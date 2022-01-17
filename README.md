@@ -1,2 +1,2 @@
 # gourmeow_puzzle
-Flutter puzzle game
+Flutter Puzzle Hack project
