@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class BoardPosition extends Equatable implements Comparable<BoardPosition>{
   final int x;
 
-  const BoardPosition(this.x, this.y);
+  BoardPosition({required this.x, required this.y});
 
   final int y;
 

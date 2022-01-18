@@ -6,7 +6,7 @@ class Meal extends Equatable {
   final Meals meal;
   final List<Ingredients> ingredients;
 
-  const Meal(this.meal, this.ingredients);
+  Meal({required this.meal, required this.ingredients});
 
   @override
   List<Object?> get props => [meal, ingredients];
@@ -14,6 +14,7 @@ class Meal extends Equatable {
 
 
 enum Meals {
+  none,
   sandwich,
   burger,
   tunaSalad,

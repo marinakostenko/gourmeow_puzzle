@@ -6,15 +6,21 @@ import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'cat.dart';
 
 class Product extends Equatable {
-  final Ingredient ingredient;
-  final Meal meal;
-  final BoardPosition position;
-  final bool isSelected;
-  final Cat cat;
+  Ingredient ingredient;
+  Meal meal;
+  BoardPosition position;
+  bool isSelected;
+  Cat cat;
 
-  const Product(this.ingredient, this.meal, this.position, this.isSelected, this.cat);
+  Product({
+    required this.ingredient,
+    required this.meal,
+    required this.position,
+    required this.isSelected,
+    required this.cat});
 
   @override
   List<Object?> get props => [ingredient, meal, position, isSelected, cat];
-
 }
+
+

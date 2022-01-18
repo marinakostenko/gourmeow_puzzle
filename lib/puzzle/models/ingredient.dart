@@ -2,12 +2,11 @@ import 'package:equatable/equatable.dart';
 
 class Ingredient extends Equatable {
   final Ingredients ingredient;
-  final List<Ingredients> pairs;
 
-  const Ingredient(this.ingredient, this.pairs);
+  Ingredient({required this.ingredient});
 
   @override
-  List<Object?> get props => [ingredient, pairs];
+  List<Object?> get props => [ingredient];
 }
 
 
