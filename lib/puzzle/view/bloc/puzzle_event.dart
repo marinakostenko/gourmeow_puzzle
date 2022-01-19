@@ -8,8 +8,9 @@ abstract class PuzzleEvent extends Equatable {
 }
 
 class PuzzleInitialized extends PuzzleEvent {
-  const PuzzleInitialized(this.newGame);
+  const PuzzleInitialized(this.newGame, this.size);
 
+  final int size;
   final bool newGame;
 
   @override

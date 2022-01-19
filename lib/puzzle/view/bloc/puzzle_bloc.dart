@@ -13,9 +13,10 @@ part 'puzzle_event.dart';
 part 'puzzle_state.dart';
 
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
-  PuzzleBloc(this.size) : super(PuzzleInitial());
+  PuzzleBloc() : super(PuzzleInitial());
 
-  final size;
+  var size;
+  var puzzle;
   var productsList;
   var cats;
 
@@ -27,9 +28,11 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     if(event is PuzzleInitialized) {
       productsList = Utils().defaultProductsList(size);
       cats = Utils().defaultCatsList();
-      final Puzzle puzzle = Puzzle(productsList);
+      puzzle = Puzzle(productsList);
 
-      _setCatWishesPositions(puzzle, cats);
+      puzzle = _setCatWishesPositions(puzzle, cats);
+
+      yield(PuzzleSuccessfullyCreated(puzzle));
     }
   }
 
