@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,20 +24,31 @@ class PuzzleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocProvider<PuzzleBloc>(
+      body: AnimatedContainer(
+        duration: const Duration(milliseconds: 530),
+        child: BlocProvider<PuzzleBloc>(
           create: (context) {
             return PuzzleBloc()..add(
-              PuzzleInitialized(true, 5),
+              const PuzzleInitialized(true, 5),
             );
           },
-          child: buildPuzzle(context)
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: 100,
+              ),
+              child: buildPuzzle(),
+            ),
+          ),
       ),
+    ),
     );
   }
 
-  Widget buildPuzzle(BuildContext context) {
+  Widget buildPuzzle() {
     return BlocBuilder<PuzzleBloc, PuzzleState>(
         builder: (BuildContext context, PuzzleState state) {
+          log("mystate ${state.toString()}");
           Puzzle puzzle;
           if (state is PuzzleInitial) {
             return const CircularProgressIndicator();
@@ -62,51 +75,50 @@ class PuzzleView extends StatelessWidget {
   }
 
   Widget boardBuilder(int size, List<Widget> products, PuzzleState state) {
-    return Column(
-      children: [
-        const Gap(80),
-        GridView.count(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: size,
-          mainAxisSpacing: 5,
-          crossAxisSpacing: 5,
-          children: products,
-        ),
-        const Gap(
-          96,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(100),
+      child: Column(
+        children: [
+          const Gap(10),
+          GridView.count(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            crossAxisCount: size,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
+            children: products,
+          ),
+          const Gap(
+            10,
+          ),
+        ],
+      ),
     );
   }
 
   Widget productBuilder(Product product, PuzzleState state) {
     return TextButton(
-      style: TextButton.styleFrom(
-        primary: Colors.white,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
+        style: TextButton.styleFrom(
+          fixedSize: const Size.square(20),
+        ).copyWith(
+        //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                (states) {
+              if (product.cat.color != Colors.white) {
+                return product.cat.color;
+              } else {
+                return Colors.black12;
+              }
+            },
           ),
         ),
-      ).copyWith(
-        foregroundColor: MaterialStateProperty.all(Colors.white),
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (states) {
-            if (product.cat.color != Colors.white) {
-              return product.cat.color;
-            } else {
-              return Colors.black12;
-            }
-          },
+        onPressed: () => {},
+        child: Text(
+          product.ingredient.ingredient.name,
+          style: TextStyle(fontSize: 12),
         ),
-      ),
-      onPressed: () => {},
-      child: Text(
-        product.ingredient.toString(),
-      ),
-    );
+      );
   }
 }
 

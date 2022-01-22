@@ -28,4 +28,5 @@ class ProductTapped extends PuzzleEvent {
 
 class PuzzleReset extends PuzzleEvent {
   const PuzzleReset();
+
 }

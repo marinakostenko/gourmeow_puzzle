@@ -18,6 +18,7 @@ class Utils {
       }
     }
 
+    debugPrint("Board positions ${positions.toString()}");
     return positions;
   }
 
@@ -61,13 +62,12 @@ class Utils {
     final defaultProducts = [tuna, bread, meat, salad, tomato];
     final products = <Product>[];
 
-    int dimension = sqrt(size).toInt();
-    var positions = getBoardPositionsList(dimension);
+    var positions = getBoardPositionsList(size);
 
     final _random = Random();
 
     int count = 1;
-    while(count <= dimension) {
+    while(count <= size) {
 
       for(int i = 0; i < defaultProducts.length; i++) {
         Product product = defaultProducts[i];

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -10,30 +9,31 @@ import 'package:gourmeow_puzzle/puzzle/models/puzzle.dart';
 import 'package:gourmeow_puzzle/puzzle/utils/utils.dart';
 
 part 'puzzle_event.dart';
+
 part 'puzzle_state.dart';
 
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
-  PuzzleBloc() : super(PuzzleInitial());
+  PuzzleBloc() : super(PuzzleInitial()) {
+    on<PuzzleInitialized>((event, emit) => _onPuzzleInitialized(event, emit));
+  }
 
-  var size;
-  var puzzle;
-  var productsList;
-  var cats;
+  void _onPuzzleInitialized(
+    PuzzleInitialized event,
+    Emitter<PuzzleState> emit,
+  ) {
+    var productsList = Utils().defaultProductsList(event.size);
+    var cats = Utils().defaultCatsList();
+    var puzzle = Puzzle(productsList);
 
-  @override
-  Stream<PuzzleState> mapEventToState(
-      PuzzleEvent event,
-      ) async* {
+    print("inside bloc");
+    print(productsList);
 
-    if(event is PuzzleInitialized) {
-      productsList = Utils().defaultProductsList(size);
-      cats = Utils().defaultCatsList();
-      puzzle = Puzzle(productsList);
-
-      puzzle = _setCatWishesPositions(puzzle, cats);
-
-      yield(PuzzleSuccessfullyCreated(puzzle));
-    }
+    puzzle = _setCatWishesPositions(puzzle, cats);
+    emit(
+      PuzzleSuccessfullyCreated(
+        puzzle,
+      ),
+    );
   }
 
   Puzzle _setCatWishesPositions(Puzzle puzzle, List<Cat> cats) {
@@ -42,10 +42,10 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     final _random = Random();
 
-    while(count < cats.length) {
-      while(true) {
+    while (count < cats.length) {
+      while (true) {
         var product = puzzle.products[_random.nextInt(puzzle.products.length)];
-        if(product.cat.color == Colors.white) {
+        if (product.cat.color == Colors.white) {
           product.cat = cats.elementAt(count);
           break;
         }
