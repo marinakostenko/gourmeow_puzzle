@@ -8,28 +8,35 @@ import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 
 class Utils {
-  List<Product> shuffleProducts(int dimension, List<Product> products) {
-    final shuffleProducts = <Product>[];
+  List<List<Product>> shuffleProducts(int dimension, List<List<Product>> products) {
+    final List<List<Product>> shuffleProducts = [];
     final _random = Random();
 
     for (int y = 1; y <= dimension; y++) {
+      var shuffledX = <Product>[];
       for (int x = 1; x <= dimension; x++) {
-        int randomIndex = _random.nextInt(products.length);
+        int randomY = _random.nextInt(products.length);
+        int randomX = _random.nextInt(products[randomY].length);
 
-        var product = products.elementAt(randomIndex);
+
+        var product = products.elementAt(randomY).elementAt(randomX);
 
         product.position = BoardPosition(x: x, y: y);
 
-        shuffleProducts.add(product);
+        shuffledX.add(product);
 
-        products.removeAt(randomIndex);
+        products.elementAt(randomY).removeAt(randomX);
+        if(products.elementAt(randomY).isEmpty) {
+          products.removeAt(randomY);
+        }
       }
+      shuffleProducts.add(shuffledX);
     }
 
     return shuffleProducts;
   }
 
-  List<Product> defaultProductsList(int size) {
+  List<List<Product>> defaultProductsList(int size) {
     Product tuna = Product(
         ingredient: Ingredient(ingredient: Ingredients.tuna),
         meal: Meal(meal: Meals.none, ingredients: []),
@@ -81,25 +88,28 @@ class Utils {
             livesCount: -1));
 
     final defaultProducts = [tuna, bread, meat, salad, tomato];
-    final products = <Product>[];
 
-    int row = 1;
-    while (row <= size) {
+    List<List<Product>> productsTable = [];
+
+    for(int j = 1; j <= size; j++) {
+      var products = <Product>[];
       for (int i = 1; i <= defaultProducts.length; i++) {
         Product product = defaultProducts[i - 1].copyWith();
-        product.position = BoardPosition(x: row, y: i);
+      //  product.position = BoardPosition(x: j, y: i);
         products.add(product);
       }
 
-      row++;
+      productsTable.add(products);
     }
 
-    for(Product product in products) {
-      final h = identityHashCode(product);
-      debugPrint(" $h ${product.position} + ${product.ingredient.ingredient.name}");
-    }
+    var shuffled = shuffleProducts(size, productsTable);
 
-    var shuffled = shuffleProducts(size, products);
+    // for(List<Product> productsList in productsTable) {
+    //   for(Product product in productsList) {
+    //     final h = identityHashCode(product);
+    //     debugPrint(" $h ${product.position} + ${product.ingredient.ingredient.name}");
+    //   }
+    // }
 
     return shuffled;
   }

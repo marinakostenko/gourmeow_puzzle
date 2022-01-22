@@ -17,13 +17,15 @@ class PuzzleInitialized extends PuzzleEvent {
   List<Object> get props => [newGame];
 }
 
-class ProductTapped extends PuzzleEvent {
-  const ProductTapped(this.product);
-
+class ProductSwiped extends PuzzleEvent {
   final Product product;
 
+  final BoardPosition swipedPosition;
+
+  const ProductSwiped(this.product, this.swipedPosition);
+
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [product, swipedPosition];
 }
 
 class PuzzleReset extends PuzzleEvent {

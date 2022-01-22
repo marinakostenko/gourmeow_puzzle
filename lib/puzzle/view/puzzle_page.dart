@@ -28,9 +28,10 @@ class PuzzleView extends StatelessWidget {
         duration: const Duration(milliseconds: 530),
         child: BlocProvider<PuzzleBloc>(
           create: (context) {
-            return PuzzleBloc()..add(
-              const PuzzleInitialized(true, 5),
-            );
+            return PuzzleBloc()
+              ..add(
+                const PuzzleInitialized(true, 5),
+              );
           },
           child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -40,38 +41,41 @@ class PuzzleView extends StatelessWidget {
               child: buildPuzzle(),
             ),
           ),
+        ),
       ),
-    ),
     );
   }
 
   Widget buildPuzzle() {
     return BlocBuilder<PuzzleBloc, PuzzleState>(
         builder: (BuildContext context, PuzzleState state) {
-          log("mystate ${state.toString()}");
-          Puzzle puzzle;
-          if (state is PuzzleInitial) {
-            return const CircularProgressIndicator();
-          }
+      log("mystate ${state.toString()}");
+      Puzzle puzzle;
+      if (state is PuzzleInitial) {
+        return const CircularProgressIndicator();
+      }
 
-          if (state is PuzzleSuccessfullyCreated) {
-            puzzle = state.puzzle;
-            return boardBuilder(
-              5,
-              puzzle.products
-                  .map(
-                    (product) => productBuilder(
-                  product,
-                  state,
-                ),
-              )
-                  .toList(),
-              state,
-            );
-          }
+      if (state is PuzzleSuccessfullyCreated) {
+        puzzle = state.puzzle;
 
-          return Container();
-        });
+        var productTable = puzzle.products;
+        var products = <Widget>[];
+
+        for (List<Product> productsList in productTable) {
+          for (Product product in productsList) {
+            products.add(productBuilder(product, state));
+          }
+        }
+
+        return boardBuilder(
+          5,
+          products,
+          state,
+        );
+      }
+
+      return Container();
+    });
   }
 
   Widget boardBuilder(int size, List<Widget> products, PuzzleState state) {
@@ -98,27 +102,26 @@ class PuzzleView extends StatelessWidget {
 
   Widget productBuilder(Product product, PuzzleState state) {
     return TextButton(
-        style: TextButton.styleFrom(
-          fixedSize: const Size.square(20),
-        ).copyWith(
+      style: TextButton.styleFrom(
+        fixedSize: const Size.square(20),
+      ).copyWith(
         //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                (states) {
-              if (product.cat.color != Colors.white) {
-                return product.cat.color;
-              } else {
-                return Colors.black12;
-              }
-            },
-          ),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+          (states) {
+            if (product.cat.color != Colors.white) {
+              return product.cat.color;
+            } else {
+              return Colors.black12;
+            }
+          },
         ),
-        onPressed: () => {},
-        child: Text(
-          product.ingredient.ingredient.name,
-          style: TextStyle(fontSize: 12),
-        ),
-      );
+      ),
+      onPressed: () => {},
+      child: Text(
+        product.ingredient.ingredient.name,
+        style: TextStyle(fontSize: 12),
+      ),
+    );
   }
 }
-
