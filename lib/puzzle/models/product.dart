@@ -1,10 +1,11 @@
 import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
+import 'package:gourmeow_puzzle/puzzle/utils/copyable.dart';
 
 import 'cat.dart';
 
-class Product {
+class Product extends Copyable<Product> {
   Ingredient ingredient;
   Meal meal;
   BoardPosition position;
@@ -18,6 +19,7 @@ class Product {
       required this.isSelected,
       required this.cat});
 
+  @override
   Product copyWith(
           {Ingredient? ingredient,
           Meal? meal,
