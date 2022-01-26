@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/models/puzzle.dart';
 
@@ -63,7 +64,7 @@ class PuzzleView extends StatelessWidget {
 
         for (List<Product> productsList in productTable) {
           for (Product product in productsList) {
-            products.add(productBuilder(product, state));
+            products.add(productBuilder(context, product, state));
           }
         }
 
@@ -100,27 +101,92 @@ class PuzzleView extends StatelessWidget {
     );
   }
 
-  Widget productBuilder(Product product, PuzzleState state) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        fixedSize: const Size.square(20),
-      ).copyWith(
-        //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (states) {
-            if (product.cat.color != Colors.white) {
-              return product.cat.color;
-            } else {
-              return Colors.black12;
-            }
-          },
+  Widget productBuilder(
+      BuildContext context, Product product, PuzzleState state) {
+
+    //Vertical drag details
+    DragStartDetails? startVerticalDragDetails;
+    DragUpdateDetails? updateVerticalDragDetails;
+
+    //Horizontal drag details
+    DragStartDetails? startHorizontalDragDetails;
+    DragUpdateDetails? updateHorizontalDragDetails;
+
+    return GestureDetector(
+      onVerticalDragStart: (dragDetails) {
+        startVerticalDragDetails = dragDetails;
+      },
+      onVerticalDragUpdate: (dragDetails) {
+        updateVerticalDragDetails = dragDetails;
+      },
+      onVerticalDragEnd: (endDetails) {
+        double dx = updateVerticalDragDetails!.globalPosition.dx - startVerticalDragDetails!.globalPosition.dx;
+        double dy = updateVerticalDragDetails!.globalPosition.dy - startVerticalDragDetails!.globalPosition.dy;
+
+        double? velocity = endDetails.primaryVelocity;
+
+        if (dx < 0) dx = -dx;
+        if (dy < 0) dy = -dy;
+        double? positiveVelocity = velocity! < 0 ? -velocity : velocity;
+
+        debugPrint("$velocity");
+
+        if(velocity < 0) {
+          debugPrint("Swipe up");
+        } else {
+          debugPrint("Swipe down");
+        }
+      },
+
+      onHorizontalDragStart: (dragDetails) {
+        startHorizontalDragDetails = dragDetails;
+      },
+      onHorizontalDragUpdate: (dragDetails) {
+        updateHorizontalDragDetails = dragDetails;
+      },
+
+      onHorizontalDragEnd: (endDetails) {
+        double dx = updateHorizontalDragDetails!.globalPosition.dx - startHorizontalDragDetails!.globalPosition.dx;
+        double dy = updateHorizontalDragDetails!.globalPosition.dy - startHorizontalDragDetails!.globalPosition.dy;
+
+        double? velocity = endDetails.primaryVelocity;
+
+        if (dx < 0) dx = -dx;
+        if (dy < 0) dy = -dy;
+        double? positiveVelocity = velocity! < 0 ? -velocity : velocity;
+
+        debugPrint("$velocity");
+
+        if(velocity < 0) {
+          debugPrint("Swipe left");
+        } else {
+          debugPrint("Swipe right");
+        }
+      },
+
+      child: AbsorbPointer(
+        child: TextButton(
+          style: TextButton.styleFrom(
+            fixedSize: const Size.square(20),
+          ).copyWith(
+            //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+              (states) {
+                if (product.cat.color != Colors.white) {
+                  return product.cat.color;
+                } else {
+                  return Colors.black12;
+                }
+              },
+            ),
+          ),
+          onPressed: () => {},
+          child: Text(
+            product.ingredient.ingredient.name,
+            style: TextStyle(fontSize: 12),
+          ),
         ),
-      ),
-      onPressed: () => {},
-      child: Text(
-        product.ingredient.ingredient.name,
-        style: TextStyle(fontSize: 12),
       ),
     );
   }

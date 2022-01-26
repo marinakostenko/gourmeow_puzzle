@@ -16,7 +16,7 @@ part 'puzzle_state.dart';
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   PuzzleBloc() : super(PuzzleInitial()) {
     on<PuzzleInitialized>((event, emit) => _onPuzzleInitialized(event, emit));
-    on<ProductSwiped>((event, emit) => _onProductTapped(event, emit));
+    on<ProductSwiped>((event, emit) => _onProductSwiped(event, emit));
   }
 
   void _onPuzzleInitialized(
@@ -37,7 +37,9 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     );
   }
 
-  void _onProductTapped(ProductSwiped event, Emitter<PuzzleState> emit) {}
+  void _onProductSwiped(ProductSwiped event, Emitter<PuzzleState> emit) {
+    debugPrint("Product tapped ${event.product.ingredient.ingredient.name}");
+  }
 
   Puzzle _setCatWishesPositions(Puzzle puzzle, List<Cat> cats) {
     //TODO add random dishes to selected cats
