@@ -6,7 +6,7 @@ import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 class Puzzle extends Equatable {
   final List<List<Product>> products;
 
-  const Puzzle(this.products);
+  const Puzzle({required this.products});
 
   int getDimension() {
     return sqrt(products.length).toInt();

@@ -27,19 +27,34 @@ class PuzzleView extends StatelessWidget {
     return Scaffold(
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 530),
-        child: BlocProvider<PuzzleBloc>(
-          create: (context) {
-            return PuzzleBloc()
-              ..add(
-                const PuzzleInitialized(true, 5),
-              );
-          },
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => PuzzleBloc()
+                ..add(
+                  const PuzzleInitialized(true, 5),
+                ),
+            ),
+          ],
           child: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 minHeight: 100,
               ),
-              child: buildPuzzle(),
+              child: BlocProvider<PuzzleBloc>(
+                lazy: false,
+                create: (context) {
+                  return PuzzleBloc()
+                    ..add(
+                      const PuzzleInitialized(true, 5),
+                    );
+                },
+                child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return buildPuzzle(context);
+                }),
+                //child:
+              ),
             ),
           ),
         ),
@@ -47,39 +62,34 @@ class PuzzleView extends StatelessWidget {
     );
   }
 
-  Widget buildPuzzle() {
-    return BlocBuilder<PuzzleBloc, PuzzleState>(
-        builder: (BuildContext context, PuzzleState state) {
-      log("mystate ${state.toString()}");
-      Puzzle puzzle;
-      if (state is PuzzleInitial) {
-        return const CircularProgressIndicator();
+  Widget buildPuzzle(BuildContext context) {
+    final state = context.select((PuzzleBloc bloc) => bloc.state);
+    debugPrint("${state}");
+
+    var puzzle = context.select((PuzzleBloc bloc) => bloc.state.puzzle);
+
+    debugPrint("${puzzle.products.length}");
+    var productTable = puzzle.products;
+    var products = <Widget>[];
+
+    for (List<Product> productsList in productTable) {
+      for (Product product in productsList) {
+        products.add(productBuilder(context, product));
       }
+    }
 
-      if (state is PuzzleSuccessfullyCreated) {
-        puzzle = state.puzzle;
+    final size = puzzle.getDimension();
+    if (size == 0) return const CircularProgressIndicator();
 
-        var productTable = puzzle.products;
-        var products = <Widget>[];
-
-        for (List<Product> productsList in productTable) {
-          for (Product product in productsList) {
-            products.add(productBuilder(context, product, state));
-          }
-        }
-
-        return boardBuilder(
-          5,
-          products,
-          state,
-        );
-      }
-
-      return Container();
-    });
+    return BlocListener<PuzzleBloc, PuzzleState>(
+      listener: (BuildContext context, PuzzleState state) {
+         context.read<PuzzleBloc>().add(PuzzleInitialized(true, 5));
+      },
+      child: boardBuilder(5, products),
+    );
   }
 
-  Widget boardBuilder(int size, List<Widget> products, PuzzleState state) {
+  Widget boardBuilder(int size, List<Widget> products) {
     return Padding(
       padding: const EdgeInsets.all(100),
       child: Column(
@@ -101,9 +111,7 @@ class PuzzleView extends StatelessWidget {
     );
   }
 
-  Widget productBuilder(
-      BuildContext context, Product product, PuzzleState state) {
-
+  Widget productBuilder(BuildContext context, Product product) {
     //Vertical drag details
     DragStartDetails? startVerticalDragDetails;
     DragUpdateDetails? updateVerticalDragDetails;
@@ -120,8 +128,10 @@ class PuzzleView extends StatelessWidget {
         updateVerticalDragDetails = dragDetails;
       },
       onVerticalDragEnd: (endDetails) {
-        double dx = updateVerticalDragDetails!.globalPosition.dx - startVerticalDragDetails!.globalPosition.dx;
-        double dy = updateVerticalDragDetails!.globalPosition.dy - startVerticalDragDetails!.globalPosition.dy;
+        double dx = updateVerticalDragDetails!.globalPosition.dx -
+            startVerticalDragDetails!.globalPosition.dx;
+        double dy = updateVerticalDragDetails!.globalPosition.dy -
+            startVerticalDragDetails!.globalPosition.dy;
 
         double? velocity = endDetails.primaryVelocity;
 
@@ -131,23 +141,29 @@ class PuzzleView extends StatelessWidget {
 
         debugPrint("$velocity");
 
-        if(velocity < 0) {
+        if (velocity < -10) {
           debugPrint("Swipe up");
-        } else {
+
+          context.read<PuzzleBloc>().add(ProductSwiped(product,
+              BoardPosition(x: product.position.x, y: product.position.y - 1)));
+        } else if (velocity > 10) {
           debugPrint("Swipe down");
+
+          context.read<PuzzleBloc>().add(ProductSwiped(product,
+              BoardPosition(x: product.position.x, y: product.position.y + 1)));
         }
       },
-
       onHorizontalDragStart: (dragDetails) {
         startHorizontalDragDetails = dragDetails;
       },
       onHorizontalDragUpdate: (dragDetails) {
         updateHorizontalDragDetails = dragDetails;
       },
-
       onHorizontalDragEnd: (endDetails) {
-        double dx = updateHorizontalDragDetails!.globalPosition.dx - startHorizontalDragDetails!.globalPosition.dx;
-        double dy = updateHorizontalDragDetails!.globalPosition.dy - startHorizontalDragDetails!.globalPosition.dy;
+        double dx = updateHorizontalDragDetails!.globalPosition.dx -
+            startHorizontalDragDetails!.globalPosition.dx;
+        double dy = updateHorizontalDragDetails!.globalPosition.dy -
+            startHorizontalDragDetails!.globalPosition.dy;
 
         double? velocity = endDetails.primaryVelocity;
 
@@ -157,13 +173,16 @@ class PuzzleView extends StatelessWidget {
 
         debugPrint("$velocity");
 
-        if(velocity < 0) {
+        if (velocity < -10) {
           debugPrint("Swipe left");
-        } else {
+          context.read<PuzzleBloc>().add(ProductSwiped(product,
+              BoardPosition(x: product.position.x - 1, y: product.position.y)));
+        } else if (velocity > 10) {
           debugPrint("Swipe right");
+          context.read<PuzzleBloc>().add(ProductSwiped(product,
+              BoardPosition(x: product.position.x + 1, y: product.position.y)));
         }
       },
-
       child: AbsorbPointer(
         child: TextButton(
           style: TextButton.styleFrom(
