@@ -7,20 +7,23 @@ class DragDrop extends StatelessWidget {
   final Function onDragEnd;
   final Function onDragAccept;
 
-  const DragDrop(
-      {Key? key,
-      required this.product,
-      required this.onDragStart,
-      required this.onDragEnd,
-      required this.onDragAccept})
+  const DragDrop({Key? key,
+    required this.product,
+    required this.onDragStart,
+    required this.onDragEnd,
+    required this.onDragAccept})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (product.draggable == Drag.drag) {
       return Draggable<Product>(
+        data: product,
+        dragAnchorStrategy: pointerDragAnchorStrategy,
         feedback: _productCard(product),
-        //onDragStarted: onDragStart(product),
+        onDragStarted: () async {
+          onDragStart(product);
+        },
         childWhenDragging: Container(),
         child: _productCard(product),
       );
@@ -28,8 +31,7 @@ class DragDrop extends StatelessWidget {
 
     if (product.draggable == Drag.drop) {
       return DragTarget<Product>(
-        builder: (BuildContext context, List<Object?> candidateData,
-            List rejectedData) {
+        builder: (context, candidateItems, rejectedItem) {
           return _productCard(product);
         },
         onAccept: (Product targetProduct) {
@@ -49,7 +51,7 @@ class DragDrop extends StatelessWidget {
         //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
         foregroundColor: MaterialStateProperty.all(Colors.white),
         backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (states) {
+              (states) {
             if (product.cat.color != Colors.white) {
               return product.cat.color;
             } else {

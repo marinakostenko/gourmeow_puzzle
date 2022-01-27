@@ -22,7 +22,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
   List<List<Product>> productsList = [];
   List<Cat> cats = [];
-  Puzzle puzzle = Puzzle(products: []);
+  Puzzle puzzle = const Puzzle(products: []);
 
   void _onPuzzleInitialized(
     PuzzleInitialized event,
@@ -36,11 +36,10 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     puzzle = _setCatWishesPositions(puzzle, cats);
 
-    debugPrint("puzzle ${puzzle.products.length}");
     emit(
       PuzzleState(
         puzzle: puzzle,
-        count: 1,
+        count: 0,
         dragCount: 0,
       ),
     );
@@ -74,6 +73,9 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       //top
       productsList[yProduct + 1][xProduct].draggable = Drag.drop;
     }
+
+    debugPrint("${productsList[yProduct][xProduct - 1].ingredient.ingredient.name}");
+    debugPrint("${productsList[yProduct][xProduct - 1].draggable}");
 
     debugPrint("drag count $count");
     puzzle = Puzzle(products: productsList);
