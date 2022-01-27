@@ -10,14 +10,18 @@ class Product extends Copyable<Product> {
   Meal meal;
   BoardPosition position;
   bool isSelected;
+  Drag draggable;
+
   Cat cat;
 
-  Product(
-      {required this.ingredient,
-      required this.meal,
-      required this.position,
-      required this.isSelected,
-      required this.cat});
+  Product({
+    required this.ingredient,
+    required this.meal,
+    required this.position,
+    required this.isSelected,
+    required this.cat,
+    required this.draggable,
+  });
 
   @override
   Product copyWith(
@@ -25,12 +29,14 @@ class Product extends Copyable<Product> {
           Meal? meal,
           BoardPosition? position,
           bool? isSelected,
+            Drag? draggable,
           Cat? cat}) =>
       Product(
         ingredient: this.ingredient,
         meal: this.meal,
         position: this.position,
         isSelected: this.isSelected,
+        draggable: this.draggable,
         cat: this.cat,
       );
 
@@ -43,6 +49,7 @@ class Product extends Copyable<Product> {
           meal == other.meal &&
           position == other.position &&
           isSelected == other.isSelected &&
+          draggable == other.draggable &&
           cat == other.cat;
 
   @override
@@ -51,5 +58,11 @@ class Product extends Copyable<Product> {
       meal.hashCode ^
       position.hashCode ^
       isSelected.hashCode ^
+      draggable.hashCode ^
       cat.hashCode;
+}
+
+enum Drag {
+  drag,
+  drop,
 }

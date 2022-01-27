@@ -42,6 +42,7 @@ class Utils {
         meal: Meal(meal: Meals.none, ingredients: []),
         position: BoardPosition(x: -1, y: -1),
         isSelected: false,
+        draggable: Drag.drag,
         cat: Cat(
             color: Colors.white,
             meal: Meal(meal: Meals.none, ingredients: []),
@@ -52,6 +53,7 @@ class Utils {
         meal: Meal(meal: Meals.none, ingredients: []),
         position: BoardPosition(x: -1, y: -1),
         isSelected: false,
+        draggable: Drag.drop,
         cat: Cat(
             color: Colors.white,
             meal: Meal(meal: Meals.none, ingredients: []),
@@ -62,6 +64,7 @@ class Utils {
         meal: Meal(meal: Meals.none, ingredients: []),
         position: BoardPosition(x: -1, y: -1),
         isSelected: false,
+        draggable: Drag.drag,
         cat: Cat(
             color: Colors.white,
             meal: Meal(meal: Meals.none, ingredients: []),
@@ -72,6 +75,7 @@ class Utils {
         meal: Meal(meal: Meals.none, ingredients: []),
         position: BoardPosition(x: -1, y: -1),
         isSelected: false,
+        draggable: Drag.drop,
         cat: Cat(
             color: Colors.white,
             meal: Meal(meal: Meals.none, ingredients: []),
@@ -82,6 +86,7 @@ class Utils {
         meal: Meal(meal: Meals.none, ingredients: []),
         position: BoardPosition(x: -1, y: -1),
         isSelected: false,
+        draggable: Drag.drag,
         cat: Cat(
             color: Colors.white,
             meal: Meal(meal: Meals.none, ingredients: []),

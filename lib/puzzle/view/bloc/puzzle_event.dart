@@ -16,6 +16,14 @@ class PuzzleInitialized extends PuzzleEvent {
   @override
   List<Object> get props => [newGame];
 }
+class ProductDragged extends PuzzleEvent {
+  final Product product;
+
+  const ProductDragged(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
 
 class ProductSwiped extends PuzzleEvent {
   final Product product;
