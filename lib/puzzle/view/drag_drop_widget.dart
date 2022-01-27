@@ -21,20 +21,20 @@ class DragDrop extends StatelessWidget {
         maxSimultaneousDrags: 1,
         data: product,
         dragAnchorStrategy: pointerDragAnchorStrategy,
-        feedback: _productCard(product),
+        feedback: _productCard(product, Colors.white),
         onDragStarted: () async {
           onDragStart(product);
         },
 
         childWhenDragging: Container(),
-        child: _productCard(product),
+        child: _productCard(product, Colors.white),
       );
     }
 
     if (product.draggable == Drag.drop) {
       return DragTarget<Product>(
         builder: (context, candidateItems, rejectedItem) {
-          return _productCard(product);
+          return _productCard(product, Colors.indigo);
         },
         onAccept: (Product targetProduct) {
           onDragAccept(product, targetProduct);
@@ -45,7 +45,7 @@ class DragDrop extends StatelessWidget {
     return Container();
   }
 
-  Widget _productCard(Product product) {
+  Widget _productCard(Product product, Color textColor) {
     return TextButton(
       style: TextButton.styleFrom(
         fixedSize: const Size.square(20),
@@ -65,7 +65,7 @@ class DragDrop extends StatelessWidget {
       onPressed: () => {},
       child: Text(
         product.ingredient.ingredient.name,
-        style: TextStyle(fontSize: 12),
+        style: TextStyle(fontSize: 12, color: textColor),
       ),
     );
   }

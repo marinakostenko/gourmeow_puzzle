@@ -53,27 +53,28 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     int xProduct = event.product.position.x - 1;
     int yProduct = event.product.position.y - 1;
 
-    if(xProduct > 0) {
+    if (xProduct > 0) {
       //left
       productsList[yProduct][xProduct - 1].draggable = Drag.drop;
     }
 
-    if(xProduct < productsList.length - 1) {
+    if (xProduct < productsList.length - 1) {
       //right
       productsList[yProduct][xProduct + 1].draggable = Drag.drop;
     }
 
-    if(yProduct > 0) {
+    if (yProduct > 0) {
       //bottom
       productsList[yProduct - 1][xProduct].draggable = Drag.drop;
     }
 
-    if(yProduct < productsList.length - 1) {
+    if (yProduct < productsList.length - 1) {
       //top
       productsList[yProduct + 1][xProduct].draggable = Drag.drop;
     }
 
-    debugPrint("${productsList[yProduct][xProduct - 1].ingredient.ingredient.name}");
+    debugPrint(
+        "${productsList[yProduct][xProduct - 1].ingredient.ingredient.name}");
     debugPrint("${productsList[yProduct][xProduct - 1].draggable}");
 
     debugPrint("drag count $count");
@@ -90,27 +91,35 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   void _onProductSwiped(ProductSwiped event, Emitter<PuzzleState> emit) {
     int count = state.count;
 
-    debugPrint("Product to swipe ${event.product.ingredient.ingredient.name}");
-    int xProduct = event.product.position.x;
-    int yProduct = event.product.position.y;
+    debugPrint(
+        "Product to swipe ${event.dragProduct.ingredient.ingredient.name}");
 
-    int x = event.swipedPosition.x;
-    int y = event.swipedPosition.y;
+    int yProduct = event.dragProduct.position.y;
+    int xProduct = event.dragProduct.position.x;
 
-    if (y < 1 || y > productsList.length || x < 1 || x > productsList.length) {
-      debugPrint("out of range $y $x");
-      return;
+    if (xProduct > 0) {
+      //left
+      productsList[yProduct][xProduct - 1].draggable = Drag.drag;
     }
 
-    Product reachedProduct = productsList.elementAt(y - 1).elementAt(x - 1);
-    debugPrint(
-        "Reached product $x, $y ${reachedProduct.ingredient.ingredient.name}");
+    if (xProduct < productsList.length - 1) {
+      //right
+      productsList[yProduct][xProduct + 1].draggable = Drag.drag;
+    }
 
-    event.product.position = BoardPosition(x: x, y: y);
-    productsList[y - 1][x - 1] = event.product;
+    if (yProduct > 0) {
+      //bottom
+      productsList[yProduct - 1][xProduct].draggable = Drag.drag;
+    }
 
-    reachedProduct.position = BoardPosition(x: xProduct, y: yProduct);
-    productsList[yProduct - 1][xProduct - 1] = reachedProduct;
+    if (yProduct < productsList.length - 1) {
+      //top
+      productsList[yProduct + 1][xProduct].draggable = Drag.drag;
+    }
+
+    productsList[event.dropProduct.position.y - 1]
+        [event.dropProduct.position.x - 1] = event.dragProduct;
+    productsList[yProduct - 1][xProduct - 1] = event.dropProduct;
 
     puzzle = Puzzle(products: productsList);
 

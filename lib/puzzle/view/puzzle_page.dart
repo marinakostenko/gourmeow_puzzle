@@ -107,7 +107,7 @@ class PuzzleView extends StatelessWidget {
               .name} - drop ${dropProduct.ingredient.ingredient.name}");
       context
           .read<PuzzleBloc>()
-          .add(ProductSwiped(dragProduct, dropProduct.position));
+          .add(ProductSwiped(dragProduct, dropProduct));
     }
 
     return DragDrop(

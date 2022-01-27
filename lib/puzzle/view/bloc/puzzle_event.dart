@@ -26,14 +26,14 @@ class ProductDragged extends PuzzleEvent {
 }
 
 class ProductSwiped extends PuzzleEvent {
-  final Product product;
+  final Product dragProduct;
 
-  final BoardPosition swipedPosition;
+  final Product dropProduct;
 
-  const ProductSwiped(this.product, this.swipedPosition);
+  const ProductSwiped(this.dragProduct, this.dropProduct);
 
   @override
-  List<Object> get props => [product, swipedPosition];
+  List<Object> get props => [dragProduct, dropProduct];
 }
 
 class PuzzleReset extends PuzzleEvent {
