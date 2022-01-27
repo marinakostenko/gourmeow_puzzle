@@ -18,12 +18,14 @@ class DragDrop extends StatelessWidget {
   Widget build(BuildContext context) {
     if (product.draggable == Drag.drag) {
       return Draggable<Product>(
+        maxSimultaneousDrags: 1,
         data: product,
         dragAnchorStrategy: pointerDragAnchorStrategy,
         feedback: _productCard(product),
         onDragStarted: () async {
           onDragStart(product);
         },
+
         childWhenDragging: Container(),
         child: _productCard(product),
       );

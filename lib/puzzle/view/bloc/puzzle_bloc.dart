@@ -39,8 +39,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     emit(
       PuzzleState(
         puzzle: puzzle,
-        count: 0,
-        dragCount: 0,
+        count: 1,
       ),
     );
   }
@@ -48,7 +47,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   void _onProductDragged(ProductDragged event, Emitter<PuzzleState> emit) {
     debugPrint("Product dragged ${event.product.ingredient.ingredient.name}");
 
-    int count = state.dragCount;
+    int count = state.count;
     count = count + 1;
 
     int xProduct = event.product.position.x - 1;
@@ -83,7 +82,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     emit(
       state.copyWith(
         puzzle: puzzle,
-        dragCount: count,
+        count: count,
       ),
     );
   }
@@ -121,7 +120,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       state.copyWith(
         puzzle: puzzle,
         count: count,
-        dragCount: 0,
       ),
     );
   }

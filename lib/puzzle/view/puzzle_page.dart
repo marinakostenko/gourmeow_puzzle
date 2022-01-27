@@ -94,12 +94,11 @@ class PuzzleView extends StatelessWidget {
   }
 
   Widget itemBuilder(BuildContext context, Product product) {
-    void _onDragStart(Product product) {
+    void _onDragStart(Product product) async {
       context.read<PuzzleBloc>().add(ProductDragged(product));
     }
 
     void _onDragEnd(Product product) {
-      context.read<PuzzleBloc>().add(ProductDragged(product));
     }
 
     void _onDragAccept(Product dragProduct, Product dropProduct) {
