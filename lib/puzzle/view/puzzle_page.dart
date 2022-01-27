@@ -49,9 +49,8 @@ class PuzzleView extends StatelessWidget {
                       const PuzzleInitialized(true, 5),
                     );
                 },
-                child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return buildPuzzle(context);
+                child: LayoutBuilder(builder: (context, constraints) {
+                  return buildPuzzle(context);
                 }),
                 //child:
               ),
@@ -83,7 +82,7 @@ class PuzzleView extends StatelessWidget {
 
     return BlocListener<PuzzleBloc, PuzzleState>(
       listener: (BuildContext context, PuzzleState state) {
-         context.read<PuzzleBloc>().add(PuzzleInitialized(true, 5));
+        //context.read<PuzzleBloc>().add(PuzzleInitialized(true, 5));
       },
       child: boardBuilder(5, products),
     );
@@ -120,91 +119,99 @@ class PuzzleView extends StatelessWidget {
     DragStartDetails? startHorizontalDragDetails;
     DragUpdateDetails? updateHorizontalDragDetails;
 
-    return GestureDetector(
-      onVerticalDragStart: (dragDetails) {
-        startVerticalDragDetails = dragDetails;
+    return Draggable(
+
+      // onVerticalDragStart: (dragDetails) {
+      //   startVerticalDragDetails = dragDetails;
+      // },
+      // onVerticalDragUpdate: (dragDetails) {
+      //   updateVerticalDragDetails = dragDetails;
+      // },
+      // onVerticalDragEnd: (endDetails) {
+      //   double dx = updateVerticalDragDetails!.globalPosition.dx -
+      //       startVerticalDragDetails!.globalPosition.dx;
+      //   double dy = updateVerticalDragDetails!.globalPosition.dy -
+      //       startVerticalDragDetails!.globalPosition.dy;
+      //
+      //   double? velocity = endDetails.primaryVelocity;
+      //
+      //   if (dx < 0) dx = -dx;
+      //   if (dy < 0) dy = -dy;
+      //   double? positiveVelocity = velocity! < 0 ? -velocity : velocity;
+      //
+      //   debugPrint("$velocity");
+      //
+      //   if (velocity < -50) {
+      //     debugPrint("Swipe up");
+      //
+      //     context.read<PuzzleBloc>().add(ProductSwiped(product,
+      //         BoardPosition(x: product.position.x, y: product.position.y - 1)));
+      //   } else if (velocity > 50) {
+      //     debugPrint("Swipe down");
+      //
+      //     context.read<PuzzleBloc>().add(ProductSwiped(product,
+      //         BoardPosition(x: product.position.x, y: product.position.y + 1)));
+      //   }
+      // },
+      // onHorizontalDragStart: (dragDetails) {
+      //   startHorizontalDragDetails = dragDetails;
+      // },
+      // onHorizontalDragUpdate: (dragDetails) {
+      //   updateHorizontalDragDetails = dragDetails;
+      // },
+      // onHorizontalDragEnd: (endDetails) {
+      //   double dx = updateHorizontalDragDetails!.globalPosition.dx -
+      //       startHorizontalDragDetails!.globalPosition.dx;
+      //   double dy = updateHorizontalDragDetails!.globalPosition.dy -
+      //       startHorizontalDragDetails!.globalPosition.dy;
+      //
+      //   double? velocity = endDetails.primaryVelocity;
+      //
+      //   if (dx < 0) dx = -dx;
+      //   if (dy < 0) dy = -dy;
+      //   double? positiveVelocity = velocity! < 0 ? -velocity : velocity;
+      //
+      //   debugPrint("$velocity");
+      //
+      //   if (velocity < -50) {
+      //     debugPrint("Swipe left");
+      //     context.read<PuzzleBloc>().add(ProductSwiped(product,
+      //         BoardPosition(x: product.position.x - 1, y: product.position.y)));
+      //   } else if (velocity > 50) {
+      //     debugPrint("Swipe right");
+      //     context.read<PuzzleBloc>().add(ProductSwiped(product,
+      //         BoardPosition(x: product.position.x + 1, y: product.position.y)));
+      //   }
+      // },
+      feedback: Container(
+        color: Colors.white,
+      ),
+
+      onDragEnd: (details) {
+        context.read<PuzzleBloc>().add(ProductSwiped(product,
+            BoardPosition(x: product.position.x, y: product.position.y - 1)));
       },
-      onVerticalDragUpdate: (dragDetails) {
-        updateVerticalDragDetails = dragDetails;
-      },
-      onVerticalDragEnd: (endDetails) {
-        double dx = updateVerticalDragDetails!.globalPosition.dx -
-            startVerticalDragDetails!.globalPosition.dx;
-        double dy = updateVerticalDragDetails!.globalPosition.dy -
-            startVerticalDragDetails!.globalPosition.dy;
-
-        double? velocity = endDetails.primaryVelocity;
-
-        if (dx < 0) dx = -dx;
-        if (dy < 0) dy = -dy;
-        double? positiveVelocity = velocity! < 0 ? -velocity : velocity;
-
-        debugPrint("$velocity");
-
-        if (velocity < -10) {
-          debugPrint("Swipe up");
-
-          context.read<PuzzleBloc>().add(ProductSwiped(product,
-              BoardPosition(x: product.position.x, y: product.position.y - 1)));
-        } else if (velocity > 10) {
-          debugPrint("Swipe down");
-
-          context.read<PuzzleBloc>().add(ProductSwiped(product,
-              BoardPosition(x: product.position.x, y: product.position.y + 1)));
-        }
-      },
-      onHorizontalDragStart: (dragDetails) {
-        startHorizontalDragDetails = dragDetails;
-      },
-      onHorizontalDragUpdate: (dragDetails) {
-        updateHorizontalDragDetails = dragDetails;
-      },
-      onHorizontalDragEnd: (endDetails) {
-        double dx = updateHorizontalDragDetails!.globalPosition.dx -
-            startHorizontalDragDetails!.globalPosition.dx;
-        double dy = updateHorizontalDragDetails!.globalPosition.dy -
-            startHorizontalDragDetails!.globalPosition.dy;
-
-        double? velocity = endDetails.primaryVelocity;
-
-        if (dx < 0) dx = -dx;
-        if (dy < 0) dy = -dy;
-        double? positiveVelocity = velocity! < 0 ? -velocity : velocity;
-
-        debugPrint("$velocity");
-
-        if (velocity < -10) {
-          debugPrint("Swipe left");
-          context.read<PuzzleBloc>().add(ProductSwiped(product,
-              BoardPosition(x: product.position.x - 1, y: product.position.y)));
-        } else if (velocity > 10) {
-          debugPrint("Swipe right");
-          context.read<PuzzleBloc>().add(ProductSwiped(product,
-              BoardPosition(x: product.position.x + 1, y: product.position.y)));
-        }
-      },
-      child: AbsorbPointer(
-        child: TextButton(
-          style: TextButton.styleFrom(
-            fixedSize: const Size.square(20),
-          ).copyWith(
-            //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (states) {
-                if (product.cat.color != Colors.white) {
-                  return product.cat.color;
-                } else {
-                  return Colors.black12;
-                }
-              },
-            ),
+      childWhenDragging: Container(),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          fixedSize: const Size.square(20),
+        ).copyWith(
+          //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (states) {
+              if (product.cat.color != Colors.white) {
+                return product.cat.color;
+              } else {
+                return Colors.black12;
+              }
+            },
           ),
-          onPressed: () => {},
-          child: Text(
-            product.ingredient.ingredient.name,
-            style: TextStyle(fontSize: 12),
-          ),
+        ),
+        onPressed: () => {},
+        child: Text(
+          product.ingredient.ingredient.name,
+          style: TextStyle(fontSize: 12),
         ),
       ),
     );

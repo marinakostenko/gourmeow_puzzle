@@ -39,11 +39,14 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     emit(
       PuzzleState(
         puzzle: puzzle,
+        count: 1,
       ),
     );
   }
 
   void _onProductSwiped(ProductSwiped event, Emitter<PuzzleState> emit) {
+    int count = state.count;
+
     debugPrint("Product to swipe ${event.product.ingredient.ingredient.name}");
     int xProduct = event.product.position.x;
     int yProduct = event.product.position.y;
@@ -68,10 +71,14 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     puzzle = Puzzle(products: productsList);
 
+    debugPrint("count $count");
+    count = count + 1;
     emit(
-        state.copyWith(
-      puzzle: puzzle,
-    ));
+      state.copyWith(
+        puzzle: puzzle,
+        count: count,
+      ),
+    );
   }
 
   Puzzle _setCatWishesPositions(Puzzle puzzle, List<Cat> cats) {
