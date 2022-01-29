@@ -46,6 +46,7 @@ class DragDrop extends StatelessWidget {
   }
 
   Widget _productCard(Product product, Color textColor) {
+    String productName = product.ingredient.ingredient.name;
     return TextButton(
       style: TextButton.styleFrom(
         fixedSize: const Size.square(20),
@@ -64,7 +65,7 @@ class DragDrop extends StatelessWidget {
       ),
       onPressed: () => {},
       child: Text(
-        product.ingredient.ingredient.name,
+        productName,
         style: TextStyle(fontSize: 12, color: textColor),
       ),
     );

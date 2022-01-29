@@ -8,7 +8,8 @@ import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 
 class Utils {
-  List<List<Product>> shuffleProducts(int dimension, List<List<Product>> products) {
+  List<List<Product>> shuffleProducts(
+      int dimension, List<List<Product>> products) {
     final List<List<Product>> shuffleProducts = [];
     final _random = Random();
 
@@ -18,7 +19,6 @@ class Utils {
         int randomY = _random.nextInt(products.length);
         int randomX = _random.nextInt(products[randomY].length);
 
-
         var product = products.elementAt(randomY).elementAt(randomX);
 
         product.position = BoardPosition(x: x, y: y);
@@ -26,7 +26,7 @@ class Utils {
         shuffledX.add(product);
 
         products.elementAt(randomY).removeAt(randomX);
-        if(products.elementAt(randomY).isEmpty) {
+        if (products.elementAt(randomY).isEmpty) {
           products.removeAt(randomY);
         }
       }
@@ -100,7 +100,7 @@ class Utils {
       var products = <Product>[];
       for (int i = 1; i <= defaultProducts.length; i++) {
         Product product = defaultProducts[i - 1].copyWith();
-      //  product.position = BoardPosition(x: j, y: i);
+        //  product.position = BoardPosition(x: j, y: i);
         products.add(product);
       }
 
@@ -109,7 +109,7 @@ class Utils {
 
     var shuffled = shuffleProducts(size, productsTable);
 
-    // for(List<Product> productsList in productsTable) {
+    // for(List<Product> productsList in shuffled) {
     //   for(Product product in productsList) {
     //     final h = identityHashCode(product);
     //     debugPrint(" $h ${product.position} + ${product.ingredient.ingredient.name}");

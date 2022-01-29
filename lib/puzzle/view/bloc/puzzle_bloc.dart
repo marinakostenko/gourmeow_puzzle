@@ -16,7 +16,7 @@ part 'puzzle_state.dart';
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   PuzzleBloc() : super(const PuzzleState()) {
     on<PuzzleInitialized>(_onPuzzleInitialized);
-    on<ProductSwiped>(_onProductSwiped);
+    on<ProductDropped>(_onProductDropped);
     on<ProductDragged>(_onProductDragged);
   }
 
@@ -84,28 +84,29 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     );
   }
 
-  void _onProductSwiped(ProductSwiped event, Emitter<PuzzleState> emit) {
+  void _onProductDropped(ProductDropped event, Emitter<PuzzleState> emit) {
     int count = state.count;
 
     debugPrint(
-        "Product to swipe ${event.dragProduct.ingredient.ingredient.name}");
+        "Product to drop ${event.dragProduct.ingredient.ingredient.name}");
 
     int yProduct = event.dragProduct.position.y;
     int xProduct = event.dragProduct.position.x;
+
+    event.dragProduct.position = event.dropProduct.position;
+
+    productsList[event.dropProduct.position.y - 1]
+        [event.dropProduct.position.x - 1] = event.dragProduct;
+
+
+    productsList[yProduct - 1][xProduct - 1] = event.dropProduct;
+    event.dropProduct.position = BoardPosition(x: xProduct, y: yProduct);
 
     for (List<Product> products in productsList) {
       for (Product product in products) {
         product.draggable = Drag.drag;
       }
     }
-
-    event.dragProduct.position = event.dropProduct.position;
-
-    productsList[event.dropProduct.position.y - 1]
-        [event.dropProduct.position.x - 1] = event.dragProduct;
-    productsList[yProduct - 1][xProduct - 1] = event.dropProduct;
-
-    event.dropProduct.position = BoardPosition(x: xProduct, y: yProduct);
 
     puzzle = Puzzle(products: productsList);
 

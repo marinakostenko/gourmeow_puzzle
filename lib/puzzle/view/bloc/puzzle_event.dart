@@ -25,12 +25,12 @@ class ProductDragged extends PuzzleEvent {
   List<Object> get props => [product];
 }
 
-class ProductSwiped extends PuzzleEvent {
+class ProductDropped extends PuzzleEvent {
   final Product dragProduct;
 
   final Product dropProduct;
 
-  const ProductSwiped(this.dragProduct, this.dropProduct);
+  const ProductDropped(this.dragProduct, this.dropProduct);
 
   @override
   List<Object> get props => [dragProduct, dropProduct];

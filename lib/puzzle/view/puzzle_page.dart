@@ -27,8 +27,7 @@ class PuzzleView extends StatelessWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-              PuzzleBloc()
+              create: (context) => PuzzleBloc()
                 ..add(
                   const PuzzleInitialized(true, 5),
                 ),
@@ -98,16 +97,15 @@ class PuzzleView extends StatelessWidget {
       context.read<PuzzleBloc>().add(ProductDragged(product));
     }
 
-    void _onDragEnd(Product product) {
-    }
+    void _onDragEnd(Product product) {}
 
-    void _onDragAccept(Product dragProduct, Product dropProduct) {
+    void _onDragAccept(Product dropProduct, Product dragProduct) {
       debugPrint(
           "drag accepted called - drag ${dragProduct.ingredient.ingredient
               .name} - drop ${dropProduct.ingredient.ingredient.name}");
       context
           .read<PuzzleBloc>()
-          .add(ProductSwiped(dragProduct, dropProduct));
+          .add(ProductDropped(dragProduct, dropProduct));
     }
 
     return DragDrop(
