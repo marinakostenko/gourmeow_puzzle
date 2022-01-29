@@ -90,6 +90,9 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     debugPrint(
         "Product to drop ${event.dragProduct.ingredient.ingredient.name}");
 
+    Cat dragCat = event.dragProduct.cat;
+    Cat dropCat = event.dropProduct.cat;
+
     int yProduct = event.dragProduct.position.y;
     int xProduct = event.dragProduct.position.x;
 
@@ -98,9 +101,20 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     productsList[event.dropProduct.position.y - 1]
         [event.dropProduct.position.x - 1] = event.dragProduct;
 
-
     productsList[yProduct - 1][xProduct - 1] = event.dropProduct;
     event.dropProduct.position = BoardPosition(x: xProduct, y: yProduct);
+
+    bool switched = false;
+    if(dragCat.color != Colors.white) {
+      event.dropProduct.cat = dragCat;
+      event.dragProduct.cat = dropCat;
+      switched = true;
+    }
+
+    if(dropCat.color != Colors.white && !switched) {
+      event.dragProduct.cat = dropCat;
+      event.dropProduct.cat = dragCat;
+    }
 
     for (List<Product> products in productsList) {
       for (Product product in products) {
@@ -133,7 +147,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
         if (product.cat.color == Colors.white) {
           product.cat = cat;
-          product.isSelected = true;
           break;
         }
       }
