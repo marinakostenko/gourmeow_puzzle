@@ -7,11 +7,12 @@ class DragDrop extends StatelessWidget {
   final Function onDragEnd;
   final Function onDragAccept;
 
-  const DragDrop({Key? key,
-    required this.product,
-    required this.onDragStart,
-    required this.onDragEnd,
-    required this.onDragAccept})
+  const DragDrop(
+      {Key? key,
+      required this.product,
+      required this.onDragStart,
+      required this.onDragEnd,
+      required this.onDragAccept})
       : super(key: key);
 
   @override
@@ -21,13 +22,12 @@ class DragDrop extends StatelessWidget {
         maxSimultaneousDrags: 1,
         data: product,
         dragAnchorStrategy: pointerDragAnchorStrategy,
-        feedback: _productCard(product, Colors.white),
+        feedback: _productCard(product, Colors.black),
         onDragStarted: () async {
           onDragStart(product);
         },
-
         childWhenDragging: Container(),
-        child: _productCard(product, Colors.white),
+        child: _productCard(product, Colors.black),
       );
     }
 
@@ -47,25 +47,22 @@ class DragDrop extends StatelessWidget {
 
   Widget _productCard(Product product, Color textColor) {
     String productName = product.ingredient.ingredient.name;
-    return TextButton(
-      style: TextButton.styleFrom(
-        fixedSize: const Size.square(20),
-      ).copyWith(
-        //  fixedSize: MaterialStateProperty.all(const Size.square(20)),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (states) {
-            if (product.cat.color != Colors.white) {
-              return product.cat.color;
-            } else {
-              return Colors.black12;
-            }
-          },
-        ),
-      ),
-      onPressed: () => {},
+    Color backgroundColor = (product.cat.color != Colors.white)
+        ? product.cat.color
+        : Colors.black12;
+    Color borderColor = (product.isSelected) ? Colors.yellow : Colors.black12;
+
+    return Container(
+      alignment: Alignment.center,
+      height: 20,
+      width: 20,
+      decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(width: 2, color: borderColor)),
       child: Text(
         productName,
+        textAlign: TextAlign.center,
         style: TextStyle(fontSize: 12, color: textColor),
       ),
     );

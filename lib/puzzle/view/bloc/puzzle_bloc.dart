@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/puzzle/models/cat.dart';
+import 'package:gourmeow_puzzle/puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/models/puzzle.dart';
 import 'package:gourmeow_puzzle/puzzle/utils/utils.dart';
@@ -105,15 +106,45 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     event.dropProduct.position = BoardPosition(x: xProduct, y: yProduct);
 
     bool switched = false;
-    if(dragCat.color != Colors.white) {
+    if (dragCat.color != Colors.white) {
       event.dropProduct.cat = dragCat;
       event.dragProduct.cat = dropCat;
       switched = true;
     }
 
-    if(dropCat.color != Colors.white && !switched) {
+    if (dropCat.color != Colors.white && !switched) {
       event.dragProduct.cat = dropCat;
       event.dropProduct.cat = dragCat;
+    }
+
+    Set<Product> dropNeighboursHorizontal =
+        _createProductSet(true, event.dropProduct);
+    Set<Product> dragNeighboursHorizontal =
+        _createProductSet(true, event.dragProduct);
+
+    Set<Ingredient> dropIngredients =
+        _createIngredientSet(dropNeighboursHorizontal);
+    Set<Ingredient> dragIngredients =
+        _createIngredientSet(dragNeighboursHorizontal);
+
+    for (var ingredients in Utils().mealIngredients.values) {
+      debugPrint("Meal set ${ingredients.toString()}");
+
+      if (ingredients.difference(dropIngredients).isEmpty) {
+        debugPrint("Drop products set ${dropIngredients.toString()}");
+
+        for (Product dropProduct in dropNeighboursHorizontal) {
+          dropProduct.isSelected = true;
+        }
+      }
+
+      if (ingredients.difference(dragIngredients).isEmpty) {
+        debugPrint("Drag products set ${dragIngredients.toString()}");
+
+        for (Product dragProduct in dragNeighboursHorizontal) {
+          dragProduct.isSelected = true;
+        }
+      }
     }
 
     for (List<Product> products in productsList) {
@@ -153,5 +184,66 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     }
 
     return puzzle;
+  }
+
+  Set<Ingredient> _createIngredientSet(Set<Product> products) {
+    Set<Ingredient> ingredients = {};
+
+    for (Product product in products) {
+      ingredients.add(product.ingredient);
+    }
+
+    return ingredients;
+  }
+
+  Set<Product> _createProductSet(bool horizontal, Product product) {
+    Set<Product> products = {};
+
+    int x = product.position.x - 1;
+    int y = product.position.y - 1;
+
+    products.add(productsList[y][x]);
+
+    if (horizontal) {
+      if (x > 0 && x < productsList.length - 1) {
+        products.add(productsList[y][x - 1]);
+        products.add(productsList[y][x + 1]);
+        return products;
+      }
+
+      if (x == 0) {
+        products.add(productsList[y][x + 1]);
+        products.add(productsList[y][x + 2]);
+        return products;
+      }
+
+      if (x == productsList.length - 1) {
+        products.add(productsList[y][x - 1]);
+        products.add(productsList[y][x - 2]);
+        return products;
+      }
+    }
+
+    if (!horizontal) {
+      if (y > 0 && y < productsList.length - 1) {
+        products.add(productsList[y - 1][x]);
+        products.add(productsList[y + 1][x]);
+        return products;
+      }
+
+      if (y == 0) {
+        products.add(productsList[y + 1][x]);
+        products.add(productsList[y + 2][x]);
+        return products;
+      }
+
+      if (y == productsList.length - 1) {
+        products.add(productsList[y - 1][x]);
+        products.add(productsList[y - 2][x]);
+        return products;
+      }
+    }
+
+    return products;
   }
 }
