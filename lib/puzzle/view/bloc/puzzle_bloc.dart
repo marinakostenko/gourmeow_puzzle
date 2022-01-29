@@ -73,10 +73,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       productsList[yProduct + 1][xProduct].draggable = Drag.drop;
     }
 
-    debugPrint(
-        "${productsList[yProduct][xProduct - 1].ingredient.ingredient.name}");
-    debugPrint("${productsList[yProduct][xProduct - 1].draggable}");
-
     debugPrint("drag count $count");
     puzzle = Puzzle(products: productsList);
 
@@ -97,29 +93,19 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     int yProduct = event.dragProduct.position.y;
     int xProduct = event.dragProduct.position.x;
 
-    if (xProduct > 0) {
-      //left
-      productsList[yProduct][xProduct - 1].draggable = Drag.drag;
+    for (List<Product> products in productsList) {
+      for (Product product in products) {
+        product.draggable = Drag.drag;
+      }
     }
 
-    if (xProduct < productsList.length - 1) {
-      //right
-      productsList[yProduct][xProduct + 1].draggable = Drag.drag;
-    }
-
-    if (yProduct > 0) {
-      //bottom
-      productsList[yProduct - 1][xProduct].draggable = Drag.drag;
-    }
-
-    if (yProduct < productsList.length - 1) {
-      //top
-      productsList[yProduct + 1][xProduct].draggable = Drag.drag;
-    }
+    event.dragProduct.position = event.dropProduct.position;
 
     productsList[event.dropProduct.position.y - 1]
         [event.dropProduct.position.x - 1] = event.dragProduct;
     productsList[yProduct - 1][xProduct - 1] = event.dropProduct;
+
+    event.dropProduct.position = BoardPosition(x: xProduct, y: yProduct);
 
     puzzle = Puzzle(products: productsList);
 
