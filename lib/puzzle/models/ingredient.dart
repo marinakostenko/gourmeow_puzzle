@@ -15,5 +15,6 @@ enum Ingredients {
   tomato,
   meat,
   salad,
-  bread
+  bread,
+  avocado
 }

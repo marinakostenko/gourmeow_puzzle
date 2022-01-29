@@ -4,12 +4,12 @@ import 'ingredient.dart';
 
 class Meal extends Equatable {
   final Meals meal;
-  final List<Ingredients> ingredients;
 
-  const Meal({required this.meal, required this.ingredients});
+  const Meal({required this.meal});
+
 
   @override
-  List<Object?> get props => [meal, ingredients];
+  List<Object?> get props => [meal];
 }
 
 
@@ -21,3 +21,4 @@ enum Meals {
   steak,
   cesar,
 }
+
