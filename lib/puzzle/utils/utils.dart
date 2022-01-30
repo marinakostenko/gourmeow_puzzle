@@ -126,26 +126,54 @@ class Utils {
     return cats;
   }
 
-  Map<Meal, Set<Ingredient>> mealIngredients = {
-    const Meal(meal: Meals.tunaSalad): <Ingredient>{
+  Map<Set<Ingredient>, Meal> mealIngredients = {
+     <Ingredient>{
       const Ingredient(ingredient: Ingredients.salad),
       const Ingredient(ingredient: Ingredients.tomato),
       const Ingredient(ingredient: Ingredients.tuna)
-    },
-    const Meal(meal: Meals.sandwich): <Ingredient>{
+    }: const Meal(meal: Meals.tunaSalad),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.salad),
+      const Ingredient(ingredient: Ingredients.tomato),
+      const Ingredient(ingredient: Ingredients.tuna)
+    }: const Meal(meal: Meals.tunaSalad),
+    <Ingredient>{
       const Ingredient(ingredient: Ingredients.bread),
       const Ingredient(ingredient: Ingredients.tomato),
       const Ingredient(ingredient: Ingredients.tuna)
-    },
-    const Meal(meal: Meals.burger): <Ingredient>{
+    } : const Meal(meal: Meals.sandwich),
+   <Ingredient>{
       const Ingredient(ingredient: Ingredients.bread),
       const Ingredient(ingredient: Ingredients.tomato),
       const Ingredient(ingredient: Ingredients.meat)
-    },
-    const Meal(meal: Meals.cesar): <Ingredient>{
+    }: const Meal(meal: Meals.burger),
+    <Ingredient>{
       const Ingredient(ingredient: Ingredients.bread),
       const Ingredient(ingredient: Ingredients.salad),
       const Ingredient(ingredient: Ingredients.meat)
-    },
+    } : const Meal(meal: Meals.cesar),
   };
+
+  // Map<Meal, Set<Ingredient>> mealIngredients = {
+  //   const Meal(meal: Meals.tunaSalad): <Ingredient>{
+  //     const Ingredient(ingredient: Ingredients.salad),
+  //     const Ingredient(ingredient: Ingredients.tomato),
+  //     const Ingredient(ingredient: Ingredients.tuna)
+  //   },
+  //   const Meal(meal: Meals.sandwich): <Ingredient>{
+  //     const Ingredient(ingredient: Ingredients.bread),
+  //     const Ingredient(ingredient: Ingredients.tomato),
+  //     const Ingredient(ingredient: Ingredients.tuna)
+  //   },
+  //   const Meal(meal: Meals.burger): <Ingredient>{
+  //     const Ingredient(ingredient: Ingredients.bread),
+  //     const Ingredient(ingredient: Ingredients.tomato),
+  //     const Ingredient(ingredient: Ingredients.meat)
+  //   },
+  //   const Meal(meal: Meals.cesar): <Ingredient>{
+  //     const Ingredient(ingredient: Ingredients.bread),
+  //     const Ingredient(ingredient: Ingredients.salad),
+  //     const Ingredient(ingredient: Ingredients.meat)
+  //   },
+  // };
 }

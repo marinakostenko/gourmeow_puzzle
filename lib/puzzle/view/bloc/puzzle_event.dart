@@ -38,13 +38,12 @@ class ProductDropped extends PuzzleEvent {
 }
 
 class ProductSelected extends PuzzleEvent {
-  final Set<Product> products;
-  final Meal meal;
+  final List<Set<Product>> products;
 
-  const ProductSelected(this.products, this.meal);
+  const ProductSelected(this.products);
 
   @override
-  List<Object> get props => [products, meal];
+  List<Object> get props => [products];
 }
 
 class MoveEmptyProducts extends PuzzleEvent {

@@ -3,16 +3,14 @@ part of 'puzzle_bloc.dart';
 class PuzzleState extends Equatable {
   final Puzzle puzzle;
   final int count;
-  final Set<Product> matchingProducts;
-  final Meal meal;
+  final List<Set<Product>> matchingProducts;
   final Set<Product> emptyProducts;
   final bool emptyProductsMoved;
 
   const PuzzleState({
     this.puzzle = const Puzzle(products: []),
     this.count = 0,
-    this.matchingProducts = const <Product>{},
-    this.meal = const Meal(meal: Meals.none),
+    this.matchingProducts = const [],
     this.emptyProducts = const <Product>{},
     this.emptyProductsMoved = false,
   });
@@ -20,7 +18,7 @@ class PuzzleState extends Equatable {
   PuzzleState copyWith(
       {Puzzle? puzzle,
       int? count,
-      Set<Product>? matchingProducts,
+      List<Set<Product>>? matchingProducts,
       Meal? meal,
       Set<Product>? emptyProducts,
       bool? emptyProductsMoved}) {
@@ -28,7 +26,6 @@ class PuzzleState extends Equatable {
       puzzle: puzzle ?? this.puzzle,
       count: count ?? this.count,
       matchingProducts: matchingProducts ?? this.matchingProducts,
-      meal: meal ?? this.meal,
       emptyProducts: emptyProducts ?? this.emptyProducts,
       emptyProductsMoved: emptyProductsMoved ?? this.emptyProductsMoved,
     );

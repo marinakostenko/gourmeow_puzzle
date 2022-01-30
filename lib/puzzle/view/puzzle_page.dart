@@ -55,7 +55,6 @@ class PuzzleView extends StatelessWidget {
     var puzzle = context.select((PuzzleBloc bloc) => bloc.state.puzzle);
     var matchingProducts =
         context.select((PuzzleBloc bloc) => bloc.state.matchingProducts);
-    var meal = context.select((PuzzleBloc bloc) => bloc.state.meal);
     var emptyProducts =
         context.select((PuzzleBloc bloc) => bloc.state.emptyProducts);
     var emptyProductsMoved = context.select((PuzzleBloc bloc) => bloc.state.emptyProductsMoved);
@@ -70,7 +69,7 @@ class PuzzleView extends StatelessWidget {
     }
 
     if (matchingProducts.isNotEmpty) {
-      context.read<PuzzleBloc>().add(ProductSelected(matchingProducts, meal));
+      context.read<PuzzleBloc>().add(ProductSelected(matchingProducts));
     }
 
     if (emptyProducts.isNotEmpty && !emptyProductsMoved) {
