@@ -21,6 +21,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     on<ProductDropped>(_onProductDropped);
     on<ProductDragged>(_onProductDragged);
     on<ProductSelected>(_onProductSelected);
+    on<FillEmptyProducts>(_onFillEmptyProducts);
   }
 
   List<List<Product>> productsList = [];
@@ -141,7 +142,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       debugPrint("Meal set ${ingredients.toString()}");
 
       if (ingredients.difference(dragIngredientsHorizontal).isEmpty) {
-        debugPrint("Drag products horizontal set ${dragIngredientsHorizontal.toString()}");
+        debugPrint(
+            "Drag products horizontal set ${dragIngredientsHorizontal.toString()}");
 
         meal = pair.key;
         matchingProducts = dragNeighboursHorizontal;
@@ -190,23 +192,25 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     );
   }
 
-  void _onProductSelected(ProductSelected event, Emitter<PuzzleState> emit) {
+  Future<void> _onProductSelected(ProductSelected event, Emitter<PuzzleState> emit) async {
+    debugPrint("Product selected state for meal ${event.meal}");
     int count = state.count;
 
     Meal meal = event.meal;
     Set<Product> matchingProduct = event.products;
     Set<Product> emptyProducts = {};
 
-    for(int i = 0; i < matchingProduct.length; i++) {
+    for (int i = 0; i < matchingProduct.length; i++) {
       Product product = matchingProduct.elementAt(i);
 
       int x = product.position.x - 1;
       int y = product.position.y - 1;
 
-      productsList[y][x].ingredient = const Ingredient(ingredient: Ingredients.none);
+      productsList[y][x].ingredient =
+          const Ingredient(ingredient: Ingredients.none);
       productsList[y][x].isSelected = false;
 
-      if(i == 0) {
+      if (i == 0) {
         productsList[y][x].meal = meal;
       } else {
         emptyProducts.add(product);
@@ -215,6 +219,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     puzzle = Puzzle(products: productsList);
 
+    await Future.delayed(Duration(seconds: 1));
 
     debugPrint("count $count");
     count = count + 1;
@@ -225,6 +230,64 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         matchingProducts: {},
         meal: const Meal(meal: Meals.none),
         emptyProducts: emptyProducts,
+      ),
+    );
+  }
+
+  Future<void> _onFillEmptyProducts(
+      FillEmptyProducts event, Emitter<PuzzleState> emit) async {
+    debugPrint(
+        "Fill empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
+
+    int count = state.count;
+    count = count + 1;
+
+    Set<Product> emptyProducts = event.products;
+
+    for (Product product in emptyProducts) {
+      int x = product.position.x - 1;
+      int y = product.position.y - 1;
+
+      int vertical = y;
+      int lastEmpty = y;
+
+      while (vertical >= 0) {
+        if (productsList[vertical][x].ingredient.ingredient !=
+            Ingredients.none) {
+          debugPrint(
+              "not empty ${productsList[vertical][x].ingredient.ingredient} moving to $lastEmpty $x");
+
+          productsList[lastEmpty][x].ingredient =
+              productsList[vertical][x].ingredient;
+          productsList[vertical][x].ingredient =
+              const Ingredient(ingredient: Ingredients.none);
+          lastEmpty = vertical;
+        }
+
+        if (productsList[vertical][x].meal.meal != Meals.none) {
+          debugPrint(
+              "not empty ${productsList[vertical][x].ingredient.ingredient} moving to $lastEmpty $x");
+
+          productsList[lastEmpty][x].meal = productsList[vertical][x].meal;
+          productsList[vertical][x].meal = const Meal(meal: Meals.none);
+          lastEmpty = vertical;
+        }
+
+        vertical--;
+      }
+    }
+
+    puzzle = Puzzle(products: productsList);
+
+    await Future.delayed(Duration(seconds: 1));
+
+    emit(
+      state.copyWith(
+        puzzle: puzzle,
+        count: count,
+        matchingProducts: {},
+        meal: const Meal(meal: Meals.none),
+        emptyProducts: {},
       ),
     );
   }
@@ -265,7 +328,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     int x = product.position.x - 1;
     int y = product.position.y - 1;
-
 
     if (horizontal) {
       if (x > 0 && x < productsList.length - 1) {
