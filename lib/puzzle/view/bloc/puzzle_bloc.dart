@@ -117,32 +117,40 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       event.dropProduct.cat = dragCat;
     }
 
-    Set<Product> dropNeighboursHorizontal =
-        _createProductSet(true, event.dropProduct);
     Set<Product> dragNeighboursHorizontal =
         _createProductSet(true, event.dragProduct);
+    Set<Product> dragNeighboursVertical =
+        _createProductSet(false, event.dragProduct);
 
-    Set<Ingredient> dropIngredients =
-        _createIngredientSet(dropNeighboursHorizontal);
-    Set<Ingredient> dragIngredients =
+    Set<Ingredient> dragIngredientsHorizontal =
         _createIngredientSet(dragNeighboursHorizontal);
+    Set<Ingredient> dragIngredientsVertical =
+        _createIngredientSet(dragNeighboursVertical);
 
+    bool selected = false;
     for (var ingredients in Utils().mealIngredients.values) {
       debugPrint("Meal set ${ingredients.toString()}");
 
-      if (ingredients.difference(dropIngredients).isEmpty) {
-        debugPrint("Drop products set ${dropIngredients.toString()}");
+      if (ingredients.difference(dragIngredientsHorizontal).isEmpty) {
+        debugPrint("Drag products horizontal set ${dragIngredientsHorizontal.toString()}");
 
-        for (Product dropProduct in dropNeighboursHorizontal) {
+        for (Product dropProduct in dragNeighboursHorizontal) {
           dropProduct.isSelected = true;
+          selected = true;
         }
       }
+    }
 
-      if (ingredients.difference(dragIngredients).isEmpty) {
-        debugPrint("Drag products set ${dragIngredients.toString()}");
+    if (!selected) {
+      for (var ingredients in Utils().mealIngredients.values) {
+        debugPrint("Meal set ${ingredients.toString()}");
 
-        for (Product dragProduct in dragNeighboursHorizontal) {
-          dragProduct.isSelected = true;
+        if (ingredients.difference(dragIngredientsVertical).isEmpty) {
+          debugPrint("Drag products set ${dragIngredientsVertical.toString()}");
+
+          for (Product dragProduct in dragNeighboursVertical) {
+            dragProduct.isSelected = true;
+          }
         }
       }
     }
