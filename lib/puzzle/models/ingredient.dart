@@ -11,6 +11,7 @@ class Ingredient extends Equatable {
 
 
 enum Ingredients {
+  none,
   tuna,
   tomato,
   meat,

@@ -53,6 +53,9 @@ class PuzzleView extends StatelessWidget {
     debugPrint("state count ${state}");
 
     var puzzle = context.select((PuzzleBloc bloc) => bloc.state.puzzle);
+    var matchingProducts =
+        context.select((PuzzleBloc bloc) => bloc.state.matchingProducts);
+    var meal = context.select((PuzzleBloc bloc) => bloc.state.meal);
 
     var productTable = puzzle.products;
     var products = <Widget>[];
@@ -61,6 +64,10 @@ class PuzzleView extends StatelessWidget {
       for (Product product in productsList) {
         products.add(itemBuilder(context, product));
       }
+    }
+
+    if (matchingProducts.isNotEmpty) {
+      context.read<PuzzleBloc>().add(ProductSelected(matchingProducts, meal));
     }
 
     final size = puzzle.getDimension();
@@ -101,11 +108,8 @@ class PuzzleView extends StatelessWidget {
 
     void _onDragAccept(Product dropProduct, Product dragProduct) {
       debugPrint(
-          "drag accepted called - drag ${dragProduct.ingredient.ingredient
-              .name} - drop ${dropProduct.ingredient.ingredient.name}");
-      context
-          .read<PuzzleBloc>()
-          .add(ProductDropped(dragProduct, dropProduct));
+          "drag accepted called - drag ${dragProduct.ingredient.ingredient.name} - drop ${dropProduct.ingredient.ingredient.name}");
+      context.read<PuzzleBloc>().add(ProductDropped(dragProduct, dropProduct));
     }
 
     return DragDrop(

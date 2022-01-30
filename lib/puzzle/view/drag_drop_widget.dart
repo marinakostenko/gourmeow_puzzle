@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gourmeow_puzzle/puzzle/models/ingredient.dart';
+import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 
 class DragDrop extends StatelessWidget {
@@ -47,10 +49,23 @@ class DragDrop extends StatelessWidget {
 
   Widget _productCard(Product product, Color textColor) {
     String productName = product.ingredient.ingredient.name;
+
+    if(product.meal.meal != Meals.none) {
+      productName = product.meal.meal.name;
+    }
+
     Color backgroundColor = (product.cat.color != Colors.white)
         ? product.cat.color
         : Colors.black12;
     Color borderColor = (product.isSelected) ? Colors.yellow : Colors.black12;
+
+    if(product.ingredient.ingredient == Ingredients.none && product.meal.meal == Meals.none) {
+      productName = "";
+      backgroundColor = (product.cat.color != Colors.white)
+          ? product.cat.color
+          : Colors.white;
+      borderColor = Colors.white;
+    }
 
     return Container(
       alignment: Alignment.center,

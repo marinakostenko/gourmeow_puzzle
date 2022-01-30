@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/puzzle/models/ingredient.dart';
+import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/models/puzzle.dart';
 import 'package:gourmeow_puzzle/puzzle/utils/utils.dart';
@@ -19,6 +20,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     on<PuzzleInitialized>(_onPuzzleInitialized);
     on<ProductDropped>(_onProductDropped);
     on<ProductDragged>(_onProductDragged);
+    on<ProductSelected>(_onProductSelected);
   }
 
   List<List<Product>> productsList = [];
@@ -41,6 +43,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       PuzzleState(
         puzzle: puzzle,
         count: 1,
+        matchingProducts: const {},
       ),
     );
   }
@@ -81,6 +84,9 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       state.copyWith(
         puzzle: puzzle,
         count: count,
+        matchingProducts: {},
+        meal: const Meal(meal: Meals.none),
+        emptyProducts: {},
       ),
     );
   }
@@ -127,26 +133,34 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     Set<Ingredient> dragIngredientsVertical =
         _createIngredientSet(dragNeighboursVertical);
 
-    bool selected = false;
-    for (var ingredients in Utils().mealIngredients.values) {
+    Set<Product> matchingProducts = <Product>{};
+    Meal meal = const Meal(meal: Meals.none);
+
+    for (var pair in Utils().mealIngredients.entries) {
+      var ingredients = pair.value;
       debugPrint("Meal set ${ingredients.toString()}");
 
       if (ingredients.difference(dragIngredientsHorizontal).isEmpty) {
         debugPrint("Drag products horizontal set ${dragIngredientsHorizontal.toString()}");
 
+        meal = pair.key;
+        matchingProducts = dragNeighboursHorizontal;
         for (Product dropProduct in dragNeighboursHorizontal) {
           dropProduct.isSelected = true;
-          selected = true;
         }
       }
     }
 
-    if (!selected) {
-      for (var ingredients in Utils().mealIngredients.values) {
+    if (matchingProducts.isEmpty) {
+      for (var pair in Utils().mealIngredients.entries) {
+        var ingredients = pair.value;
         debugPrint("Meal set ${ingredients.toString()}");
 
         if (ingredients.difference(dragIngredientsVertical).isEmpty) {
           debugPrint("Drag products set ${dragIngredientsVertical.toString()}");
+
+          meal = pair.key;
+          matchingProducts = dragNeighboursVertical;
 
           for (Product dragProduct in dragNeighboursVertical) {
             dragProduct.isSelected = true;
@@ -169,6 +183,48 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       state.copyWith(
         puzzle: puzzle,
         count: count,
+        matchingProducts: matchingProducts,
+        meal: meal,
+        emptyProducts: {},
+      ),
+    );
+  }
+
+  void _onProductSelected(ProductSelected event, Emitter<PuzzleState> emit) {
+    int count = state.count;
+
+    Meal meal = event.meal;
+    Set<Product> matchingProduct = event.products;
+    Set<Product> emptyProducts = {};
+
+    for(int i = 0; i < matchingProduct.length; i++) {
+      Product product = matchingProduct.elementAt(i);
+
+      int x = product.position.x - 1;
+      int y = product.position.y - 1;
+
+      productsList[y][x].ingredient = const Ingredient(ingredient: Ingredients.none);
+      productsList[y][x].isSelected = false;
+
+      if(i == 0) {
+        productsList[y][x].meal = meal;
+      } else {
+        emptyProducts.add(product);
+      }
+    }
+
+    puzzle = Puzzle(products: productsList);
+
+
+    debugPrint("count $count");
+    count = count + 1;
+    emit(
+      state.copyWith(
+        puzzle: puzzle,
+        count: count,
+        matchingProducts: {},
+        meal: const Meal(meal: Meals.none),
+        emptyProducts: emptyProducts,
       ),
     );
   }
@@ -210,42 +266,47 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     int x = product.position.x - 1;
     int y = product.position.y - 1;
 
-    products.add(productsList[y][x]);
 
     if (horizontal) {
       if (x > 0 && x < productsList.length - 1) {
         products.add(productsList[y][x - 1]);
+        products.add(productsList[y][x]);
         products.add(productsList[y][x + 1]);
         return products;
       }
 
       if (x == 0) {
+        products.add(productsList[y][x]);
         products.add(productsList[y][x + 1]);
         products.add(productsList[y][x + 2]);
         return products;
       }
 
       if (x == productsList.length - 1) {
-        products.add(productsList[y][x - 1]);
         products.add(productsList[y][x - 2]);
+        products.add(productsList[y][x - 1]);
+        products.add(productsList[y][x]);
         return products;
       }
     }
 
     if (!horizontal) {
       if (y > 0 && y < productsList.length - 1) {
-        products.add(productsList[y - 1][x]);
         products.add(productsList[y + 1][x]);
+        products.add(productsList[y][x]);
+        products.add(productsList[y - 1][x]);
         return products;
       }
 
       if (y == 0) {
-        products.add(productsList[y + 1][x]);
         products.add(productsList[y + 2][x]);
+        products.add(productsList[y + 1][x]);
+        products.add(productsList[y][x]);
         return products;
       }
 
       if (y == productsList.length - 1) {
+        products.add(productsList[y][x]);
         products.add(productsList[y - 1][x]);
         products.add(productsList[y - 2][x]);
         return products;
