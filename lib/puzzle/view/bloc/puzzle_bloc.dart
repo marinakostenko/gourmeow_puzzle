@@ -21,6 +21,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     on<ProductDropped>(_onProductDropped);
     on<ProductDragged>(_onProductDragged);
     on<ProductSelected>(_onProductSelected);
+    on<MoveEmptyProducts>(_onMoveEmptyProducts);
     on<FillEmptyProducts>(_onFillEmptyProducts);
   }
 
@@ -88,6 +89,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         matchingProducts: {},
         meal: const Meal(meal: Meals.none),
         emptyProducts: {},
+        emptyProductsMoved: false,
       ),
     );
   }
@@ -188,11 +190,13 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         matchingProducts: matchingProducts,
         meal: meal,
         emptyProducts: {},
+        emptyProductsMoved: false,
       ),
     );
   }
 
-  Future<void> _onProductSelected(ProductSelected event, Emitter<PuzzleState> emit) async {
+  Future<void> _onProductSelected(
+      ProductSelected event, Emitter<PuzzleState> emit) async {
     debugPrint("Product selected state for meal ${event.meal}");
     int count = state.count;
 
@@ -230,19 +234,21 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         matchingProducts: {},
         meal: const Meal(meal: Meals.none),
         emptyProducts: emptyProducts,
+        emptyProductsMoved: false,
       ),
     );
   }
 
-  Future<void> _onFillEmptyProducts(
-      FillEmptyProducts event, Emitter<PuzzleState> emit) async {
+  Future<void> _onMoveEmptyProducts(
+      MoveEmptyProducts event, Emitter<PuzzleState> emit) async {
     debugPrint(
-        "Fill empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
+        "Move empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
 
     int count = state.count;
     count = count + 1;
 
     Set<Product> emptyProducts = event.products;
+    Set<Product> emptyProductsUpdated = event.products;
 
     for (Product product in emptyProducts) {
       int x = product.position.x - 1;
@@ -261,6 +267,13 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
               productsList[vertical][x].ingredient;
           productsList[vertical][x].ingredient =
               const Ingredient(ingredient: Ingredients.none);
+
+          emptyProductsUpdated = emptyProductsUpdated
+              .map((product) => product == productsList[lastEmpty][x]
+                  ? productsList[vertical][x]
+                  : product)
+              .toSet();
+
           lastEmpty = vertical;
         }
 
@@ -270,6 +283,13 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
           productsList[lastEmpty][x].meal = productsList[vertical][x].meal;
           productsList[vertical][x].meal = const Meal(meal: Meals.none);
+
+          emptyProductsUpdated = emptyProductsUpdated
+              .map((product) => product == productsList[lastEmpty][x]
+              ? productsList[vertical][x]
+              : product)
+              .toSet();
+
           lastEmpty = vertical;
         }
 
@@ -287,9 +307,46 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         count: count,
         matchingProducts: {},
         meal: const Meal(meal: Meals.none),
-        emptyProducts: {},
+        emptyProducts: emptyProductsUpdated,
+        emptyProductsMoved: true,
       ),
     );
+  }
+
+  Future<void> _onFillEmptyProducts(
+      FillEmptyProducts event, Emitter<PuzzleState> emit) async {
+    debugPrint(
+        "Fill empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
+
+    int count = state.count;
+    count = count + 1;
+
+    Set<Product> emptyProducts = event.products;
+    
+    for(Product product in emptyProducts) {
+      int x = product.position.x - 1;
+      int y = product.position.y - 1;
+
+      debugPrint("old ingredient ${productsList[y][x].ingredient}");
+      productsList[y][x].ingredient = Ingredient(ingredient: IngredientsExt.generateRandomIngredient());
+      debugPrint("new ingredient ${productsList[y][x].ingredient}");
+    }
+
+    puzzle = Puzzle(products: productsList);
+
+    await Future.delayed(Duration(seconds: 1));
+
+    emit(
+      state.copyWith(
+        puzzle: puzzle,
+        count: count,
+        matchingProducts: {},
+        meal: const Meal(meal: Meals.none),
+        emptyProducts: {},
+        emptyProductsMoved: false,
+      ),
+    );
+
   }
 
   Puzzle _setCatWishesPositions(Puzzle puzzle, List<Cat> cats) {
