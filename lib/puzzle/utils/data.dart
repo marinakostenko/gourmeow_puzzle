@@ -7,7 +7,7 @@ import 'package:gourmeow_puzzle/puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 
-class Utils {
+class Data {
   List<List<Product>> shuffleProducts(
       int dimension, List<List<Product>> products) {
     final List<List<Product>> shuffleProducts = [];
@@ -205,7 +205,7 @@ class Utils {
     }: const Meal(meal: Meals.sandwich),
     <Ingredient>{
       const Ingredient(ingredient: Ingredients.bun),
-      const Ingredient(ingredient: Ingredients.tomato),
+      const Ingredient(ingredient: Ingredients.salad),
       const Ingredient(ingredient: Ingredients.meat)
     }: const Meal(meal: Meals.burger),
     <Ingredient>{

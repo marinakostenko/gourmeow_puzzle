@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class BoardPosition extends Equatable implements Comparable<BoardPosition>{
   final int x;
 
-  BoardPosition({required this.x, required this.y});
+  const BoardPosition({required this.x, required this.y});
 
   final int y;
 
@@ -12,9 +12,9 @@ class BoardPosition extends Equatable implements Comparable<BoardPosition>{
 
   @override
   int compareTo(BoardPosition other) {
-    if (y < other.y) {
+    if (y > other.y) {
       return -1;
-    } else if (y > other.y) {
+    } else if (y < other.y) {
       return 1;
     } else {
       if (x < other.x) {
