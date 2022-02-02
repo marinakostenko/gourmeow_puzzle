@@ -12,7 +12,7 @@ class Ingredient extends Equatable {
   List<Object?> get props => [ingredient];
 }
 
-enum Ingredients { none, tuna, tomato, meat, salad, bread, avocado }
+enum Ingredients { none, tuna, tomato, meat, salad, bread }
 
 extension IngredientsExt on Ingredients {
   static Ingredients generateRandomIngredient() {

@@ -346,7 +346,11 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       debugPrint("new ingredient ${productsList[y][x].ingredient}");
     }
 
-  //  var matchingProducts = _checkBoardOnMealsExistence();
+    var matchingProducts = _checkBoardOnMealsExistence();
+    debugPrint(matchingProducts
+        .map((set) =>
+            set.map((product) => product.ingredient.ingredient.name).toString())
+        .toString());
 
     puzzle = Puzzle(products: productsList);
 
@@ -356,7 +360,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       state.copyWith(
         puzzle: puzzle,
         count: count,
-        matchingProducts: [],
+        matchingProducts: matchingProducts,
         meal: const Meal(meal: Meals.none),
         emptyProducts: {},
         emptyProductsMoved: false,
@@ -367,63 +371,76 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   List<Set<Product>> _checkBoardOnMealsExistence() {
     List<Set<Product>> mealsOnBoard = [];
 
-    for (int y = 0; y <= productsList.length; y++) {
-      for (int x = 0; x <= productsList[0].length; x++) {
+    for (int y = 0; y < productsList.length; y++) {
+      for (int x = 0; x < productsList[0].length; x++) {
         //horizontal check
-        Set<Product> horizontalProducts = {};
-        int count = 0;
-        while (count < 3 && x + count < 3) {
-          Product product = productsList[y][x + count];
-          if (!product.isSelected) {
-            horizontalProducts.add(product);
-          } else {
-            break;
+        if (x < 3) {
+          Set<Product> horizontalProducts = {};
+          Set<Ingredient> horizontalIngredients = {};
+          int count = 0;
+          while (count < 3) {
+            Product product = productsList[y][x + count];
+            if (!product.isSelected) {
+              horizontalProducts.add(product);
+              horizontalIngredients.add(product.ingredient);
+              count++;
+            } else {
+              break;
+            }
           }
-        }
 
-        if (horizontalProducts.length == 3) {
-          for (var ingredients in Utils().mealIngredients.keys) {
-            if (ingredients.difference(horizontalProducts).isEmpty) {
-              debugPrint(
-                  "Products set ${horizontalProducts.map((product) => product.ingredient.ingredient.name)}");
+          debugPrint(
+              "Horizontal product set ${horizontalProducts.map((product) => product.ingredient.ingredient.name)}");
 
-              for (Product product in horizontalProducts) {
-                int x = product.position.x - 1;
-                int y = product.position.y - 1;
+          if (horizontalProducts.length == 3) {
+            for (var ingredients in Utils().mealIngredients.keys) {
+              if (ingredients.difference(horizontalIngredients).isEmpty) {
+                debugPrint(
+                    "Products set ${horizontalProducts.map((product) => product.ingredient.ingredient.name)}");
 
-                productsList[y][x].isSelected = true;
+                for (Product product in horizontalProducts) {
+                  int x = product.position.x - 1;
+                  int y = product.position.y - 1;
+
+                  productsList[y][x].isSelected = true;
+                }
+                mealsOnBoard.add(horizontalProducts);
               }
-              mealsOnBoard.add(horizontalProducts);
             }
           }
         }
 
         //vertical check
 
-        Set<Product> verticalProducts = {};
-        int countV = 0;
-        while (countV < 3 && y + countV < 3) {
-          Product product = productsList[y + countV][x];
-          if (!product.isSelected) {
-            verticalProducts.add(product);
-          } else {
-            break;
+        if (y < 3) {
+          Set<Product> verticalProducts = {};
+          Set<Ingredient> verticalIngredients = {};
+          int countV = 0;
+          while (countV < 3) {
+            Product product = productsList[y + countV][x];
+            if (!product.isSelected) {
+              verticalProducts.add(product);
+              verticalIngredients.add(product.ingredient);
+            } else {
+              break;
+            }
+            countV++;
           }
-        }
 
-        if (verticalProducts.length == 3) {
-          for (var ingredients in Utils().mealIngredients.keys) {
-            if (ingredients.difference(verticalProducts).isEmpty) {
-              debugPrint(
-                  "Products set ${verticalProducts.map((product) => product.ingredient.ingredient.name)}");
+          if (verticalProducts.length == 3) {
+            for (var ingredients in Utils().mealIngredients.keys) {
+              if (ingredients.difference(verticalIngredients).isEmpty) {
+                debugPrint(
+                    "Products set ${verticalProducts.map((product) => product.ingredient.ingredient.name)}");
 
-              for (Product product in verticalProducts) {
-                int x = product.position.x - 1;
-                int y = product.position.y - 1;
+                for (Product product in verticalProducts) {
+                  int x = product.position.x - 1;
+                  int y = product.position.y - 1;
 
-                productsList[y][x].isSelected = true;
+                  productsList[y][x].isSelected = true;
+                }
+                mealsOnBoard.add(verticalProducts);
               }
-              mealsOnBoard.add(verticalProducts);
             }
           }
         }
