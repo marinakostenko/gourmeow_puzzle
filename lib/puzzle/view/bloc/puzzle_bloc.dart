@@ -39,13 +39,19 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     cats = Utils().defaultCatsList();
     puzzle = Puzzle(products: productsList);
 
+    var matchingProducts = _checkBoardOnMealsExistence();
+    debugPrint(matchingProducts
+        .map((set) =>
+            set.map((product) => product.ingredient.ingredient.name).toString())
+        .toString());
+
     puzzle = _setCatWishesPositions(puzzle, cats);
 
     emit(
       PuzzleState(
         puzzle: puzzle,
         count: 1,
-        matchingProducts: const [],
+        matchingProducts: matchingProducts,
       ),
     );
   }
@@ -212,31 +218,35 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         }
       }
 
-      Set<Product> matchingProduct = products;
+      if (meal.meal != Meals.none) {
+        //debugPrint("Product with none meal ${products.map((product) => product.ingredient.ingredient.name).toString().toString()}");
 
-      debugPrint("Product selected state for meal $meal");
+        Set<Product> matchingProduct = products;
 
-      for (int i = 0; i < matchingProduct.length; i++) {
-        Product product = matchingProduct.elementAt(i);
+        debugPrint("Product selected state for meal $meal");
 
-        int x = product.position.x - 1;
-        int y = product.position.y - 1;
+        for (int i = 0; i < matchingProduct.length; i++) {
+          Product product = matchingProduct.elementAt(i);
 
-        productsList[y][x].ingredient =
-            const Ingredient(ingredient: Ingredients.none);
-        productsList[y][x].isSelected = false;
+          int x = product.position.x - 1;
+          int y = product.position.y - 1;
 
-        if (i == 0) {
-          productsList[y][x].meal = meal;
-        } else {
-          emptyProducts.add(product);
+          productsList[y][x].ingredient =
+              const Ingredient(ingredient: Ingredients.none);
+          productsList[y][x].isSelected = false;
+
+          if (i == 0) {
+            productsList[y][x].meal = meal;
+          } else {
+            emptyProducts.add(product);
+          }
         }
       }
     }
 
     puzzle = Puzzle(products: productsList);
 
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 5));
 
     debugPrint("count $count");
     count = count + 1;
@@ -254,8 +264,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
   Future<void> _onMoveEmptyProducts(
       MoveEmptyProducts event, Emitter<PuzzleState> emit) async {
-    debugPrint(
-        "Move empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
+    // debugPrint(
+    //     "Move empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
 
     int count = state.count;
     count = count + 1;
@@ -273,8 +283,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       while (vertical >= 0) {
         if (productsList[vertical][x].ingredient.ingredient !=
             Ingredients.none) {
-          debugPrint(
-              "not empty ${productsList[vertical][x].ingredient.ingredient} moving to $lastEmpty $x");
+          // debugPrint(
+          //     "not empty ${productsList[vertical][x].ingredient.ingredient} moving to $lastEmpty $x");
 
           productsList[lastEmpty][x].ingredient =
               productsList[vertical][x].ingredient;
@@ -291,8 +301,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         }
 
         if (productsList[vertical][x].meal.meal != Meals.none) {
-          debugPrint(
-              "not empty ${productsList[vertical][x].ingredient.ingredient} moving to $lastEmpty $x");
+          // debugPrint(
+          //     "not empty ${productsList[vertical][x].ingredient.ingredient} moving to $lastEmpty $x");
 
           productsList[lastEmpty][x].meal = productsList[vertical][x].meal;
           productsList[vertical][x].meal = const Meal(meal: Meals.none);
@@ -328,8 +338,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
   Future<void> _onFillEmptyProducts(
       FillEmptyProducts event, Emitter<PuzzleState> emit) async {
-    debugPrint(
-        "Fill empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
+    // debugPrint(
+    //     "Fill empty products ${event.products.map((ingredient) => ingredient.ingredient)}");
 
     int count = state.count;
     count = count + 1;
@@ -340,10 +350,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       int x = product.position.x - 1;
       int y = product.position.y - 1;
 
-      debugPrint("old ingredient ${productsList[y][x].ingredient}");
       productsList[y][x].ingredient =
           Ingredient(ingredient: IngredientsExt.generateRandomIngredient());
-      debugPrint("new ingredient ${productsList[y][x].ingredient}");
     }
 
     var matchingProducts = _checkBoardOnMealsExistence();
@@ -380,7 +388,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
           int count = 0;
           while (count < 3) {
             Product product = productsList[y][x + count];
-            if (!product.isSelected) {
+            if (!product.isSelected &&
+                product.ingredient.ingredient != Ingredients.none) {
               horizontalProducts.add(product);
               horizontalIngredients.add(product.ingredient);
               count++;
@@ -389,14 +398,15 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
             }
           }
 
-          debugPrint(
-              "Horizontal product set ${horizontalProducts.map((product) => product.ingredient.ingredient.name)}");
+          // debugPrint(
+          //     "Horizontal product set ${horizontalProducts.map((
+          //         product) => product.ingredient.ingredient.name)}");
 
           if (horizontalProducts.length == 3) {
             for (var ingredients in Utils().mealIngredients.keys) {
               if (ingredients.difference(horizontalIngredients).isEmpty) {
                 debugPrint(
-                    "Products set ${horizontalProducts.map((product) => product.ingredient.ingredient.name)}");
+                    "Products set horizontal ${horizontalProducts.map((product) => product.ingredient.ingredient.name + "${product.position.y} + ${product.position.x}")}");
 
                 for (Product product in horizontalProducts) {
                   int x = product.position.x - 1;
@@ -409,16 +419,20 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
             }
           }
         }
+      }
+    }
 
+    for (int y = 0; y < productsList.length; y++) {
+      for (int x = 0; x < productsList[0].length; x++) {
         //vertical check
-
         if (y < 3) {
           Set<Product> verticalProducts = {};
           Set<Ingredient> verticalIngredients = {};
           int countV = 0;
           while (countV < 3) {
             Product product = productsList[y + countV][x];
-            if (!product.isSelected) {
+            if (!product.isSelected &&
+                product.ingredient.ingredient != Ingredients.none) {
               verticalProducts.add(product);
               verticalIngredients.add(product.ingredient);
             } else {
@@ -431,7 +445,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
             for (var ingredients in Utils().mealIngredients.keys) {
               if (ingredients.difference(verticalIngredients).isEmpty) {
                 debugPrint(
-                    "Products set ${verticalProducts.map((product) => product.ingredient.ingredient.name)}");
+                    "Products set vertical ${verticalProducts.map((product) => product.ingredient.ingredient.name + "${product.position.y} + ${product.position.x}")}");
 
                 for (Product product in verticalProducts) {
                   int x = product.position.x - 1;

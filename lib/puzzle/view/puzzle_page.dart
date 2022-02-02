@@ -50,7 +50,7 @@ class PuzzleView extends StatelessWidget {
 
   Widget buildPuzzle(BuildContext context) {
     final state = context.select((PuzzleBloc bloc) => bloc.state.count);
-    debugPrint("state count ${state}");
+    debugPrint("state count $state");
 
     var puzzle = context.select((PuzzleBloc bloc) => bloc.state.puzzle);
     var matchingProducts =

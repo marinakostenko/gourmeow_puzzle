@@ -81,17 +81,78 @@ class Utils {
         draggable: Drag.drag,
         cat: Cat(
             color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+    Product bun = Product(
+        ingredient: Ingredient(ingredient: Ingredients.bun),
+        meal: Meal(meal: Meals.none),
+        position: BoardPosition(x: -1, y: -1),
+        isSelected: false,
+        draggable: Drag.drag,
+        cat: Cat(
+            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+    Product avocado = Product(
+        ingredient: Ingredient(ingredient: Ingredients.avocado),
+        meal: Meal(meal: Meals.none),
+        position: BoardPosition(x: -1, y: -1),
+        isSelected: false,
+        draggable: Drag.drag,
+        cat: Cat(
+            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
 
-    final defaultProducts = [tuna, bread, meat, salad, tomato];
+    Product croutons = Product(
+        ingredient: Ingredient(ingredient: Ingredients.croutons),
+        meal: Meal(meal: Meals.none),
+        position: BoardPosition(x: -1, y: -1),
+        isSelected: false,
+        draggable: Drag.drag,
+        cat: Cat(
+            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+
+    Product cheese = Product(
+        ingredient: Ingredient(ingredient: Ingredients.cheese),
+        meal: Meal(meal: Meals.none),
+        position: BoardPosition(x: -1, y: -1),
+        isSelected: false,
+        draggable: Drag.drag,
+        cat: Cat(
+            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+    Product onion = Product(
+        ingredient: Ingredient(ingredient: Ingredients.onion),
+        meal: Meal(meal: Meals.none),
+        position: BoardPosition(x: -1, y: -1),
+        isSelected: false,
+        draggable: Drag.drag,
+        cat: Cat(
+            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+
+    final defaultProducts = [
+      tuna,
+      bread,
+      meat,
+      salad,
+      tomato,
+      bun,
+      avocado,
+      croutons,
+      cheese,
+      onion
+    ];
 
     List<List<Product>> productsTable = [];
 
+    int defaultCount = 0;
+
     for (int j = 1; j <= size; j++) {
       var products = <Product>[];
-      for (int i = 1; i <= defaultProducts.length; i++) {
-        Product product = defaultProducts[i - 1].copyWith();
-        //  product.position = BoardPosition(x: j, y: i);
-        products.add(product);
+      for (int i = 1; i <= size; i++) {
+        if (defaultCount < defaultProducts.length) {
+          Product product = defaultProducts[defaultCount].copyWith();
+          products.add(product);
+          defaultCount++;
+        }
+
+        if (defaultCount == defaultProducts.length) {
+          defaultCount = 0;
+        }
       }
 
       productsTable.add(products);
@@ -127,53 +188,30 @@ class Utils {
   }
 
   Map<Set<Ingredient>, Meal> mealIngredients = {
-     <Ingredient>{
+    <Ingredient>{
       const Ingredient(ingredient: Ingredients.salad),
-      const Ingredient(ingredient: Ingredients.tomato),
+      const Ingredient(ingredient: Ingredients.onion),
       const Ingredient(ingredient: Ingredients.tuna)
     }: const Meal(meal: Meals.tunaSalad),
     <Ingredient>{
       const Ingredient(ingredient: Ingredients.salad),
       const Ingredient(ingredient: Ingredients.tomato),
-      const Ingredient(ingredient: Ingredients.tuna)
-    }: const Meal(meal: Meals.tunaSalad),
+      const Ingredient(ingredient: Ingredients.avocado)
+    }: const Meal(meal: Meals.vegetableSalad),
     <Ingredient>{
       const Ingredient(ingredient: Ingredients.bread),
       const Ingredient(ingredient: Ingredients.tomato),
-      const Ingredient(ingredient: Ingredients.tuna)
-    } : const Meal(meal: Meals.sandwich),
-   <Ingredient>{
-      const Ingredient(ingredient: Ingredients.bread),
+      const Ingredient(ingredient: Ingredients.cheese)
+    }: const Meal(meal: Meals.sandwich),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.bun),
       const Ingredient(ingredient: Ingredients.tomato),
       const Ingredient(ingredient: Ingredients.meat)
     }: const Meal(meal: Meals.burger),
     <Ingredient>{
-      const Ingredient(ingredient: Ingredients.bread),
+      const Ingredient(ingredient: Ingredients.croutons),
       const Ingredient(ingredient: Ingredients.salad),
       const Ingredient(ingredient: Ingredients.meat)
-    } : const Meal(meal: Meals.cesar),
+    }: const Meal(meal: Meals.cesar),
   };
-
-  // Map<Meal, Set<Ingredient>> mealIngredients = {
-  //   const Meal(meal: Meals.tunaSalad): <Ingredient>{
-  //     const Ingredient(ingredient: Ingredients.salad),
-  //     const Ingredient(ingredient: Ingredients.tomato),
-  //     const Ingredient(ingredient: Ingredients.tuna)
-  //   },
-  //   const Meal(meal: Meals.sandwich): <Ingredient>{
-  //     const Ingredient(ingredient: Ingredients.bread),
-  //     const Ingredient(ingredient: Ingredients.tomato),
-  //     const Ingredient(ingredient: Ingredients.tuna)
-  //   },
-  //   const Meal(meal: Meals.burger): <Ingredient>{
-  //     const Ingredient(ingredient: Ingredients.bread),
-  //     const Ingredient(ingredient: Ingredients.tomato),
-  //     const Ingredient(ingredient: Ingredients.meat)
-  //   },
-  //   const Meal(meal: Meals.cesar): <Ingredient>{
-  //     const Ingredient(ingredient: Ingredients.bread),
-  //     const Ingredient(ingredient: Ingredients.salad),
-  //     const Ingredient(ingredient: Ingredients.meat)
-  //   },
-  // };
 }

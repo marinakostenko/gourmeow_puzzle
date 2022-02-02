@@ -18,6 +18,7 @@ enum Meals {
   sandwich,
   burger,
   tunaSalad,
+  vegetableSalad,
   steak,
   cesar,
 }
