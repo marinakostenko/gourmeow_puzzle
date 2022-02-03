@@ -27,3 +27,8 @@ class BoardPosition extends Equatable implements Comparable<BoardPosition>{
     }
   }
 }
+
+enum Layout {
+  horizontal,
+  vertical
+}

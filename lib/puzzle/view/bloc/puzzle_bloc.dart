@@ -85,7 +85,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       productsList[yProduct + 1][xProduct].draggable = Drag.drop;
     }
 
-    debugPrint("drag count $count");
     puzzle = Puzzle(products: productsList);
 
     emit(
@@ -102,9 +101,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
   void _onProductDropped(ProductDropped event, Emitter<PuzzleState> emit) {
     int count = state.count;
-
-    debugPrint(
-        "Product to drop ${event.dragProduct.ingredient.ingredient.name}");
 
     Cat dragCat = event.dragProduct.cat;
     Cat dropCat = event.dropProduct.cat;
@@ -183,13 +179,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       if (meal.meal != Meals.none) {
         Set<Product> matchingProduct = products;
 
-        debugPrint("Before sort ${matchingProduct.map((product) => product.ingredient.ingredient.name)}");
-        matchingProduct.toList().sort((product1, product2) =>
-            product1.position.compareTo(product2.position));
-
-        debugPrint("After sort ${matchingProduct.map((product) => product.ingredient.ingredient.name)}");
-
-
         debugPrint("Product selected state for meal $meal");
 
         for (int i = 0; i < matchingProduct.length; i++) {
@@ -215,7 +204,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     await Future.delayed(Duration(seconds: 1));
 
-    debugPrint("count $count");
     count = count + 1;
     emit(
       state.copyWith(
@@ -334,86 +322,60 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   List<Set<Product>> _checkBoardOnMealsExistence() {
     List<Set<Product>> mealsOnBoard = [];
 
-    for (int y = 0; y < productsList.length; y++) {
-      for (int x = 0; x < productsList[0].length; x++) {
-        //horizontal check
-        if (x < 3) {
-          Set<Product> horizontalProducts = {};
-          int count = 0;
-          while (count < 3) {
-            Product product = productsList[y][x + count];
-            if (!product.isSelected &&
-                product.ingredient.ingredient != Ingredients.none) {
-              horizontalProducts.add(product);
-              count++;
-            } else {
-              break;
-            }
-          }
+    List<Set<Product>> horizontalMeals = _checkLayout(Layout.horizontal);
+    List<Set<Product>> verticalMeals = _checkLayout(Layout.vertical);
 
-          if (horizontalProducts.length == 3) {
-            var horizontalIngredients =
-                _createIngredientSet(horizontalProducts);
-
-            for (var ingredients in Data().mealIngredients.keys) {
-              if (ingredients.difference(horizontalIngredients).isEmpty) {
-                debugPrint(
-                    "Products set horizontal ${horizontalProducts.map((product) => product.ingredient.ingredient.name + "${product.position.y} + ${product.position.x}")}");
-
-                for (Product product in horizontalProducts) {
-                  int x = product.position.x - 1;
-                  int y = product.position.y - 1;
-
-                  productsList[y][x].isSelected = true;
-                }
-                mealsOnBoard.add(horizontalProducts);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    for (int y = 0; y < productsList.length; y++) {
-      for (int x = 0; x < productsList[0].length; x++) {
-        //vertical check
-        if (y < 3) {
-          Set<Product> verticalProducts = {};
-          int count = 0;
-          while (count < 3) {
-            Product product = productsList[y + count][x];
-            if (!product.isSelected &&
-                product.ingredient.ingredient != Ingredients.none) {
-              verticalProducts.add(product);
-            } else {
-              break;
-            }
-            count++;
-          }
-
-          if (verticalProducts.length == 3) {
-            var verticalIngredients = _createIngredientSet(verticalProducts);
-
-            for (var ingredients in Data().mealIngredients.keys) {
-              if (ingredients.difference(verticalIngredients).isEmpty) {
-                debugPrint(
-                    "Products set vertical ${verticalProducts.map((product) => product.ingredient.ingredient.name + "${product.position.y} + ${product.position.x}")}");
-
-                for (Product product in verticalProducts) {
-                  int x = product.position.x - 1;
-                  int y = product.position.y - 1;
-
-                  productsList[y][x].isSelected = true;
-                }
-                mealsOnBoard.add(verticalProducts);
-              }
-            }
-          }
-        }
-      }
-    }
+    mealsOnBoard = horizontalMeals + verticalMeals;
 
     return mealsOnBoard;
+  }
+
+  List<Set<Product>> _checkLayout(Layout layout) {
+    List<Set<Product>> mealsOnBoardByLayout = [];
+
+    for (int y = 0; y < productsList.length; y++) {
+      for (int x = 0; x < productsList[0].length; x++) {
+        int variable = (layout == Layout.horizontal) ? x : y;
+        int xCount = 0;
+        int yCount = 0;
+
+        if (variable < 3) {
+          Set<Product> products = {};
+          while (xCount < 3 && yCount < 3) {
+            Product product = productsList[y + yCount][x + xCount];
+            if (!product.isSelected &&
+                product.ingredient.ingredient != Ingredients.none) {
+              products.add(product);
+
+              (layout == Layout.horizontal) ? xCount++ : yCount++;
+            } else {
+              break;
+            }
+          }
+
+          if (products.length == 3) {
+            var currIngredients = _createIngredientSet(products);
+
+            for (var ingredients in Data().mealIngredients.keys) {
+              if (ingredients.difference(currIngredients).isEmpty) {
+                debugPrint(
+                    "Products set ${layout.name} ${products.map((product) => product.ingredient.ingredient.name + "${product.position.y} + ${product.position.x}")}");
+
+                for (Product product in products) {
+                  int x = product.position.x - 1;
+                  int y = product.position.y - 1;
+
+                  productsList[y][x].isSelected = true;
+                }
+                mealsOnBoardByLayout.add(products);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return mealsOnBoardByLayout;
   }
 
   Puzzle _setCatWishesPositions(Puzzle puzzle, List<Cat> cats) {
