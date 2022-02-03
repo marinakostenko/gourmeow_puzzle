@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:gourmeow_puzzle/puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 
 import 'bloc/puzzle_bloc.dart';
@@ -57,7 +58,10 @@ class PuzzleView extends StatelessWidget {
         context.select((PuzzleBloc bloc) => bloc.state.matchingProducts);
     var emptyProducts =
         context.select((PuzzleBloc bloc) => bloc.state.emptyProducts);
-    var emptyProductsMoved = context.select((PuzzleBloc bloc) => bloc.state.emptyProductsMoved);
+    var emptyProductsMoved =
+        context.select((PuzzleBloc bloc) => bloc.state.emptyProductsMoved);
+
+    var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
 
     var productTable = puzzle.products;
     var products = <Widget>[];
@@ -83,12 +87,21 @@ class PuzzleView extends StatelessWidget {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
 
-    return boardBuilder(5, products);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        boardBuilder(context, 5, products),
+        catBuilder(context, cats),
+      ],
+    );
   }
 
-  Widget boardBuilder(int size, List<Widget> products) {
-    return Padding(
-      padding: const EdgeInsets.all(100),
+  Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.height / 1.2,
       child: Column(
         children: [
           const Gap(10),
@@ -127,6 +140,36 @@ class PuzzleView extends StatelessWidget {
       onDragStart: _onDragStart,
       onDragEnd: _onDragEnd,
       onDragAccept: _onDragAccept,
+    );
+  }
+
+  Widget catBuilder(BuildContext context, List<Cat> cats) {
+    return Container(
+      height:  MediaQuery.of(context).size.height,
+      width: 200,
+
+      child: ListView(
+       // scrollDirection: Axis.horizontal,
+        children: List.generate(cats.length, (index) {
+          Cat cat = cats.elementAt(index);
+
+          return Container(
+            margin: const EdgeInsets.all(20),
+            alignment: Alignment.center,
+            height: 100,
+            width: 200,
+            decoration: BoxDecoration(
+              color: cat.color,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              cat.meal.meal.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12, color: Colors.white),
+            ),
+          );
+        }),
+      ),
     );
   }
 }

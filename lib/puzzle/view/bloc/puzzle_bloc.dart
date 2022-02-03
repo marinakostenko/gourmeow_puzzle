@@ -52,6 +52,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         puzzle: puzzle,
         count: 1,
         matchingProducts: matchingProducts,
+        cats: cats,
       ),
     );
   }
@@ -95,6 +96,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         meal: const Meal(meal: Meals.none),
         emptyProducts: {},
         emptyProductsMoved: false,
+        cats: cats,
       ),
     );
   }
@@ -151,6 +153,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         matchingProducts: matchingProducts,
         emptyProducts: {},
         emptyProductsMoved: false,
+        cats: cats,
       ),
     );
   }
@@ -213,6 +216,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         meal: const Meal(meal: Meals.none),
         emptyProducts: emptyProducts,
         emptyProductsMoved: false,
+        cats: cats,
       ),
     );
   }
@@ -278,6 +282,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         meal: const Meal(meal: Meals.none),
         emptyProducts: emptyProductsUpdated,
         emptyProductsMoved: true,
+        cats: cats,
       ),
     );
   }
@@ -315,6 +320,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         meal: const Meal(meal: Meals.none),
         emptyProducts: {},
         emptyProductsMoved: false,
+        cats: cats,
       ),
     );
   }
@@ -382,6 +388,9 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     final _random = Random();
 
     for (Cat cat in cats) {
+      var meals = CuisineExt.getMealsByCuisine(cat.cuisine);
+      cat.meal = Meal(meal: meals.elementAt(_random.nextInt(meals.length)));
+
       while (true) {
         var product = puzzle.products
             .elementAt(_random.nextInt(puzzle.products.length))

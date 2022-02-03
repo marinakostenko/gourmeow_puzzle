@@ -28,8 +28,8 @@ enum Cuisine {
 }
 
 extension CuisineExt on Cuisine {
-  List<Meals> get getMealsByCuisine {
-    switch (this) {
+  static List<Meals> getMealsByCuisine(Cuisine cuisine) {
+    switch (cuisine) {
       case Cuisine.american:
         return [Meals.sandwich, Meals.burger, Meals.tunaSalad];
       case Cuisine.asian:
