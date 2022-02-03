@@ -32,12 +32,12 @@ class Product extends Copyable<Product> {
             Drag? draggable,
           Cat? cat}) =>
       Product(
-        ingredient: this.ingredient,
-        meal: this.meal,
-        position: this.position,
-        isSelected: this.isSelected,
-        draggable: this.draggable,
-        cat: this.cat,
+        ingredient: ingredient ?? this.ingredient,
+        meal: meal ?? this.meal,
+        position: position ?? this.position,
+        isSelected: isSelected ?? this.isSelected,
+        draggable: draggable ?? this.draggable,
+        cat: cat ?? this.cat,
       );
 
   @override

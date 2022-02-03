@@ -37,92 +37,46 @@ class Data {
   }
 
   List<List<Product>> defaultProductsList(int size) {
-    Product tuna = Product(
-        ingredient: Ingredient(ingredient: Ingredients.tuna),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
+    Product defaultProduct = Product(
+        ingredient: const Ingredient(ingredient: Ingredients.rise),
+        meal: const Meal(meal: Meals.none),
+        position: const BoardPosition(x: -1, y: -1),
         isSelected: false,
         draggable: Drag.drag,
         cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+            color: Colors.white,
+            meal: Meal(meal: Meals.none),
+            livesCount: -1,
+            cuisine: Cuisine.none));
 
-    Product bread = Product(
-        ingredient: Ingredient(ingredient: Ingredients.bread),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-
-    Product meat = Product(
-        ingredient: Ingredient(ingredient: Ingredients.meat),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-
-    Product salad = Product(
-        ingredient: Ingredient(ingredient: Ingredients.salad),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-
-    Product tomato = Product(
-        ingredient: Ingredient(ingredient: Ingredients.tomato),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-    Product bun = Product(
-        ingredient: Ingredient(ingredient: Ingredients.bun),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-    Product avocado = Product(
-        ingredient: Ingredient(ingredient: Ingredients.avocado),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-
-    Product croutons = Product(
-        ingredient: Ingredient(ingredient: Ingredients.croutons),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-
-    Product cheese = Product(
-        ingredient: Ingredient(ingredient: Ingredients.cheese),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
-    Product onion = Product(
-        ingredient: Ingredient(ingredient: Ingredients.onion),
-        meal: Meal(meal: Meals.none),
-        position: BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-            color: Colors.white, meal: Meal(meal: Meals.none), livesCount: -1));
+    Product tuna = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.tuna));
+    Product bread = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.bread));
+    Product meat = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.meat));
+    Product salad = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.salad));
+    Product tomato = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.tomato));
+    Product bun = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.bun));
+    Product avocado = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.avocado));
+    Product croutons = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.croutons));
+    Product cheese = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.cheese));
+    Product onion = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.onion));
+    Product rise = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.rise));
+    Product nori = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.nori));
+    Product shrimps = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.shrimps));
+    Product egg = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.egg));
 
     final defaultProducts = [
       tuna,
@@ -134,7 +88,11 @@ class Data {
       avocado,
       croutons,
       cheese,
-      onion
+      onion,
+      rise,
+      nori,
+      shrimps,
+      egg
     ];
 
     List<List<Product>> productsTable = [];
@@ -173,12 +131,21 @@ class Data {
   List<Cat> defaultCatsList() {
     final cats = <Cat>[];
 
-    Cat blueCat =
-        Cat(color: Colors.blue, meal: Meal(meal: Meals.none), livesCount: 3);
-    Cat greenCat =
-        Cat(color: Colors.green, meal: Meal(meal: Meals.none), livesCount: 3);
-    Cat gingerCat =
-        Cat(color: Colors.orange, meal: Meal(meal: Meals.none), livesCount: 3);
+    Cat blueCat = Cat(
+        color: Colors.blue,
+        meal: Meal(meal: Meals.none),
+        livesCount: 3,
+        cuisine: Cuisine.american);
+    Cat greenCat = Cat(
+        color: Colors.green,
+        meal: Meal(meal: Meals.none),
+        livesCount: 3,
+        cuisine: Cuisine.french);
+    Cat gingerCat = Cat(
+        color: Colors.orange,
+        meal: Meal(meal: Meals.none),
+        livesCount: 3,
+        cuisine: Cuisine.asian);
 
     cats.add(blueCat);
     cats.add(gingerCat);
@@ -213,5 +180,15 @@ class Data {
       const Ingredient(ingredient: Ingredients.salad),
       const Ingredient(ingredient: Ingredients.meat)
     }: const Meal(meal: Meals.cesar),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.egg),
+      const Ingredient(ingredient: Ingredients.rise),
+      const Ingredient(ingredient: Ingredients.shrimps)
+    }: const Meal(meal: Meals.eggRise),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.tuna),
+      const Ingredient(ingredient: Ingredients.rise),
+      const Ingredient(ingredient: Ingredients.nori)
+    }: const Meal(meal: Meals.tunaRoll),
   };
 }

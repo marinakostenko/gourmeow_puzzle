@@ -7,9 +7,10 @@ class Cat extends Equatable {
   final Color color;
   final Meal meal;
   final int livesCount;
+  final Cuisine cuisine;
 
-  Cat({required this.color, required this.meal, required this.livesCount});
+  Cat({required this.color, required this.meal, required this.livesCount, required this.cuisine});
 
   @override
-  List<Object?> get props => [color, meal, livesCount];
+  List<Object?> get props => [color, meal, livesCount, cuisine];
 }

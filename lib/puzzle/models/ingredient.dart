@@ -23,14 +23,18 @@ enum Ingredients {
   bun,
   croutons,
   cheese,
-  onion
+  onion,
+  rise,
+  nori,
+  egg,
+  shrimps
 }
 
 extension IngredientsExt on Ingredients {
   static Ingredients generateRandomIngredient() {
     var rnd = Random();
     var ingredient =
-        Ingredients.values[rnd.nextInt(Ingredients.values.length - 1) + 1];
+    Ingredients.values[rnd.nextInt(Ingredients.values.length - 1) + 1];
     debugPrint("Ingredient ${ingredient.name}");
     return ingredient;
   }

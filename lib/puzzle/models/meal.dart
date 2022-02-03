@@ -15,6 +15,29 @@ enum Meals {
   burger,
   tunaSalad,
   vegetableSalad,
-  steak,
   cesar,
+  eggRise,
+  tunaRoll,
+}
+
+enum Cuisine {
+  none,
+  french,
+  american,
+  asian
+}
+
+extension CuisineExt on Cuisine {
+  List<Meals> get getMealsByCuisine {
+    switch (this) {
+      case Cuisine.american:
+        return [Meals.sandwich, Meals.burger, Meals.tunaSalad];
+      case Cuisine.asian:
+        return [Meals.eggRise, Meals.tunaRoll];
+      case Cuisine.french:
+        return [Meals.cesar, Meals.vegetableSalad];
+      default:
+        return [];
+    }
+  }
 }

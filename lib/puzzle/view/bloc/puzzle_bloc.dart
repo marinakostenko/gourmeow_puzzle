@@ -379,8 +379,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   }
 
   Puzzle _setCatWishesPositions(Puzzle puzzle, List<Cat> cats) {
-    //TODO add random dishes to selected cats
-
     final _random = Random();
 
     for (Cat cat in cats) {
