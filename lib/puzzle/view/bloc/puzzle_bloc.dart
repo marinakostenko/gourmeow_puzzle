@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -25,6 +24,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     on<MoveEmptyProducts>(_onMoveEmptyProducts);
     on<FillEmptyProducts>(_onFillEmptyProducts);
     on<TimeEnded>(_onTimeEnded);
+    on<TimeReset>(_onTimeReset);
   }
 
   List<List<Product>> productsList = [];
@@ -55,6 +55,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         count: 1,
         matchingProducts: matchingProducts,
         cats: cats,
+        resetTimer: true,
       ),
     );
   }
@@ -99,6 +100,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: {},
         emptyProductsMoved: false,
         cats: cats,
+        resetTimer: false,
       ),
     );
   }
@@ -156,6 +158,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: {},
         emptyProductsMoved: false,
         cats: cats,
+        resetTimer: false,
       ),
     );
   }
@@ -201,14 +204,20 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     count = count + 1;
     emit(
       state.copyWith(
-        puzzle: puzzle,
-        count: count,
-        matchingProducts: [],
-        emptyProducts: emptyProducts,
-        emptyProductsMoved: false,
-        cats: cats,
-        updateCats: true,
-      ),
+          puzzle: puzzle,
+          count: count,
+          matchingProducts: [],
+          emptyProducts: emptyProducts,
+          emptyProductsMoved: false,
+          cats: cats,
+          updateCats: true,
+          resetTimer: true),
+    );
+  }
+
+  void _onTimeReset(TimeReset event, Emitter<PuzzleState> emit) {
+    emit(
+      state.copyWith(resetTimer: event.reset),
     );
   }
 
@@ -271,6 +280,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: emptyProducts,
         emptyProductsMoved: false,
         cats: cats,
+        resetTimer: false,
       ),
     );
   }
@@ -337,6 +347,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: emptyProductsUpdated,
         emptyProductsMoved: true,
         cats: cats,
+        resetTimer: false,
       ),
     );
   }
@@ -383,6 +394,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProductsMoved: false,
         cats: cats,
         updateCats: updateCats,
+        resetTimer: false,
       ),
     );
   }

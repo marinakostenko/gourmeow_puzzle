@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gourmeow_puzzle/puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
+import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
+import 'package:gourmeow_puzzle/timer/ticker.dart';
 
 import 'bloc/puzzle_bloc.dart';
 import 'drag_drop_widget.dart';
@@ -32,6 +34,9 @@ class PuzzleView extends StatelessWidget {
                 ..add(
                   const PuzzleInitialized(true, 5),
                 ),
+            ),
+            BlocProvider(
+              create: (context) => TimerBloc(ticker: const Ticker()),
             ),
           ],
           child: SingleChildScrollView(
@@ -63,6 +68,7 @@ class PuzzleView extends StatelessWidget {
 
     var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
     var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
+    var resetTimer = context.select((PuzzleBloc bloc) => bloc.state.resetTimer);
 
     var productTable = puzzle.products;
     var products = <Widget>[];
@@ -82,7 +88,15 @@ class PuzzleView extends StatelessWidget {
     }
 
     if (emptyProducts.isNotEmpty && emptyProductsMoved) {
-      context.read<PuzzleBloc>().add(FillEmptyProducts(emptyProducts, updateCats, cats));
+      context
+          .read<PuzzleBloc>()
+          .add(FillEmptyProducts(emptyProducts, updateCats, cats));
+    }
+
+    debugPrint("Reset timer $resetTimer");
+    if (resetTimer) {
+      context.read<TimerBloc>().add(const TimerStarted(duration: 60));
+      context.read<PuzzleBloc>().add(const TimeReset(false));
     }
 
     final size = puzzle.getDimension();
@@ -196,7 +210,22 @@ class PuzzleView extends StatelessWidget {
             ),
           ),
         ),
+        timer(context),
       ],
+    );
+  }
+
+  Widget timer(BuildContext context) {
+    final state = context.select((TimerBloc bloc) => bloc.state);
+    debugPrint("timer bloc state $state");
+
+    final duration = context.select((TimerBloc bloc) => bloc.state.duration);
+    final minutesStr =
+        ((duration / 60) % 60).floor().toString().padLeft(2, '0');
+    final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
+    return Text(
+      '$minutesStr:$secondsStr',
+      style: const TextStyle(fontSize: 20, color: Colors.indigo),
     );
   }
 }
