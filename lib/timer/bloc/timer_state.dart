@@ -1,24 +1,35 @@
 part of 'timer_bloc.dart';
 
-class TimerState extends Equatable {
-  const TimerState({
-    this.isRunning = false,
-    this.duration = 30,
-  });
-
-  final bool isRunning;
+abstract class TimerState extends Equatable {
   final int duration;
 
-  @override
-  List<Object> get props => [isRunning, duration];
+  const TimerState(this.duration);
 
-  TimerState copyWith({
-    bool? isRunning,
-    int? duration,
-  }) {
-    return TimerState(
-      isRunning: isRunning ?? this.isRunning,
-      duration: duration ?? this.duration,
-    );
-  }
+  @override
+  List<Object> get props => [duration];
+}
+
+class TimerInitial extends TimerState {
+  const TimerInitial(int duration) : super(duration);
+
+  @override
+  String toString() => 'TimerInitial { duration: $duration }';
+}
+
+class TimerRunPause extends TimerState {
+  const TimerRunPause(int duration) : super(duration);
+
+  @override
+  String toString() => 'TimerRunPause { duration: $duration }';
+}
+
+class TimerRunInProgress extends TimerState {
+  const TimerRunInProgress(int duration) : super(duration);
+
+  @override
+  String toString() => 'TimerRunInProgress { duration: $duration }';
+}
+
+class TimerRunComplete extends TimerState {
+  const TimerRunComplete() : super(0);
 }

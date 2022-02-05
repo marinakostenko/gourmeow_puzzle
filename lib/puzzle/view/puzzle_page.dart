@@ -6,6 +6,7 @@ import 'package:gourmeow_puzzle/puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
 import 'package:gourmeow_puzzle/timer/ticker.dart';
+import 'package:gourmeow_puzzle/timer/timer_countdown.dart';
 
 import 'bloc/puzzle_bloc.dart';
 import 'drag_drop_widget.dart';
@@ -68,7 +69,6 @@ class PuzzleView extends StatelessWidget {
 
     var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
     var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
-    var resetTimer = context.select((PuzzleBloc bloc) => bloc.state.resetTimer);
 
     var productTable = puzzle.products;
     var products = <Widget>[];
@@ -93,16 +93,10 @@ class PuzzleView extends StatelessWidget {
           .add(FillEmptyProducts(emptyProducts, updateCats, cats));
     }
 
-    debugPrint("Reset timer $resetTimer");
-    if (resetTimer) {
-      context.read<TimerBloc>().add(const TimerStarted(duration: 60));
-      context.read<PuzzleBloc>().add(const TimeReset(false));
-    }
-
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
 
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -115,8 +109,8 @@ class PuzzleView extends StatelessWidget {
   Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.height / 1.2,
+      height: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width / 1.1,
       child: Column(
         children: [
           const Gap(10),
@@ -159,7 +153,7 @@ class PuzzleView extends StatelessWidget {
   }
 
   Widget catBuilder(BuildContext context, List<Cat> cats) {
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
@@ -210,22 +204,8 @@ class PuzzleView extends StatelessWidget {
             ),
           ),
         ),
-        timer(context),
+        const TimerCountdown(),
       ],
-    );
-  }
-
-  Widget timer(BuildContext context) {
-    final state = context.select((TimerBloc bloc) => bloc.state);
-    debugPrint("timer bloc state $state");
-
-    final duration = context.select((TimerBloc bloc) => bloc.state.duration);
-    final minutesStr =
-        ((duration / 60) % 60).floor().toString().padLeft(2, '0');
-    final secondsStr = (duration % 60).floor().toString().padLeft(2, '0');
-    return Text(
-      '$minutesStr:$secondsStr',
-      style: const TextStyle(fontSize: 20, color: Colors.indigo),
     );
   }
 }

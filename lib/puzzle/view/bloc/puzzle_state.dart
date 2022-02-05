@@ -8,7 +8,7 @@ class PuzzleState extends Equatable {
   final bool emptyProductsMoved;
   final List<Cat> cats;
   final bool updateCats;
-  final bool resetTimer;
+ // final bool resetTimer;
 
   const PuzzleState({
     this.puzzle = const Puzzle(products: []),
@@ -18,7 +18,7 @@ class PuzzleState extends Equatable {
     this.emptyProductsMoved = false,
     this.cats = const <Cat>[],
     this.updateCats = false,
-    this.resetTimer = false,
+   // this.resetTimer = false,
   });
 
   PuzzleState copyWith({
@@ -40,7 +40,7 @@ class PuzzleState extends Equatable {
       emptyProductsMoved: emptyProductsMoved ?? this.emptyProductsMoved,
       cats: cats ?? this.cats,
       updateCats: updateCats ?? this.updateCats,
-      resetTimer: resetTimer ?? this.resetTimer,
+      //resetTimer: resetTimer ?? this.resetTimer,
     );
   }
 
@@ -53,6 +53,6 @@ class PuzzleState extends Equatable {
         emptyProductsMoved,
         cats,
         updateCats,
-        resetTimer
+       // resetTimer
       ];
 }

@@ -1,30 +1,24 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../ticker.dart';
 
 part 'timer_event.dart';
-
 part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker;
-  final int _duration = 30;
+  static const int _duration = 60;
 
   StreamSubscription<int>? _tickerSubscription;
 
   TimerBloc({required Ticker ticker})
       : _ticker = ticker,
-        super(const TimerState()) {
-    on<TimerEvent>((event, emit) {
-      on<TimerStarted>(_onTimerStarted);
-      on<TimerTicked>(_onTimerTicked);
-      on<TimerStopped>(_onTimerStopped);
-      on<TimerReset>(_onTimerReset);
-    });
+        super(const TimerInitial(_duration)) {
+    on<TimerStarted>(_onStarted);
+    on<TimerPaused>(_onPaused);
+    on<TimerTicked>(_onTicked);
   }
 
   @override
@@ -33,28 +27,26 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     return super.close();
   }
 
-  void _onTimerStarted(TimerStarted event, Emitter<TimerState> emit) {
-    debugPrint("Timer started");
+  void _onStarted(TimerStarted event, Emitter<TimerState> emit) {
+    emit(TimerRunInProgress(event.duration));
     _tickerSubscription?.cancel();
     _tickerSubscription = _ticker
         .tick(ticks: event.duration)
         .listen((duration) => add(TimerTicked(duration: duration)));
-    emit(state.copyWith(isRunning: true));
   }
 
-  void _onTimerTicked(TimerTicked event, Emitter<TimerState> emit) {
-    emit(event.duration > 0
-        ? state.copyWith(isRunning: true, duration: event.duration)
-        : state.copyWith(isRunning: false, duration: 0));
+  void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
+    if (state is TimerRunInProgress) {
+      _tickerSubscription?.pause();
+      emit(TimerRunPause(state.duration));
+    }
   }
 
-  void _onTimerStopped(TimerStopped event, Emitter<TimerState> emit) {
-    _tickerSubscription?.pause();
-    emit(state.copyWith(isRunning: false));
-  }
-
-  void _onTimerReset(TimerReset event, Emitter<TimerState> emit) {
-    _tickerSubscription?.cancel();
-    emit(state.copyWith(duration: _duration));
+  void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
+    emit(
+      event.duration > 0
+          ? TimerRunInProgress(event.duration)
+          : TimerRunComplete(),
+    );
   }
 }

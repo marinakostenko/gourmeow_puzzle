@@ -75,15 +75,6 @@ class TimeEnded extends PuzzleEvent {
   List<Object> get props => [cats];
 }
 
-class TimeReset extends PuzzleEvent {
-  final bool reset;
-
-  const TimeReset(this.reset);
-
-  @override
-  List<Object> get props => [reset];
-}
-
 class PuzzleReset extends PuzzleEvent {
   const PuzzleReset();
 }

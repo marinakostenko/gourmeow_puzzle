@@ -24,7 +24,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     on<MoveEmptyProducts>(_onMoveEmptyProducts);
     on<FillEmptyProducts>(_onFillEmptyProducts);
     on<TimeEnded>(_onTimeEnded);
-    on<TimeReset>(_onTimeReset);
   }
 
   List<List<Product>> productsList = [];
@@ -55,7 +54,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         count: 1,
         matchingProducts: matchingProducts,
         cats: cats,
-        resetTimer: true,
+       // resetTimer: true,
       ),
     );
   }
@@ -212,12 +211,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
           cats: cats,
           updateCats: true,
           resetTimer: true),
-    );
-  }
-
-  void _onTimeReset(TimeReset event, Emitter<PuzzleState> emit) {
-    emit(
-      state.copyWith(resetTimer: event.reset),
     );
   }
 
