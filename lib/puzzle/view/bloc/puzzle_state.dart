@@ -7,6 +7,7 @@ class PuzzleState extends Equatable {
   final Set<Product> emptyProducts;
   final bool emptyProductsMoved;
   final List<Cat> cats;
+  final bool updateCats;
 
   const PuzzleState({
     this.puzzle = const Puzzle(products: []),
@@ -15,6 +16,7 @@ class PuzzleState extends Equatable {
     this.emptyProducts = const <Product>{},
     this.emptyProductsMoved = false,
     this.cats = const <Cat>[],
+    this.updateCats = false,
   });
 
   PuzzleState copyWith({
@@ -25,6 +27,7 @@ class PuzzleState extends Equatable {
     Set<Product>? emptyProducts,
     bool? emptyProductsMoved,
     List<Cat>? cats,
+    bool? updateCats,
   }) {
     return PuzzleState(
       puzzle: puzzle ?? this.puzzle,
@@ -33,10 +36,18 @@ class PuzzleState extends Equatable {
       emptyProducts: emptyProducts ?? this.emptyProducts,
       emptyProductsMoved: emptyProductsMoved ?? this.emptyProductsMoved,
       cats: cats ?? this.cats,
+      updateCats: updateCats ?? this.updateCats,
     );
   }
 
   @override
-  List<Object> get props =>
-      [puzzle, count, matchingProducts, emptyProducts, emptyProductsMoved];
+  List<Object> get props => [
+        puzzle,
+        count,
+        matchingProducts,
+        emptyProducts,
+        emptyProductsMoved,
+        cats,
+        updateCats
+      ];
 }

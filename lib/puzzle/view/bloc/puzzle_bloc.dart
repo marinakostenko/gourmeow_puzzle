@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -23,6 +24,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     on<ProductSelected>(_onProductSelected);
     on<MoveEmptyProducts>(_onMoveEmptyProducts);
     on<FillEmptyProducts>(_onFillEmptyProducts);
+    on<TimeEnded>(_onTimeEnded);
   }
 
   List<List<Product>> productsList = [];
@@ -154,6 +156,58 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: {},
         emptyProductsMoved: false,
         cats: cats,
+      ),
+    );
+  }
+
+  void _onTimeEnded(TimeEnded event, Emitter<PuzzleState> emit) {
+    int count = state.count;
+
+    List<Cat> cats = event.cats;
+    Set<Product> emptyProducts = {};
+
+    for (Cat cat in cats) {
+      Meal expected = cat.meal;
+
+      Product product = productsList[cat.position.y - 1][cat.position.x - 1];
+      Meal real = product.meal;
+      int livesCount = cat.livesCount;
+
+      if (expected.meal != real.meal) {
+        cat.livesCount = livesCount - 1;
+      }
+
+      cat.position = const BoardPosition(x: -1, y: -1);
+      cat.meal = const Meal(meal: Meals.none);
+
+      product.meal = const Meal(meal: Meals.none);
+      product.ingredient = const Ingredient(ingredient: Ingredients.none);
+      product.isSelected = false;
+      product.cat = Cat(
+        color: Colors.white,
+        meal: const Meal(meal: Meals.none),
+        livesCount: -1,
+        cuisine: Cuisine.none,
+        position: const BoardPosition(x: -1, y: -1),
+      );
+
+      emptyProducts.add(product);
+    }
+
+    puzzle = Puzzle(products: productsList);
+    this.cats = cats;
+
+    debugPrint("count $count");
+    count = count + 1;
+    emit(
+      state.copyWith(
+        puzzle: puzzle,
+        count: count,
+        matchingProducts: [],
+        emptyProducts: emptyProducts,
+        emptyProductsMoved: false,
+        cats: cats,
+        updateCats: true,
       ),
     );
   }
@@ -310,6 +364,13 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     puzzle = Puzzle(products: productsList);
 
+    bool updateCats = event.updateCats;
+
+    if (matchingProducts.isEmpty && event.updateCats) {
+      puzzle = _setCatWishesPositions(puzzle, event.cats);
+      updateCats = false;
+    }
+
     await Future.delayed(Duration(seconds: 1));
 
     emit(
@@ -321,6 +382,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: {},
         emptyProductsMoved: false,
         cats: cats,
+        updateCats: updateCats,
       ),
     );
   }
@@ -398,10 +460,13 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
         if (product.cat.color == Colors.white) {
           product.cat = cat;
+          cat.position = product.position;
           break;
         }
       }
     }
+
+    this.cats = cats;
 
     return puzzle;
   }

@@ -62,6 +62,7 @@ class PuzzleView extends StatelessWidget {
         context.select((PuzzleBloc bloc) => bloc.state.emptyProductsMoved);
 
     var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
+    var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
 
     var productTable = puzzle.products;
     var products = <Widget>[];
@@ -81,7 +82,7 @@ class PuzzleView extends StatelessWidget {
     }
 
     if (emptyProducts.isNotEmpty && emptyProductsMoved) {
-      context.read<PuzzleBloc>().add(FillEmptyProducts(emptyProducts));
+      context.read<PuzzleBloc>().add(FillEmptyProducts(emptyProducts, updateCats, cats));
     }
 
     final size = puzzle.getDimension();
@@ -144,32 +145,58 @@ class PuzzleView extends StatelessWidget {
   }
 
   Widget catBuilder(BuildContext context, List<Cat> cats) {
-    return Container(
-      height:  MediaQuery.of(context).size.height,
-      width: 200,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          width: 200,
+          child: ListView(
+            // scrollDirection: Axis.horizontal,
+            children: List.generate(cats.length, (index) {
+              Cat cat = cats.elementAt(index);
 
-      child: ListView(
-       // scrollDirection: Axis.horizontal,
-        children: List.generate(cats.length, (index) {
-          Cat cat = cats.elementAt(index);
-
-          return Container(
-            margin: const EdgeInsets.all(20),
-            alignment: Alignment.center,
-            height: 100,
-            width: 200,
-            decoration: BoxDecoration(
-              color: cat.color,
-              borderRadius: BorderRadius.circular(5),
+              return Container(
+                margin: const EdgeInsets.all(10),
+                alignment: Alignment.center,
+                height: 100,
+                width: 200,
+                decoration: BoxDecoration(
+                  color: cat.color,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  cat.meal.meal.name + "\n" + cat.livesCount.toString(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
+              );
+            }),
+          ),
+        ),
+        Container(
+          width: 100,
+          height: 100,
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(8.0),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.indigo,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
             ),
-            child: Text(
-              cat.meal.meal.name,
+            onPressed: () => context.read<PuzzleBloc>().add(TimeEnded(cats)),
+            child: const Text(
+              "READY",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: Colors.white),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
-          );
-        }),
-      ),
+          ),
+        ),
+      ],
     );
   }
 }

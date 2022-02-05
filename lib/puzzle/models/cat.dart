@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
+import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 
 class Cat {
@@ -8,9 +9,14 @@ class Cat {
   Meal meal;
   int livesCount;
   Cuisine cuisine;
+  BoardPosition position;
 
-  Cat({required this.color, required this.meal, required this.livesCount, required this.cuisine});
-
+  Cat(
+      {required this.color,
+      required this.meal,
+      required this.livesCount,
+      required this.cuisine,
+      required this.position});
 
   @override
   bool operator ==(Object other) =>
@@ -20,9 +26,14 @@ class Cat {
           color == other.color &&
           meal == other.meal &&
           livesCount == other.livesCount &&
-          cuisine == other.cuisine;
+          cuisine == other.cuisine &&
+          position == other.position;
 
   @override
   int get hashCode =>
-      color.hashCode ^ meal.hashCode ^ livesCount.hashCode ^ cuisine.hashCode;
+      color.hashCode ^
+      meal.hashCode ^
+      livesCount.hashCode ^
+      cuisine.hashCode ^
+      position.hashCode;
 }

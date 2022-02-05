@@ -57,11 +57,22 @@ class MoveEmptyProducts extends PuzzleEvent {
 
 class FillEmptyProducts extends PuzzleEvent {
   final Set<Product> products;
+  final bool updateCats;
+  final List<Cat> cats;
 
-  const FillEmptyProducts(this.products);
+  const FillEmptyProducts(this.products, this.updateCats, this.cats);
 
   @override
-  List<Object> get props => [products];
+  List<Object> get props => [products, updateCats, cats];
+}
+
+class TimeEnded extends PuzzleEvent {
+  final List<Cat> cats;
+
+  const TimeEnded(this.cats);
+
+  @override
+  List<Object> get props => [cats];
 }
 
 class PuzzleReset extends PuzzleEvent {

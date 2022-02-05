@@ -44,10 +44,12 @@ class Data {
         isSelected: false,
         draggable: Drag.drag,
         cat: Cat(
-            color: Colors.white,
-            meal: Meal(meal: Meals.none),
-            livesCount: -1,
-            cuisine: Cuisine.none));
+          color: Colors.white,
+          meal: const Meal(meal: Meals.none),
+          livesCount: -1,
+          cuisine: Cuisine.none,
+          position: const BoardPosition(x: -1, y: -1),
+        ));
 
     Product tuna = defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.tuna));
@@ -132,20 +134,26 @@ class Data {
     final cats = <Cat>[];
 
     Cat blueCat = Cat(
-        color: Colors.blue,
-        meal: Meal(meal: Meals.none),
-        livesCount: 3,
-        cuisine: Cuisine.american);
+      color: Colors.blue,
+      meal: const Meal(meal: Meals.none),
+      livesCount: 3,
+      cuisine: Cuisine.american,
+      position: const BoardPosition(x: -1, y: -1),
+    );
     Cat greenCat = Cat(
-        color: Colors.green,
-        meal: Meal(meal: Meals.none),
-        livesCount: 3,
-        cuisine: Cuisine.french);
+      color: Colors.green,
+      meal: const Meal(meal: Meals.none),
+      livesCount: 3,
+      cuisine: Cuisine.french,
+      position: const BoardPosition(x: -1, y: -1),
+    );
     Cat gingerCat = Cat(
-        color: Colors.orange,
-        meal: Meal(meal: Meals.none),
-        livesCount: 3,
-        cuisine: Cuisine.asian);
+      color: Colors.orange,
+      meal: const Meal(meal: Meals.none),
+      livesCount: 3,
+      cuisine: Cuisine.asian,
+      position: const BoardPosition(x: -1, y: -1),
+    );
 
     cats.add(blueCat);
     cats.add(gingerCat);
