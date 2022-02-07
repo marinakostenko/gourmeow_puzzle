@@ -23,8 +23,6 @@ class _TimerCountdownState extends State<TimerCountdown> {
   Widget timer(BuildContext context) {
     final state = context.select((TimerBloc bloc) => bloc.state);
 
-    debugPrint("timer bloc state $state");
-
     if (state is TimerInitial) {
       context.read<TimerBloc>().add(TimerStarted(duration: state.duration));
     }

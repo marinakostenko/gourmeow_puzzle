@@ -10,7 +10,7 @@ part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker;
-  static const int _duration = 10;
+  static const int _duration = 60;
 
   bool timerFinished = false;
 
@@ -39,7 +39,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
-    if(event.duration == 0) {
+    if (event.duration == 0) {
       timerFinished = true;
     }
     emit(
@@ -49,8 +49,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     );
   }
 
-  void _onReset(TimerReset event, Emitter<TimerState> emit) {
+  void _onReset(TimerReset event, Emitter<TimerState> emit) async {
     _tickerSubscription?.cancel();
+    await Future.delayed(Duration(seconds: 1));
     emit(TimerInitial(_duration));
   }
 }

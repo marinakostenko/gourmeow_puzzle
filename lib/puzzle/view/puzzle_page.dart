@@ -70,16 +70,11 @@ class PuzzleView extends StatelessWidget {
     var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
     var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
 
-    var resetTimer = context.select((PuzzleBloc bloc) => bloc.state.resetTimer);
-
     var timerFinished = context.select((TimerBloc bloc) => bloc.timerFinished);
 
-    if(resetTimer) {
-      context.read<TimerBloc>().add(TimerReset());
-    }
-
     debugPrint("Timer finished " + timerFinished.toString());
-    if(timerFinished) {
+
+    if (timerFinished) {
       context.read<PuzzleBloc>().add(TimeEnded(cats));
       BlocProvider.of<TimerBloc>(context).timerFinished = false;
     }
@@ -105,6 +100,10 @@ class PuzzleView extends StatelessWidget {
       context
           .read<PuzzleBloc>()
           .add(FillEmptyProducts(emptyProducts, updateCats, cats));
+    }
+
+    if (updateCats) {
+      context.read<TimerBloc>().add(const TimerReset());
     }
 
     final size = puzzle.getDimension();

@@ -55,7 +55,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         count: 1,
         matchingProducts: matchingProducts,
         cats: cats,
-        resetTimer: false,
       ),
     );
   }
@@ -100,7 +99,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: {},
         emptyProductsMoved: false,
         cats: cats,
-        resetTimer: false,
       ),
     );
   }
@@ -158,7 +156,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: {},
         emptyProductsMoved: false,
         cats: cats,
-        resetTimer: false,
       ),
     );
   }
@@ -204,14 +201,14 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     count = count + 1;
     emit(
       state.copyWith(
-          puzzle: puzzle,
-          count: count,
-          matchingProducts: [],
-          emptyProducts: emptyProducts,
-          emptyProductsMoved: false,
-          cats: cats,
-          updateCats: true,
-          resetTimer: true),
+        puzzle: puzzle,
+        count: count,
+        matchingProducts: [],
+        emptyProducts: emptyProducts,
+        emptyProductsMoved: false,
+        cats: cats,
+        updateCats: true,
+      ),
     );
   }
 
@@ -274,7 +271,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: emptyProducts,
         emptyProductsMoved: false,
         cats: cats,
-        resetTimer: false,
       ),
     );
   }
@@ -341,7 +337,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: emptyProductsUpdated,
         emptyProductsMoved: true,
         cats: cats,
-        resetTimer: false,
       ),
     );
   }
@@ -388,7 +383,6 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProductsMoved: false,
         cats: cats,
         updateCats: updateCats,
-        resetTimer: false,
       ),
     );
   }
