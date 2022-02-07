@@ -55,6 +55,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         count: 1,
         matchingProducts: matchingProducts,
         cats: cats,
+        gameFinished: false,
       ),
     );
   }
@@ -165,6 +166,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     List<Cat> cats = event.cats;
     Set<Product> emptyProducts = {};
+    bool gameFinished = false;
 
     for (Cat cat in cats) {
       Meal expected = cat.meal;
@@ -175,6 +177,12 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
       if (expected.meal != real.meal) {
         cat.livesCount = livesCount - 1;
+      } else {
+        cat.livesCount = 3;
+      }
+
+      if (cat.livesCount == 0) {
+        gameFinished = true;
       }
 
       cat.position = const BoardPosition(x: -1, y: -1);
@@ -197,6 +205,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     puzzle = Puzzle(products: productsList);
     this.cats = cats;
 
+    bool updateCats = gameFinished ? false : true;
+
     debugPrint("count $count");
     count = count + 1;
     emit(
@@ -207,7 +217,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         emptyProducts: emptyProducts,
         emptyProductsMoved: false,
         cats: cats,
-        updateCats: true,
+        updateCats: updateCats,
+        gameFinished: gameFinished,
       ),
     );
   }

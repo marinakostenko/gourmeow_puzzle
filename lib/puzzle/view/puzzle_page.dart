@@ -71,6 +71,25 @@ class PuzzleView extends StatelessWidget {
     var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
 
     var timerFinished = context.select((TimerBloc bloc) => bloc.timerFinished);
+    var gameFinished = context.select((PuzzleBloc bloc) => bloc.state.gameFinished);
+
+    if(gameFinished) {
+      return Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.lightBlue.withOpacity(0.5),
+        ),
+
+        child: const Text(
+          "Game over",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 32, color: Colors.white),
+        ),
+      );
+    }
+
 
     debugPrint("Timer finished " + timerFinished.toString());
 
