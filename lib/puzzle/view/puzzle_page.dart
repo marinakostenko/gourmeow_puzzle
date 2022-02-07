@@ -70,6 +70,19 @@ class PuzzleView extends StatelessWidget {
     var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
     var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
 
+    var resetTimer = context.select((PuzzleBloc bloc) => bloc.state.resetTimer);
+
+    var timerFinished = context.select((TimerBloc bloc) => bloc.timerFinished);
+
+    if(resetTimer) {
+      context.read<TimerBloc>().add(TimerReset());
+    }
+
+    debugPrint("Timer finished " + timerFinished.toString());
+    if(timerFinished) {
+      context.read<PuzzleBloc>().add(TimeEnded(cats));
+    }
+
     var productTable = puzzle.products;
     var products = <Widget>[];
 
@@ -96,7 +109,7 @@ class PuzzleView extends StatelessWidget {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
 
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -109,8 +122,8 @@ class PuzzleView extends StatelessWidget {
   Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.width,
-      width: MediaQuery.of(context).size.width / 1.1,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.height / 1.2,
       child: Column(
         children: [
           const Gap(10),
@@ -153,7 +166,7 @@ class PuzzleView extends StatelessWidget {
   }
 
   Widget catBuilder(BuildContext context, List<Cat> cats) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(

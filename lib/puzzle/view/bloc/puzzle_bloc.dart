@@ -54,7 +54,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         count: 1,
         matchingProducts: matchingProducts,
         cats: cats,
-       // resetTimer: true,
+        resetTimer: false,
       ),
     );
   }

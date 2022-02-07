@@ -5,11 +5,14 @@ import 'package:equatable/equatable.dart';
 import '../ticker.dart';
 
 part 'timer_event.dart';
+
 part 'timer_state.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker;
-  static const int _duration = 60;
+  static const int _duration = 10;
+
+  bool timerFinished = false;
 
   StreamSubscription<int>? _tickerSubscription;
 
@@ -17,8 +20,8 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       : _ticker = ticker,
         super(const TimerInitial(_duration)) {
     on<TimerStarted>(_onStarted);
-    on<TimerPaused>(_onPaused);
     on<TimerTicked>(_onTicked);
+    on<TimerReset>(_onReset);
   }
 
   @override
@@ -28,6 +31,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onStarted(TimerStarted event, Emitter<TimerState> emit) {
+    timerFinished = false;
     emit(TimerRunInProgress(event.duration));
     _tickerSubscription?.cancel();
     _tickerSubscription = _ticker
@@ -35,18 +39,19 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
         .listen((duration) => add(TimerTicked(duration: duration)));
   }
 
-  void _onPaused(TimerPaused event, Emitter<TimerState> emit) {
-    if (state is TimerRunInProgress) {
-      _tickerSubscription?.pause();
-      emit(TimerRunPause(state.duration));
-    }
-  }
-
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
+    if(event.duration == 0) {
+      timerFinished = true;
+    }
     emit(
       event.duration > 0
           ? TimerRunInProgress(event.duration)
           : TimerRunComplete(),
     );
+  }
+
+  void _onReset(TimerReset event, Emitter<TimerState> emit) {
+    _tickerSubscription?.cancel();
+    emit(TimerInitial(_duration));
   }
 }
