@@ -10,6 +10,7 @@ import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/models/puzzle.dart';
 import 'package:gourmeow_puzzle/puzzle/utils/data.dart';
+import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
 
 part 'puzzle_event.dart';
 

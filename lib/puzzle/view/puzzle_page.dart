@@ -81,6 +81,7 @@ class PuzzleView extends StatelessWidget {
     debugPrint("Timer finished " + timerFinished.toString());
     if(timerFinished) {
       context.read<PuzzleBloc>().add(TimeEnded(cats));
+      BlocProvider.of<TimerBloc>(context).timerFinished = false;
     }
 
     var productTable = puzzle.products;
