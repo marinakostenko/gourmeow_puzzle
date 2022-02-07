@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gourmeow_puzzle/puzzle/view/bloc/puzzle_bloc.dart';
+import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/puzzle/view/puzzle_page.dart';
 
 void main() {

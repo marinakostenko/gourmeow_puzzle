@@ -1,7 +1,7 @@
-import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
-import 'package:gourmeow_puzzle/puzzle/models/ingredient.dart';
-import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
-import 'package:gourmeow_puzzle/puzzle/utils/copyable.dart';
+import 'package:gourmeow_puzzle/models/board_position.dart';
+import 'package:gourmeow_puzzle/models/ingredient.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
+import 'package:gourmeow_puzzle/models/copyable.dart';
 
 import 'cat.dart';
 

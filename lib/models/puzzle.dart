@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:equatable/equatable.dart';
-import 'package:gourmeow_puzzle/puzzle/models/product.dart';
+import 'package:gourmeow_puzzle/models/product.dart';
 
 class Puzzle extends Equatable {
   final List<List<Product>> products;

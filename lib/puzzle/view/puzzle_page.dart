@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:gourmeow_puzzle/puzzle/models/cat.dart';
-import 'package:gourmeow_puzzle/puzzle/models/product.dart';
+import 'package:gourmeow_puzzle/models/cat.dart';
+import 'package:gourmeow_puzzle/models/product.dart';
+import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
 import 'package:gourmeow_puzzle/timer/ticker.dart';
 import 'package:gourmeow_puzzle/timer/timer_countdown.dart';
 
-import 'bloc/puzzle_bloc.dart';
 import 'drag_drop_widget.dart';
 
 class PuzzlePage extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:equatable/equatable.dart';
-import 'package:gourmeow_puzzle/puzzle/models/board_position.dart';
-import 'package:gourmeow_puzzle/puzzle/models/meal.dart';
+import 'package:gourmeow_puzzle/models/board_position.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
 
 class Cat {
   Color color;
