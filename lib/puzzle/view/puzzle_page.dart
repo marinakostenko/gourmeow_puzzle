@@ -71,25 +71,13 @@ class PuzzleView extends StatelessWidget {
     var updateCats = context.select((PuzzleBloc bloc) => bloc.state.updateCats);
 
     var timerFinished = context.select((TimerBloc bloc) => bloc.timerFinished);
-    var gameFinished = context.select((PuzzleBloc bloc) => bloc.state.gameFinished);
 
-    if(gameFinished) {
-      return Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.lightBlue.withOpacity(0.5),
-        ),
+    var gameFinished =
+        context.select((PuzzleBloc bloc) => bloc.state.gameFinished);
 
-        child: const Text(
-          "Game over",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 32, color: Colors.white),
-        ),
-      );
+    if (gameFinished) {
+      return _gameFinishOverlay(context);
     }
-
 
     debugPrint("Timer finished " + timerFinished.toString());
 
@@ -238,6 +226,58 @@ class PuzzleView extends StatelessWidget {
         ),
         const TimerCountdown(),
       ],
+    );
+  }
+
+  Widget _gameFinishOverlay(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.lightBlue.withOpacity(0.8),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.lightBlue.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            padding: EdgeInsets.all(10.0),
+            child: const Text(
+              "Game over",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 48, color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+              ).copyWith(
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.white.withOpacity(0.8)),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+              ),
+              onPressed: () {
+                context
+                    .read<PuzzleBloc>()
+                    .add(const PuzzleInitialized(true, 5));
+              },
+              child: const Text(
+                "Restart",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 32, color: Colors.indigo),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
