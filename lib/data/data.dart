@@ -51,68 +51,118 @@ class Data {
           position: const BoardPosition(x: -1, y: -1),
         ));
 
-    Product tuna = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.tuna));
-    Product bread = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.bread));
-    Product meat = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.meat));
-    Product salad = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.salad));
-    Product tomato = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.tomato));
-    Product bun = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.bun));
-    Product avocado = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.avocado));
-    Product croutons = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.croutons));
-    Product cheese = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.cheese));
-    Product onion = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.onion));
     Product rise = defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.rise));
     Product nori = defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.nori));
-    Product shrimps = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.shrimps));
     Product egg = defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.egg));
+    Product shrimps = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.shrimps));
+    Product salmon = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.salmon));
+    Product lettuce = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.lettuce));
+    Product mango = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.mango));
+    Product chicken = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.chicken));
+    Product noodles = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.noodles));
+    Product chilli = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.chilli));
+    Product shiitake = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.shiitake));
+    Product patty = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.patty));
+    Product bun = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.bun));
+    Product lobster = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.lobster));
+
+    Product butter = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.butter));
+    Product lemon = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.lemon));
+    Product flour = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.flour));
+    Product milk = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.milk));
+    Product meat = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.meat));
+    Product garlic = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.garlic));
+    Product wine = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.wine));
+    Product apple = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.apple));
+
+    Product zucchini = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.zucchini));
+
+    Product mussels = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.mussels));
+    Product eggplant = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.eggplant));
+    Product tomato = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.tomato));
 
     final defaultProducts = [
-      tuna,
-      bread,
-      meat,
-      salad,
-      tomato,
-      bun,
-      avocado,
-      croutons,
-      cheese,
-      onion,
+      rise,
       rise,
       nori,
+      egg,
+      egg,
+      egg,
       shrimps,
-      egg
+      shrimps,
+      salmon,
+      salmon,
+      lettuce,
+      lettuce,
+      mango,
+      chicken,
+      chicken,
+      noodles,
+      noodles,
+      chilli,
+      shiitake,
+      patty,
+      bun,
+      lobster,
+      butter,
+      butter,
+      butter,
+      lemon,
+      lemon,
+      flour,
+      flour,
+      flour,
+      flour,
+      milk,
+      meat,
+      garlic,
+      garlic,
+      wine,
+      wine,
+      apple,
+      zucchini,
+      zucchini,
+      mussels,
+      eggplant,
+      tomato,
     ];
 
     List<List<Product>> productsTable = [];
 
-    int defaultCount = 0;
+    var _random = Random();
 
     for (int j = 1; j <= size; j++) {
       var products = <Product>[];
       for (int i = 1; i <= size; i++) {
-        if (defaultCount < defaultProducts.length) {
-          Product product = defaultProducts[defaultCount].copyWith();
-          products.add(product);
-          defaultCount++;
-        }
-
-        if (defaultCount == defaultProducts.length) {
-          defaultCount = 0;
-        }
+        int rand = _random.nextInt(defaultProducts.length - 1);
+        Product product = defaultProducts[rand].copyWith();
+        products.add(product);
       }
 
       productsTable.add(products);
@@ -164,39 +214,79 @@ class Data {
 
   Map<Set<Ingredient>, Meal> mealIngredients = {
     <Ingredient>{
-      const Ingredient(ingredient: Ingredients.salad),
-      const Ingredient(ingredient: Ingredients.onion),
-      const Ingredient(ingredient: Ingredients.tuna)
-    }: const Meal(meal: Meals.tunaSalad),
-    <Ingredient>{
-      const Ingredient(ingredient: Ingredients.salad),
-      const Ingredient(ingredient: Ingredients.tomato),
-      const Ingredient(ingredient: Ingredients.avocado)
-    }: const Meal(meal: Meals.vegetableSalad),
-    <Ingredient>{
-      const Ingredient(ingredient: Ingredients.bread),
-      const Ingredient(ingredient: Ingredients.tomato),
-      const Ingredient(ingredient: Ingredients.cheese)
-    }: const Meal(meal: Meals.sandwich),
-    <Ingredient>{
-      const Ingredient(ingredient: Ingredients.bun),
-      const Ingredient(ingredient: Ingredients.salad),
-      const Ingredient(ingredient: Ingredients.meat)
-    }: const Meal(meal: Meals.burger),
-    <Ingredient>{
-      const Ingredient(ingredient: Ingredients.croutons),
-      const Ingredient(ingredient: Ingredients.salad),
-      const Ingredient(ingredient: Ingredients.meat)
-    }: const Meal(meal: Meals.cesar),
-    <Ingredient>{
       const Ingredient(ingredient: Ingredients.egg),
       const Ingredient(ingredient: Ingredients.rise),
       const Ingredient(ingredient: Ingredients.shrimps)
     }: const Meal(meal: Meals.eggRise),
     <Ingredient>{
-      const Ingredient(ingredient: Ingredients.tuna),
+      const Ingredient(ingredient: Ingredients.salmon),
       const Ingredient(ingredient: Ingredients.rise),
       const Ingredient(ingredient: Ingredients.nori)
-    }: const Meal(meal: Meals.tunaRoll),
+    }: const Meal(meal: Meals.sushi),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.mango),
+      const Ingredient(ingredient: Ingredients.lettuce),
+      const Ingredient(ingredient: Ingredients.shrimps)
+    }: const Meal(meal: Meals.mangoSalad),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.chicken),
+      const Ingredient(ingredient: Ingredients.noodles),
+      const Ingredient(ingredient: Ingredients.chilli)
+    }: const Meal(meal: Meals.pho),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.shiitake),
+      const Ingredient(ingredient: Ingredients.noodles),
+      const Ingredient(ingredient: Ingredients.chicken)
+    }: const Meal(meal: Meals.friedNoodles),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.patty),
+      const Ingredient(ingredient: Ingredients.lettuce),
+      const Ingredient(ingredient: Ingredients.bun)
+    }: const Meal(meal: Meals.burger),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.lobster),
+      const Ingredient(ingredient: Ingredients.lemon),
+      const Ingredient(ingredient: Ingredients.butter)
+    }: const Meal(meal: Meals.lobsterTail),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.flour),
+      const Ingredient(ingredient: Ingredients.milk),
+      const Ingredient(ingredient: Ingredients.egg)
+    }: const Meal(meal: Meals.pancakes),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.meat),
+      const Ingredient(ingredient: Ingredients.wine),
+      const Ingredient(ingredient: Ingredients.garlic)
+    }: const Meal(meal: Meals.steak),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.flour),
+      const Ingredient(ingredient: Ingredients.apple),
+      const Ingredient(ingredient: Ingredients.butter)
+    }: const Meal(meal: Meals.applePie),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.flour),
+      const Ingredient(ingredient: Ingredients.butter),
+      const Ingredient(ingredient: Ingredients.egg)
+    }: const Meal(meal: Meals.croissant),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.salmon),
+      const Ingredient(ingredient: Ingredients.lemon),
+      const Ingredient(ingredient: Ingredients.zucchini)
+    }: const Meal(meal: Meals.bakedSalmon),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.mussels),
+      const Ingredient(ingredient: Ingredients.wine),
+      const Ingredient(ingredient: Ingredients.garlic)
+    }: const Meal(meal: Meals.moules),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.zucchini),
+      const Ingredient(ingredient: Ingredients.eggplant),
+      const Ingredient(ingredient: Ingredients.tomato)
+    }: const Meal(meal: Meals.ratatouille),
+    <Ingredient>{
+      const Ingredient(ingredient: Ingredients.chicken),
+      const Ingredient(ingredient: Ingredients.butter),
+      const Ingredient(ingredient: Ingredients.apple)
+    }: const Meal(meal: Meals.chickenInSider),
   };
 }

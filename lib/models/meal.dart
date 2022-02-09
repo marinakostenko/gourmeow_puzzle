@@ -11,13 +11,24 @@ class Meal extends Equatable {
 
 enum Meals {
   none,
-  sandwich,
-  burger,
-  tunaSalad,
-  vegetableSalad,
-  cesar,
+
   eggRise,
-  tunaRoll,
+  sushi,
+  mangoSalad,
+  pho,
+  friedNoodles,
+
+  burger,
+  lobsterTail,
+  pancakes,
+  steak,
+  applePie,
+
+  croissant,
+  bakedSalmon,
+  moules,
+  ratatouille,
+  chickenInSider,
 }
 
 enum Cuisine {
@@ -31,11 +42,11 @@ extension CuisineExt on Cuisine {
   static List<Meals> getMealsByCuisine(Cuisine cuisine) {
     switch (cuisine) {
       case Cuisine.american:
-        return [Meals.sandwich, Meals.burger, Meals.tunaSalad];
+        return [Meals.burger, Meals.lobsterTail, Meals.pancakes, Meals.steak, Meals.applePie];
       case Cuisine.asian:
-        return [Meals.eggRise, Meals.tunaRoll];
+        return [Meals.eggRise, Meals.sushi, Meals.mangoSalad, Meals.pho, Meals.friedNoodles];
       case Cuisine.french:
-        return [Meals.cesar, Meals.vegetableSalad];
+        return [Meals.croissant, Meals.bakedSalmon, Meals.moules, Meals.ratatouille, Meals.chickenInSider];
       default:
         return [];
     }
