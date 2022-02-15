@@ -12,24 +12,6 @@ class Ingredient extends Equatable {
   List<Object?> get props => [ingredient];
 }
 
-// enum Ingredients {
-//   none,
-//   tuna,
-//   tomato,
-//   meat,
-//   salad,
-//   bread,
-//   avocado,
-//   bun,
-//   croutons,
-//   cheese,
-//   onion,
-//   rise,
-//   nori,
-//   egg,
-//   shrimps
-// }
-
 enum Ingredients {
   none,
 
