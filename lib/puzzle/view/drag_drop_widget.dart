@@ -49,22 +49,24 @@ class DragDrop extends StatelessWidget {
 
   Widget _productCard(Product product, Color textColor) {
     String productName = product.ingredient.ingredient.name;
+    AssetImage image = product.ingredient.ingredient.ingredientImage;
 
     if(product.meal.meal != Meals.none) {
       productName = product.meal.meal.name;
+      image = product.meal.meal.mealImage;
     }
 
     Color backgroundColor = (product.cat.color != Colors.white)
         ? product.cat.color
-        : Colors.black12;
-    Color borderColor = (product.isSelected) ? Colors.yellow : Colors.black12;
+        : Colors.transparent;
+    Color borderColor = (product.isSelected) ? Colors.yellow : Colors.transparent;
 
     if(product.ingredient.ingredient == Ingredients.none && product.meal.meal == Meals.none) {
       productName = "";
       backgroundColor = (product.cat.color != Colors.white)
           ? product.cat.color
           : Colors.white;
-      borderColor = Colors.white;
+      borderColor = Colors.transparent;
     }
 
     return Container(
@@ -72,13 +74,14 @@ class DragDrop extends StatelessWidget {
       height: 20,
       width: 20,
       decoration: BoxDecoration(
+          image: DecorationImage(
+            image: image,
+            alignment: Alignment.center,
+            repeat: ImageRepeat.noRepeat,
+          ),
           color: backgroundColor,
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(width: 2, color: borderColor)),
-      child: Text(
-        productName,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 12, color: textColor),
+          border: Border.all(width: 2, color: borderColor),
       ),
     );
   }
