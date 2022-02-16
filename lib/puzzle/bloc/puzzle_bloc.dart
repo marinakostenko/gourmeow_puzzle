@@ -364,7 +364,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       int y = product.position.y - 1;
 
       productsList[y][x].ingredient =
-          Ingredient(ingredient: IngredientsExt.generateRandomIngredient());
+          Ingredient(ingredient: IngredientsExt.generateRandomIngredient(), );
     }
 
     var matchingProducts = _checkBoardOnMealsExistence();

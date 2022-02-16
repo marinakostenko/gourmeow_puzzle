@@ -38,7 +38,7 @@ class Data {
 
   List<List<Product>> defaultProductsList(int size) {
     Product defaultProduct = Product(
-        ingredient: const Ingredient(ingredient: Ingredients.rise),
+        ingredient: const Ingredient(ingredient: Ingredients.rice),
         meal: const Meal(meal: Meals.none),
         position: const BoardPosition(x: -1, y: -1),
         isSelected: false,
@@ -51,8 +51,8 @@ class Data {
           position: const BoardPosition(x: -1, y: -1),
         ));
 
-    Product rise = defaultProduct.copyWith(
-        ingredient: const Ingredient(ingredient: Ingredients.rise));
+    Product rice = defaultProduct.copyWith(
+        ingredient: const Ingredient(ingredient: Ingredients.rice));
     Product nori = defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.nori));
     Product egg = defaultProduct.copyWith(
@@ -108,8 +108,8 @@ class Data {
         ingredient: const Ingredient(ingredient: Ingredients.tomato));
 
     final defaultProducts = [
-      rise,
-      rise,
+      rice,
+      rice,
       nori,
       egg,
       egg,
@@ -215,12 +215,12 @@ class Data {
   Map<Set<Ingredient>, Meal> mealIngredients = {
     <Ingredient>{
       const Ingredient(ingredient: Ingredients.egg),
-      const Ingredient(ingredient: Ingredients.rise),
+      const Ingredient(ingredient: Ingredients.rice),
       const Ingredient(ingredient: Ingredients.shrimps)
-    }: const Meal(meal: Meals.eggRise),
+    }: const Meal(meal: Meals.eggRice),
     <Ingredient>{
       const Ingredient(ingredient: Ingredients.salmon),
-      const Ingredient(ingredient: Ingredients.rise),
+      const Ingredient(ingredient: Ingredients.rice),
       const Ingredient(ingredient: Ingredients.nori)
     }: const Meal(meal: Meals.sushi),
     <Ingredient>{
@@ -287,6 +287,6 @@ class Data {
       const Ingredient(ingredient: Ingredients.chicken),
       const Ingredient(ingredient: Ingredients.butter),
       const Ingredient(ingredient: Ingredients.apple)
-    }: const Meal(meal: Meals.chickenInSider),
+    }: const Meal(meal: Meals.chickenInCider),
   };
 }
