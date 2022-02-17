@@ -58,14 +58,14 @@ class DragDrop extends StatelessWidget {
 
     Color backgroundColor = (product.cat.color != Colors.white)
         ? product.cat.color
-        : Colors.transparent;
+        : Colors.blueGrey;
     Color borderColor = (product.isSelected) ? Colors.yellow : Colors.transparent;
 
     if(product.ingredient.ingredient == Ingredients.none && product.meal.meal == Meals.none) {
       productName = "";
       backgroundColor = (product.cat.color != Colors.white)
           ? product.cat.color
-          : Colors.white;
+          : Colors.transparent;
       borderColor = Colors.transparent;
     }
 

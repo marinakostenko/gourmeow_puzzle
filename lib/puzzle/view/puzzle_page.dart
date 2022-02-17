@@ -26,6 +26,7 @@ class PuzzleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 530),
         child: MultiBlocProvider(
