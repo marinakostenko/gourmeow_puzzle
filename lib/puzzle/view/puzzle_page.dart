@@ -34,7 +34,7 @@ class PuzzleView extends StatelessWidget {
             BlocProvider(
               create: (context) => PuzzleBloc()
                 ..add(
-                  const PuzzleInitialized(true, 5),
+                  const PuzzleInitialized(true, 6),
                 ),
             ),
             BlocProvider(
@@ -121,7 +121,7 @@ class PuzzleView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        boardBuilder(context, 5, products),
+        boardBuilder(context, 6, products),
         catBuilder(context, cats),
       ],
     );
@@ -268,7 +268,7 @@ class PuzzleView extends StatelessWidget {
               onPressed: () {
                 context
                     .read<PuzzleBloc>()
-                    .add(const PuzzleInitialized(true, 5));
+                    .add(const PuzzleInitialized(true, 6));
               },
               child: const Text(
                 "Restart",

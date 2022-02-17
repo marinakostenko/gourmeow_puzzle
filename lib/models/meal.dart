@@ -67,7 +67,7 @@ extension MealsExt on Meals {
       case Meals.ratatouille:
         return const AssetImage('assets/images/meals/ratatouille.png');
       case Meals.chickenInCider:
-        return const AssetImage('assets/images/meals/chicken_in_cider.png');
+        return const AssetImage('assets/images/meals/chicken_in_сider.png');
       default:
         return const AssetImage('assets/images/default.png');
     }

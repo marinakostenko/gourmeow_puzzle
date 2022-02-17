@@ -418,7 +418,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         int xCount = 0;
         int yCount = 0;
 
-        if (variable < 3) {
+        if (variable < 4) {
           Set<Product> products = {};
           while (xCount < 3 && yCount < 3) {
             Product product = productsList[y + yCount][x + xCount];
