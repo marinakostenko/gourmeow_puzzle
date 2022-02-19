@@ -6,6 +6,7 @@ import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
+import 'package:gourmeow_puzzle/models/recipe.dart';
 
 class Data {
   List<List<Product>> shuffleProducts(
@@ -289,4 +290,19 @@ class Data {
       const Ingredient(ingredient: Ingredients.apple)
     }: const Meal(meal: Meals.chickenInCider),
   };
+
+  List<Recipe> recipesList() {
+    List<Recipe> recipes = [];
+
+    mealIngredients.forEach((key, value) {
+      List<AssetImage> ingredientImages = [];
+      for (var element in key) {
+        ingredientImages.add(element.ingredient.ingredientImage);
+      }
+      Recipe recipe = Recipe(meal: value.meal, mealImage: value.meal.mealImage, ingredientsImages: ingredientImages);
+      recipes.add(recipe);
+    });
+
+    return recipes;
+  }
 }

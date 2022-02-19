@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:equatable/equatable.dart';
 import 'package:gourmeow_puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 

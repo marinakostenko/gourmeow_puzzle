@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
+import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
 import 'package:gourmeow_puzzle/timer/ticker.dart';
 import 'package:gourmeow_puzzle/timer/timer_countdown.dart';
@@ -26,6 +27,12 @@ class PuzzleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        actions: const [
+          Recipes(isMobile: false),
+        ],
+      ),
       backgroundColor: Colors.black,
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 530),
