@@ -254,9 +254,9 @@ class Data {
     //6 and 9 should always starts from same x
 
     Map<int, BoardPosition> startPositions = {
-      6 : BoardPosition(x: -1, y: -1),
-      9 : BoardPosition(x: -1, y: -1),
-      10 : BoardPosition(x: -1, y: -1),
+      6: BoardPosition(x: -1, y: -1),
+      9: BoardPosition(x: -1, y: -1),
+      10: BoardPosition(x: -1, y: -1),
     };
 
     List<BoardPosition> corners = [
@@ -269,57 +269,80 @@ class Data {
     //assign meals for each cat from meals list
     for (Cat cat in cats) {
       var meals = CuisineExt.getMealsByCuisine(cat.cuisine);
+      var tmp = meals;
       int? count = catsMap[cat];
 
-      debugPrint("Count ${count} / to 3 ${count!~/3}");
-
       for (int i = 0; i < count! ~/ 3; i++) {
-        int index = _random.nextInt(meals.length);
-        debugPrint("Index ${meals.elementAt(index)}");
-        cat.meals.add(Meal(meal: meals.elementAt(index)));
-        meals.removeAt(index);
+        int index = _random.nextInt(tmp.length);
+        debugPrint("Index ${tmp.elementAt(index)}");
+        cat.meals.add(Meal(meal: tmp.elementAt(index)));
+        tmp.removeAt(index);
       }
 
+      debugPrint("meals length ${meals.length}");
+      debugPrint("Count ${count}");
       List<BoardPosition> positions = [];
 
-      if(count == 6) {
+      debugPrint("Corners ${corners.toString()}");
+      debugPrint("Start Positions ${startPositions.toString()}");
+
+      if (count == 6) {
         int? nineX = startPositions[9]?.x;
-        if(nineX == -1) {
+        debugPrint("Start position of 9 ${nineX}");
+        if (nineX == -1) {
           int cornerIndex = _random.nextInt(corners.length);
           positions = generatePatterns(
               corners[cornerIndex].x, corners[cornerIndex].y, count);
+
+          startPositions[6] = corners[cornerIndex];
           corners.removeAt(cornerIndex);
         } else {
-          BoardPosition position = corners.firstWhere((position) => position.x == nineX);
-          positions = generatePatterns(
-              position.x, position.y, count);
-          corners.remove(position);
+          BoardPosition position =
+              corners.firstWhere((position) => position.x == nineX);
+          positions = generatePatterns(position.x, position.y, count);
+
+          int cornerIndex = corners.indexOf(position);
+          startPositions[6] = corners[cornerIndex];
+          corners.removeAt(cornerIndex);
         }
       } else if (count == 9) {
         int? sixX = startPositions[6]?.x;
-        if(sixX == -1) {
+        debugPrint("Start position of 6 ${sixX}");
+
+        if (sixX == -1) {
           int cornerIndex = _random.nextInt(corners.length);
           positions = generatePatterns(
               corners[cornerIndex].x, corners[cornerIndex].y, count);
+          startPositions[9] = corners[cornerIndex];
           corners.removeAt(cornerIndex);
         } else {
-          BoardPosition position = corners.firstWhere((position) => position.x == sixX);
-          positions = generatePatterns(
-              position.x, position.y, count);
-          corners.remove(position);
+          BoardPosition position =
+              corners.firstWhere((position) => position.x == sixX);
+          positions = generatePatterns(position.x, position.y, count);
+
+          int cornerIndex = corners.indexOf(position);
+          startPositions[9] = corners[cornerIndex];
+          corners.removeAt(cornerIndex);
         }
       } else {
         int cornerIndex = _random.nextInt(corners.length);
-        positions = generatePatterns(
-            corners[cornerIndex].x, corners[cornerIndex].y, count);
+        int cornerX = corners[cornerIndex].x;
+        int cornerY = corners[cornerIndex].y;
+        positions = generatePatterns(cornerX, cornerY, count);
+        startPositions[10] = corners[cornerIndex];
         corners.removeAt(cornerIndex);
+
+        BoardPosition sameXPosition =
+            corners.firstWhere((position) => position.x == cornerX);
+        int sameXIndex = corners.indexOf(sameXPosition);
+        corners.removeAt(sameXIndex);
       }
 
       List<Ingredient> ingredients = [];
 
-      for (Meals meal in meals) {
+      for (Meal meal in cat.meals) {
         for (var entry in mealIngredients.entries) {
-          if (entry.value.meal == meal) {
+          if (entry.value.meal == meal.meal) {
             ingredients.addAll(entry.key);
             break;
           }
@@ -340,10 +363,12 @@ class Data {
             position: BoardPosition(x: x, y: y),
             cat: cat,
           );
-          debugPrint("Ingredients length ${ingredients.length} index $index ingredient ${ingredients[index].ingredient}");
+          debugPrint(
+              "Ingredients length ${ingredients.length} index $index ingredient ${ingredients[index].ingredient}");
           index++;
         } else {
-          debugPrint("Ingredients length ${ingredients.length} index $index ingredient none");
+          debugPrint(
+              "Ingredients length ${ingredients.length} index $index ingredient none");
           products[y - 1][x - 1] = defaultProduct.copyWith();
         }
       }
