@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
+import 'package:gourmeow_puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
@@ -58,20 +59,7 @@ class SlidePuzzleView extends StatelessWidget {
   }
 
   Widget buildPuzzle(BuildContext context) {
-    final state = context.select((PuzzleBloc bloc) => bloc.state.count);
-    debugPrint("state count $state");
-
-    var puzzle = context.select((PuzzleBloc bloc) => bloc.state.puzzle);
-
-    var cats = context.select((PuzzleBloc bloc) => bloc.state.cats);
-
-    var gameFinished =
-    context.select((PuzzleBloc bloc) => bloc.state.gameFinished);
-
-    if (gameFinished) {
-      return _gameFinishOverlay(context);
-    }
-
+    var puzzle = context.select((SlidePuzzleBloc bloc) => bloc.state.puzzle);
     var productTable = puzzle.products;
     var products = <Widget>[];
 
@@ -88,8 +76,7 @@ class SlidePuzzleView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        boardBuilder(context, 6, products),
-        catBuilder(context, cats),
+        boardBuilder(context, 5, products),
       ],
     );
   }
@@ -97,7 +84,7 @@ class SlidePuzzleView extends StatelessWidget {
   Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height * 1.5,
       width: MediaQuery.of(context).size.height / 1.2,
       child: Column(
         children: [
@@ -120,132 +107,41 @@ class SlidePuzzleView extends StatelessWidget {
   }
 
   Widget itemBuilder(BuildContext context, Product product) {
-    void _onDragStart(Product product) async {
-      context.read<PuzzleBloc>().add(ProductDragged(product));
+    AssetImage image = product.ingredient.ingredient.ingredientImage;
+
+    Color backgroundColor = (product.cat.color != Colors.white)
+        ? product.cat.color
+        : Colors.white;
+    Color borderColor = (product.isSelected) ? Colors.yellow : Colors.transparent;
+
+    if(product.ingredient.ingredient == Ingredients.none) {
+      backgroundColor = (product.cat.color != Colors.white)
+          ? product.cat.color
+          : Colors.transparent;
+      borderColor = Colors.transparent;
     }
 
-    void _onDragEnd(Product product) {}
-
-    void _onDragAccept(Product dropProduct, Product dragProduct) {
-      debugPrint(
-          "drag accepted called - drag ${dragProduct.ingredient.ingredient.name} - drop ${dropProduct.ingredient.ingredient.name}");
-      context.read<PuzzleBloc>().add(ProductDropped(dragProduct, dropProduct));
-    }
-
-    return DragDrop(
-      product: product,
-      onDragStart: _onDragStart,
-      onDragEnd: _onDragEnd,
-      onDragAccept: _onDragAccept,
-    );
-  }
-
-  Widget catBuilder(BuildContext context, List<Cat> cats) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
-          width: 200,
-          child: ListView(
-            // scrollDirection: Axis.horizontal,
-            children: List.generate(cats.length, (index) {
-              Cat cat = cats.elementAt(index);
-
-              return Container(
-                margin: const EdgeInsets.all(10),
-                alignment: Alignment.center,
-                height: 100,
-                width: 200,
-                decoration: BoxDecoration(
-                  color: cat.color,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  cat.meal.meal.name + "\n" + cat.livesCount.toString(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                ),
-              );
-            }),
+    return TextButton(
+      onPressed: () {
+        context.read<SlidePuzzleBloc>().add(ProductTapped(product));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        alignment: Alignment.center,
+        height: 80,
+        width: 80,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: image,
+            alignment: Alignment.center,
+            repeat: ImageRepeat.noRepeat,
           ),
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(width: 2, color: borderColor),
         ),
-        Container(
-          width: 100,
-          height: 100,
-          margin: const EdgeInsets.all(10),
-          padding: const EdgeInsets.all(8.0),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.indigo,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
-                ),
-              ),
-            ),
-            onPressed: () => context.read<PuzzleBloc>().add(TimeEnded(cats)),
-            child: const Text(
-              "READY",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
-          ),
-        ),
-        const TimerCountdown(),
-      ],
-    );
-  }
+      ),
 
-  Widget _gameFinishOverlay(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.lightBlue.withOpacity(0.8),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.lightBlue.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            padding: EdgeInsets.all(10.0),
-            child: const Text(
-              "Game over",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 48, color: Colors.white),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(20),
-              ).copyWith(
-                backgroundColor:
-                MaterialStateProperty.all(Colors.white.withOpacity(0.8)),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-              ),
-              onPressed: () {
-                context
-                    .read<PuzzleBloc>()
-                    .add(const PuzzleInitialized(true, 6));
-              },
-              child: const Text(
-                "Restart",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 32, color: Colors.indigo),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

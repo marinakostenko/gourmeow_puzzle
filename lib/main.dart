@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/puzzle/view/puzzle_page.dart';
+import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,7 +42,13 @@ class MainPage extends StatelessWidget {
           height: 200,
           margin: EdgeInsets.all(30),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+                Navigator.of(context).push<void>(
+                  MaterialPageRoute(
+                    builder: (context) => const SlidePuzzlePage(),
+                  ),
+                );
+            },
             child: const Text(
               "Slide endless_puzzle mode",
               style: TextStyle(fontSize: 32),

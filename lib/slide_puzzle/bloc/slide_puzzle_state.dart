@@ -11,7 +11,6 @@ class SlidePuzzleState extends Equatable {
     this.tileMovementStatus = TileMovementStatus.nothingTapped,
     this.numberOfCorrectTiles = 0,
     this.numberOfMoves = 0,
-    this.lastTappedTile,
   });
 
   final Puzzle puzzle;
@@ -20,7 +19,6 @@ class SlidePuzzleState extends Equatable {
 
   final TileMovementStatus tileMovementStatus;
 
-  final Tile? lastTappedTile;
 
   final int numberOfCorrectTiles;
 
@@ -34,7 +32,6 @@ class SlidePuzzleState extends Equatable {
     TileMovementStatus? tileMovementStatus,
     int? numberOfCorrectTiles,
     int? numberOfMoves,
-    Tile? lastTappedTile,
   }) {
     return SlidePuzzleState(
       puzzle: puzzle ?? this.puzzle,
@@ -42,7 +39,6 @@ class SlidePuzzleState extends Equatable {
       tileMovementStatus: tileMovementStatus ?? this.tileMovementStatus,
       numberOfCorrectTiles: numberOfCorrectTiles ?? this.numberOfCorrectTiles,
       numberOfMoves: numberOfMoves ?? this.numberOfMoves,
-      lastTappedTile: lastTappedTile ?? this.lastTappedTile,
     );
   }
 
@@ -53,6 +49,5 @@ class SlidePuzzleState extends Equatable {
     tileMovementStatus,
     numberOfCorrectTiles,
     numberOfMoves,
-    lastTappedTile,
   ];
 }
