@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -250,6 +251,11 @@ class Data {
       nums.removeAt(index);
     }
 
+    var sortedKeys = catsMap.keys.toList(growable: false)
+      ..sort((k1, k2) => catsMap[k1]!.compareTo(catsMap[k2]!));
+    Map<Cat, int> sortedCatsMap = LinkedHashMap.fromIterable(sortedKeys,
+        key: (k) => k, value: (k) => catsMap[k]!);
+
     //create board
     //6 and 9 should always starts from same x
 
@@ -267,14 +273,15 @@ class Data {
     ];
 
     //assign meals for each cat from meals list
-    for (Cat cat in cats) {
+    for (var entry in sortedCatsMap.entries) {
+      Cat cat = entry.key;
+      int? count = entry.value;
+
       var meals = CuisineExt.getMealsByCuisine(cat.cuisine);
       var tmp = meals;
-      int? count = catsMap[cat];
 
-      for (int i = 0; i < count! ~/ 3; i++) {
+      for (int i = 0; i < count ~/ 3; i++) {
         int index = _random.nextInt(tmp.length);
-        debugPrint("Index ${tmp.elementAt(index)}");
         cat.meals.add(Meal(meal: tmp.elementAt(index)));
         tmp.removeAt(index);
       }
@@ -283,8 +290,6 @@ class Data {
       debugPrint("Count ${count}");
       List<BoardPosition> positions = [];
 
-      debugPrint("Corners ${corners.toString()}");
-      debugPrint("Start Positions ${startPositions.toString()}");
 
       if (count == 6) {
         int? nineX = startPositions[9]?.x;
@@ -301,11 +306,12 @@ class Data {
               corners.firstWhere((position) => position.x == nineX);
           positions = generatePatterns(position.x, position.y, count);
 
-          int cornerIndex = corners.indexOf(position);
-          startPositions[6] = corners[cornerIndex];
-          corners.removeAt(cornerIndex);
+          startPositions[6] = position;
+          corners.remove(position);
         }
-      } else if (count == 9) {
+      }
+
+      if (count == 9) {
         int? sixX = startPositions[6]?.x;
         debugPrint("Start position of 6 ${sixX}");
 
@@ -320,11 +326,12 @@ class Data {
               corners.firstWhere((position) => position.x == sixX);
           positions = generatePatterns(position.x, position.y, count);
 
-          int cornerIndex = corners.indexOf(position);
-          startPositions[9] = corners[cornerIndex];
-          corners.removeAt(cornerIndex);
+          startPositions[9] = position;
+          corners.remove(position);
         }
-      } else {
+      }
+
+      if (count == 10) {
         int cornerIndex = _random.nextInt(corners.length);
         int cornerX = corners[cornerIndex].x;
         int cornerY = corners[cornerIndex].y;
@@ -334,8 +341,7 @@ class Data {
 
         BoardPosition sameXPosition =
             corners.firstWhere((position) => position.x == cornerX);
-        int sameXIndex = corners.indexOf(sameXPosition);
-        corners.removeAt(sameXIndex);
+        corners.remove(sameXPosition);
       }
 
       List<Ingredient> ingredients = [];
@@ -355,21 +361,15 @@ class Data {
         int x = position.x;
         int y = position.y;
 
-        debugPrint("Position x ${x} position y ${y}");
-
         if (index < ingredients.length) {
           products[y - 1][x - 1] = defaultProduct.copyWith(
             ingredient: ingredients[index],
             position: BoardPosition(x: x, y: y),
             cat: cat,
           );
-          debugPrint(
-              "Ingredients length ${ingredients.length} index $index ingredient ${ingredients[index].ingredient}");
           index++;
         } else {
-          debugPrint(
-              "Ingredients length ${ingredients.length} index $index ingredient none");
-          products[y - 1][x - 1] = defaultProduct.copyWith();
+          products[y - 1][x - 1] = defaultProduct.copyWith(position: BoardPosition(x: x, y: y));
         }
       }
     }

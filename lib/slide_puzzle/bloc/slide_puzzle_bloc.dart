@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:gourmeow_puzzle/data/data.dart';
 import 'package:gourmeow_puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
@@ -27,8 +28,9 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
       Emitter<SlidePuzzleState> emit,
       ) {
 
-    final list = Data().generateSolvableProductsList(5);
-    Puzzle puzzle = Puzzle(products: list);
+    productsList = Data().generateSolvableProductsList(5);
+
+    Puzzle puzzle = Puzzle(products: productsList);
 
     emit(
       SlidePuzzleState(
@@ -39,8 +41,10 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
   }
 
   void _onProductTapped(ProductTapped event, Emitter<SlidePuzzleState> emit) {
+    debugPrint("Product tapped");
     final tappedProduct = event.product;
     if (state.puzzleStatus == PuzzleStatus.incomplete) {
+      debugPrint("Tile is movable ${state.puzzle.isTileMovable(tappedProduct)}");
       if (state.puzzle.isTileMovable(tappedProduct)) {
         Product whiteSpaceProduct = state.puzzle.getWhitespaceTile();
         BoardPosition whiteSpaceProductPosition = whiteSpaceProduct.position;
@@ -56,6 +60,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         whiteSpaceProduct.cat = tappedProductCat;
         productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1] = whiteSpaceProduct;
 
+        debugPrint("${productsList[whiteSpaceProductPosition.y - 1][whiteSpaceProductPosition.x - 1].ingredient} and "
+            "${productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1].ingredient}");
         puzzle = Puzzle(products: productsList);
         if (puzzle.isComplete()) {
           emit(

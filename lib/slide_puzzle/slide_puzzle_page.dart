@@ -8,7 +8,6 @@ import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
-import 'package:gourmeow_puzzle/timer/timer_countdown.dart';
 
 class SlidePuzzlePage extends StatelessWidget {
   const SlidePuzzlePage({Key? key}) : super(key: key);
@@ -39,7 +38,7 @@ class SlidePuzzleView extends StatelessWidget {
             BlocProvider(
               create: (context) => SlidePuzzleBloc()
                 ..add(
-                  const SlidePuzzleInitialized(shufflePuzzle: true, size: 6),
+                  const SlidePuzzleInitialized(shufflePuzzle: true, size: 5),
                 ),
             ),
           ],
@@ -60,6 +59,9 @@ class SlidePuzzleView extends StatelessWidget {
 
   Widget buildPuzzle(BuildContext context) {
     var puzzle = context.select((SlidePuzzleBloc bloc) => bloc.state.puzzle);
+    var count = context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfMoves);
+    debugPrint("Numer of moves count $count");
+
     var productTable = puzzle.products;
     var products = <Widget>[];
 
@@ -84,8 +86,8 @@ class SlidePuzzleView extends StatelessWidget {
   Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height * 1.5,
-      width: MediaQuery.of(context).size.height / 1.2,
+      height: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: [
           const Gap(10),
