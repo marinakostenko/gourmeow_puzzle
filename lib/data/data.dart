@@ -108,23 +108,16 @@ class Data {
     Product tomato = defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.tomato));
 
+    final Map<Ingredients, int> defaultProductsMap = {};
     final defaultProducts = [
-      rice,
       rice,
       nori,
       egg,
-      egg,
-      egg,
-      shrimps,
       shrimps,
       salmon,
-      salmon,
-      lettuce,
       lettuce,
       mango,
       chicken,
-      chicken,
-      noodles,
       noodles,
       chilli,
       shiitake,
@@ -132,27 +125,22 @@ class Data {
       bun,
       lobster,
       butter,
-      butter,
-      butter,
       lemon,
-      lemon,
-      flour,
-      flour,
-      flour,
       flour,
       milk,
       meat,
       garlic,
-      garlic,
-      wine,
       wine,
       apple,
-      zucchini,
       zucchini,
       mussels,
       eggplant,
       tomato,
     ];
+
+    for (var product in defaultProducts) {
+      defaultProductsMap.putIfAbsent(product.ingredient.ingredient, () => 2);
+    }
 
     List<List<Product>> productsTable = [];
 
@@ -161,9 +149,18 @@ class Data {
     for (int j = 1; j <= size; j++) {
       var products = <Product>[];
       for (int i = 1; i <= size; i++) {
-        int rand = _random.nextInt(defaultProducts.length - 1);
-        Product product = defaultProducts[rand].copyWith();
-        products.add(product);
+        while(true) {
+          int rand = _random.nextInt(defaultProducts.length - 1);
+          Product product = defaultProducts[rand].copyWith();
+
+          int count = defaultProductsMap[product.ingredient.ingredient]!;
+          if(count > 0) {
+            products.add(product);
+            defaultProductsMap[product.ingredient.ingredient] = count - 1;
+            break;
+          }
+        }
+
       }
 
       productsTable.add(products);
