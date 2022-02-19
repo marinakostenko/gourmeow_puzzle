@@ -109,11 +109,23 @@ extension IngredientsExt on Ingredients {
     }
   }
 
-  static Ingredients generateRandomIngredient() {
-    var rnd = Random();
-    var ingredient =
-    Ingredients.values[rnd.nextInt(Ingredients.values.length - 1) + 1];
-    debugPrint("Ingredient ${ingredient.name}");
-    return ingredient;
+  static Ingredients generateRandomIngredient(List<Ingredient> ingredients) {
+    while(true) {
+      var rnd = Random();
+      var ingredient = Ingredients.values[rnd.nextInt(Ingredients.values.length - 1) + 1];
+
+      int count = 0;
+      for (var element in ingredients) {
+        if(element.ingredient == ingredient) {
+          count++;
+        }
+      }
+
+      if(count < 2) {
+        debugPrint("Ingredient ${ingredient.name}");
+        return ingredient;
+      }
+    }
+
   }
 }

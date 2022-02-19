@@ -359,12 +359,19 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     Set<Product> emptyProducts = event.products;
 
+    List<Ingredient> ingredients = [];
+    for (int i = 0; i < productsList.length; i++) {
+      for (int j = 0; j < productsList[0].length; j++) {
+        ingredients.add(productsList[i][j].ingredient);
+      }
+    }
+
     for (Product product in emptyProducts) {
       int x = product.position.x - 1;
       int y = product.position.y - 1;
 
-      productsList[y][x].ingredient =
-          Ingredient(ingredient: IngredientsExt.generateRandomIngredient(), );
+      productsList[y][x].ingredient = Ingredient(
+          ingredient: IngredientsExt.generateRandomIngredient(ingredients));
     }
 
     var matchingProducts = _checkBoardOnMealsExistence();
