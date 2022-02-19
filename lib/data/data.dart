@@ -37,79 +37,80 @@ class Data {
     return shuffleProducts;
   }
 
-  List<List<Product>> defaultProductsList(int size) {
-    Product defaultProduct = Product(
-        ingredient: const Ingredient(ingredient: Ingredients.rice),
-        meal: const Meal(meal: Meals.none),
-        position: const BoardPosition(x: -1, y: -1),
-        isSelected: false,
-        draggable: Drag.drag,
-        cat: Cat(
-          color: Colors.white,
-          meal: const Meal(meal: Meals.none),
-          livesCount: -1,
-          cuisine: Cuisine.none,
-          position: const BoardPosition(x: -1, y: -1),
-        ));
+  final Product _defaultProduct = Product(
+    ingredient: const Ingredient(ingredient: Ingredients.rice),
+    meal: const Meal(meal: Meals.none),
+    position: const BoardPosition(x: -1, y: -1),
+    isSelected: false,
+    draggable: Drag.drag,
+    cat: Cat(
+      color: Colors.white,
+      meal: const Meal(meal: Meals.none),
+      meals: [],
+      livesCount: -1,
+      cuisine: Cuisine.none,
+      position: const BoardPosition(x: -1, y: -1),
+    ),
+  );
 
-    Product rice = defaultProduct.copyWith(
+  List<Product> allProductsList() {
+    Product rice = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.rice));
-    Product nori = defaultProduct.copyWith(
+    Product nori = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.nori));
-    Product egg = defaultProduct.copyWith(
+    Product egg = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.egg));
-    Product shrimps = defaultProduct.copyWith(
+    Product shrimps = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.shrimps));
-    Product salmon = defaultProduct.copyWith(
+    Product salmon = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.salmon));
-    Product lettuce = defaultProduct.copyWith(
+    Product lettuce = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.lettuce));
-    Product mango = defaultProduct.copyWith(
+    Product mango = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.mango));
-    Product chicken = defaultProduct.copyWith(
+    Product chicken = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.chicken));
-    Product noodles = defaultProduct.copyWith(
+    Product noodles = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.noodles));
-    Product chilli = defaultProduct.copyWith(
+    Product chilli = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.chilli));
-    Product shiitake = defaultProduct.copyWith(
+    Product shiitake = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.shiitake));
-    Product patty = defaultProduct.copyWith(
+    Product patty = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.patty));
-    Product bun = defaultProduct.copyWith(
+    Product bun = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.bun));
-    Product lobster = defaultProduct.copyWith(
+    Product lobster = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.lobster));
 
-    Product butter = defaultProduct.copyWith(
+    Product butter = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.butter));
-    Product lemon = defaultProduct.copyWith(
+    Product lemon = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.lemon));
-    Product flour = defaultProduct.copyWith(
+    Product flour = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.flour));
-    Product milk = defaultProduct.copyWith(
+    Product milk = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.milk));
-    Product meat = defaultProduct.copyWith(
+    Product meat = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.meat));
-    Product garlic = defaultProduct.copyWith(
+    Product garlic = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.garlic));
-    Product wine = defaultProduct.copyWith(
+    Product wine = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.wine));
-    Product apple = defaultProduct.copyWith(
+    Product apple = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.apple));
 
-    Product zucchini = defaultProduct.copyWith(
+    Product zucchini = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.zucchini));
 
-    Product mussels = defaultProduct.copyWith(
+    Product mussels = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.mussels));
-    Product eggplant = defaultProduct.copyWith(
+    Product eggplant = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.eggplant));
-    Product tomato = defaultProduct.copyWith(
+    Product tomato = _defaultProduct.copyWith(
         ingredient: const Ingredient(ingredient: Ingredients.tomato));
 
-    final Map<Ingredients, int> defaultProductsMap = {};
-    final defaultProducts = [
+    return [
       rice,
       nori,
       egg,
@@ -137,6 +138,11 @@ class Data {
       eggplant,
       tomato,
     ];
+  }
+
+  List<List<Product>> defaultProductsList(int size) {
+    final Map<Ingredients, int> defaultProductsMap = {};
+    final defaultProducts = allProductsList();
 
     for (var product in defaultProducts) {
       defaultProductsMap.putIfAbsent(product.ingredient.ingredient, () => 2);
@@ -149,18 +155,17 @@ class Data {
     for (int j = 1; j <= size; j++) {
       var products = <Product>[];
       for (int i = 1; i <= size; i++) {
-        while(true) {
+        while (true) {
           int rand = _random.nextInt(defaultProducts.length - 1);
           Product product = defaultProducts[rand].copyWith();
 
           int count = defaultProductsMap[product.ingredient.ingredient]!;
-          if(count > 0) {
+          if (count > 0) {
             products.add(product);
             defaultProductsMap[product.ingredient.ingredient] = count - 1;
             break;
           }
         }
-
       }
 
       productsTable.add(products);
@@ -184,6 +189,7 @@ class Data {
     Cat blueCat = Cat(
       color: Colors.blue,
       meal: const Meal(meal: Meals.none),
+      meals: [],
       livesCount: 3,
       cuisine: Cuisine.american,
       position: const BoardPosition(x: -1, y: -1),
@@ -191,6 +197,7 @@ class Data {
     Cat greenCat = Cat(
       color: Colors.green,
       meal: const Meal(meal: Meals.none),
+      meals: [],
       livesCount: 3,
       cuisine: Cuisine.french,
       position: const BoardPosition(x: -1, y: -1),
@@ -198,6 +205,7 @@ class Data {
     Cat gingerCat = Cat(
       color: Colors.orange,
       meal: const Meal(meal: Meals.none),
+      meals: [],
       livesCount: 3,
       cuisine: Cuisine.asian,
       position: const BoardPosition(x: -1, y: -1),
@@ -208,6 +216,124 @@ class Data {
     cats.add(greenCat);
 
     return cats;
+  }
+
+  List<List<Product>> generateSolvableProductsList(int size) {
+    List<List<Product>> products = [];
+    List<Cat> cats = defaultCatsList();
+
+    //5 to 5 -> 24 products 3 cats = 8 products -> 3 products 3 products 2 products
+    var nums = <int>[10, 9, 2];
+
+    //decide randomly which cat will have 2 and 3 meals
+    Map<Cat, int> catsMap = {};
+    final _random = Random();
+
+    for (var cat in cats) {
+      int index = nums.elementAt(_random.nextInt(nums.length - 1));
+      catsMap.putIfAbsent(cat, () => nums[index]);
+      nums.removeAt(index);
+    }
+
+    //create board
+    List<BoardPosition> corners = [
+      const BoardPosition(x: 1, y: 1),
+      const BoardPosition(x: 1, y: 5),
+      const BoardPosition(x: 5, y: 1),
+      const BoardPosition(x: 5, y: 5)
+    ];
+
+    //assign meals for each cat from meals list
+    for (Cat cat in cats) {
+      var meals = CuisineExt.getMealsByCuisine(cat.cuisine);
+      int? count = catsMap[cat];
+
+      for (int i = 0; i < count! % 3; i++) {
+        int index = _random.nextInt(meals.length - 1);
+        cat.meals.add(Meal(meal: meals.elementAt(index)));
+        meals.removeAt(index);
+      }
+
+      int cornerIndex = _random.nextInt(corners.length - 1);
+      List<BoardPosition> positions = generatePatterns(
+          corners[cornerIndex].x, corners[cornerIndex].y, count);
+      corners.removeAt(cornerIndex);
+
+      List<Ingredient> ingredients = [];
+
+      for (Meals meal in meals) {
+        for (var entry in mealIngredients.entries) {
+          if (entry.value.meal == meal) {
+            ingredients.addAll(entry.key);
+            break;
+          }
+        }
+      }
+
+      int index = 0;
+
+      positions.forEach((position) {
+        int x = position.x;
+        int y = position.y;
+
+        if(index < ingredients.length) {
+          products[y - 1][x - 1] = _defaultProduct.copyWith(
+            ingredient: ingredients[index],
+            position: position,
+            cat: cat,
+          );
+        } else {
+          products[y - 1][x - 1] = _defaultProduct.copyWith();
+        }
+      });
+    }
+
+    return products;
+  }
+
+  List<BoardPosition> generatePatterns(int x, int y, int elementsCount) {
+    switch (elementsCount) {
+      case 6:
+        return _createPositions(x, y, 3, 2);
+      case 9:
+        return _createPositions(x, y, 3, 3);
+      case 10:
+        return _createPositions(x, y, 2, 5);
+      default:
+        return [];
+    }
+  }
+
+  List<BoardPosition> _createPositions(
+      int x, int y, int horizontalCount, int verticalCount) {
+    List<BoardPosition> tiles = [];
+    if (x == 1 && y == 1) {
+      for (int i = 1; i <= verticalCount; i++) {
+        for (int j = 1; j <= horizontalCount; j++) {
+          tiles.add(BoardPosition(x: j, y: i));
+        }
+      }
+    } else if (x == 1 && y == 5) {
+      for (int i = 6 - verticalCount; i <= 5; i++) {
+        for (int j = 1; j <= horizontalCount; j++) {
+          tiles.add(BoardPosition(x: j, y: i));
+        }
+      }
+    } else if (x == 5 && y == 1) {
+      for (int i = 1; i <= verticalCount; i++) {
+        for (int j = 6 - horizontalCount; j <= 5; j++) {
+          tiles.add(BoardPosition(x: j, y: i));
+        }
+      }
+    } else if (x == 5 && y == 5) {
+      for (int i = 6 - verticalCount; i <= 5; i++) {
+        for (int j = 6 - horizontalCount; j <= 5; j++) {
+          tiles.add(BoardPosition(x: j, y: i));
+        }
+      }
+    }
+
+    return tiles;
   }
 
   Map<Set<Ingredient>, Meal> mealIngredients = {
@@ -296,7 +422,10 @@ class Data {
       for (var element in key) {
         ingredientImages.add(element.ingredient.ingredientImage);
       }
-      Recipe recipe = Recipe(meal: value.meal, mealImage: value.meal.mealImage, ingredientsImages: ingredientImages);
+      Recipe recipe = Recipe(
+          meal: value.meal,
+          mealImage: value.meal.mealImage,
+          ingredientsImages: ingredientImages);
       recipes.add(recipe);
     });
 

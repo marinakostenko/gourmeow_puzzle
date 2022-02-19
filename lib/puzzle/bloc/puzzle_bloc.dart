@@ -194,6 +194,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       product.cat = Cat(
         color: Colors.white,
         meal: const Meal(meal: Meals.none),
+        meals: [],
         livesCount: -1,
         cuisine: Cuisine.none,
         position: const BoardPosition(x: -1, y: -1),

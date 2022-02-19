@@ -6,6 +6,7 @@ import 'package:gourmeow_puzzle/models/meal.dart';
 class Cat {
   Color color;
   Meal meal;
+  List<Meal> meals;
   int livesCount;
   Cuisine cuisine;
   BoardPosition position;
@@ -13,6 +14,7 @@ class Cat {
   Cat(
       {required this.color,
       required this.meal,
+        required this.meals,
       required this.livesCount,
       required this.cuisine,
       required this.position});
@@ -24,6 +26,7 @@ class Cat {
           runtimeType == other.runtimeType &&
           color == other.color &&
           meal == other.meal &&
+          meals == other.meals &&
           livesCount == other.livesCount &&
           cuisine == other.cuisine &&
           position == other.position;
@@ -32,6 +35,7 @@ class Cat {
   int get hashCode =>
       color.hashCode ^
       meal.hashCode ^
+      meals.hashCode ^
       livesCount.hashCode ^
       cuisine.hashCode ^
       position.hashCode;
