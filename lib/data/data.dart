@@ -390,6 +390,182 @@ class Data {
     }
   }
 
+  Map<int, List<BoardPosition>> _createBoard(int x, int y) {
+    Map<int, List<BoardPosition>> tiles = {};
+
+    if (x == 1 && y == 1) {
+      List<BoardPosition> tilesSixIngredients = [];
+
+      for (int i = 1; i <= 2; i++) {
+        for (int j = 1; j <= 3; j++) {
+          tilesSixIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      tiles.putIfAbsent(6, () => tilesSixIngredients);
+
+      List<BoardPosition> tilesNineIngredients = [];
+
+      for (int i = 3; i <= 5; i++) {
+        for (int j = 1; j <= 2; j++) {
+          tilesNineIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int j = 3; j <= 5; j++) {
+        tilesNineIngredients.add(BoardPosition(x: j, y: 5));
+      }
+
+      tiles.putIfAbsent(9, () => tilesNineIngredients);
+
+      List<BoardPosition> tilesTenIngredients = [];
+
+      for (int i = 1; i <= 3; i++) {
+        for (int j = 4; j <= 5; j++) {
+          tilesTenIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int j = 3; j <= 5; j++) {
+        tilesTenIngredients.add(BoardPosition(x: j, y: 4));
+      }
+
+      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
+
+      tiles.putIfAbsent(10, () => tilesTenIngredients);
+    }
+
+    if (x == 1 && y == 5) {
+      List<BoardPosition> tilesSixIngredients = [];
+
+      for (int i = 1; i <= 2; i++) {
+        for (int j = 3; j <= 5; j++) {
+          tilesSixIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      tiles.putIfAbsent(6, () => tilesSixIngredients);
+
+      List<BoardPosition> tilesNineIngredients = [];
+
+      for (int i = 4; i <= 5; i++) {
+        for (int j = 3; j <= 5; j++) {
+          tilesNineIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int i = 1; i <= 3; i++) {
+        tilesNineIngredients.add(BoardPosition(x: 5, y: i));
+      }
+
+      tiles.putIfAbsent(9, () => tilesNineIngredients);
+
+      List<BoardPosition> tilesTenIngredients = [];
+
+      for (int i = 1; i <= 2; i++) {
+        for (int j = 1; j <= 3; j++) {
+          tilesTenIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int i = 3; i <= 5; i++) {
+        tilesTenIngredients.add(BoardPosition(x: 4, y: i));
+      }
+
+      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
+
+      tiles.putIfAbsent(10, () => tilesTenIngredients);
+
+    }
+
+    if (x == 5 && y == 1) {
+      List<BoardPosition> tilesSixIngredients = [];
+
+      for (int i = 1; i <= 3; i++) {
+        for (int j = 4; j <= 5; j++) {
+          tilesSixIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      tiles.putIfAbsent(6, () => tilesSixIngredients);
+
+
+      List<BoardPosition> tilesNineIngredients = [];
+
+      for (int i = 1; i <= 2; i++) {
+        for (int j = 1; j <= 3; j++) {
+          tilesNineIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int i = 3; i <= 5; i++) {
+        tilesNineIngredients.add(BoardPosition(x: 1, y: i));
+      }
+
+      tiles.putIfAbsent(9, () => tilesNineIngredients);
+
+      List<BoardPosition> tilesTenIngredients = [];
+
+      for (int i = 4; i <= 5; i++) {
+        for (int j = 3; j <= 5; j++) {
+          tilesTenIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int i = 3; i <= 5; i++) {
+        tilesTenIngredients.add(BoardPosition(x: 2, y: i));
+      }
+
+      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
+
+      tiles.putIfAbsent(10, () => tilesTenIngredients);
+    }
+
+    if (x == 5 && y == 5) {
+      List<BoardPosition> tilesSixIngredients = [];
+
+      for (int i = 4; i <= 5; i++) {
+        for (int j = 3; j <= 5; j++) {
+          tilesSixIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      tiles.putIfAbsent(6, () => tilesSixIngredients);
+
+      List<BoardPosition> tilesNineIngredients = [];
+
+      for (int i = 1; i <= 3; i++) {
+        for (int j = 4; j <= 5; j++) {
+          tilesNineIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int j = 1; j <= 3; j++) {
+        tilesNineIngredients.add(BoardPosition(x: 1, y: j));
+      }
+
+      tiles.putIfAbsent(9, () => tilesNineIngredients);
+
+      List<BoardPosition> tilesTenIngredients = [];
+
+      for (int i = 1; i <= 2; i++) {
+        for (int j = 3; j <= 5; j++) {
+          tilesTenIngredients.add(BoardPosition(x: j, y: i));
+        }
+      }
+
+      for (int j = 1; j <= 3; j++) {
+        tilesTenIngredients.add(BoardPosition(x: 2, y: 2));
+      }
+
+      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
+
+      tiles.putIfAbsent(10, () => tilesTenIngredients);
+    }
+
+    return tiles;
+
+  }
   List<BoardPosition> _createPositions(
       int x, int y, int horizontalCount, int verticalCount) {
     List<BoardPosition> tiles = [];
