@@ -224,16 +224,11 @@ class Data {
     for (int j = 1; j <= size; j++) {
       var productsList = <Product>[];
       for (int i = 1; i <= size; i++) {
-        Product product = defaultProduct.copyWith();
+        Product product =
+            defaultProduct.copyWith(position: BoardPosition(x: i, y: j));
         productsList.add(product);
       }
       products.add(productsList);
-    }
-
-    for (int y = 0; y < size; y++) {
-      for (int x = 0; x < size; x++) {
-        products[y][x] = defaultProduct.copyWith();
-      }
     }
 
     List<Cat> cats = defaultCatsList();
@@ -257,20 +252,22 @@ class Data {
         key: (k) => k, value: (k) => catsMap[k]!);
 
     //create board
-    //6 and 9 should always starts from same x
-
-    Map<int, BoardPosition> startPositions = {
-      6: BoardPosition(x: -1, y: -1),
-      9: BoardPosition(x: -1, y: -1),
-      10: BoardPosition(x: -1, y: -1),
-    };
-
     List<BoardPosition> corners = [
       const BoardPosition(x: 1, y: 1),
       const BoardPosition(x: 1, y: 5),
       const BoardPosition(x: 5, y: 1),
       const BoardPosition(x: 5, y: 5)
     ];
+
+    int cornerIndex = _random.nextInt(corners.length);
+    Map<int, List<BoardPosition>> positionsMap =
+        _createBoard(corners[cornerIndex].x, corners[cornerIndex].y);
+    debugPrint("Corner ${corners[cornerIndex]}");
+    positionsMap.forEach((key, value) {
+      for (var element in value) {
+        debugPrint("Ingredients count ${key} ${element}");
+      }
+    });
 
     //assign meals for each cat from meals list
     for (var entry in sortedCatsMap.entries) {
@@ -279,69 +276,20 @@ class Data {
 
       var meals = CuisineExt.getMealsByCuisine(cat.cuisine);
       var tmp = meals;
+      int mealsCount = count ~/ 3;
 
-      for (int i = 0; i < count ~/ 3; i++) {
+      for (int i = 0; i < mealsCount; i++) {
         int index = _random.nextInt(tmp.length);
         cat.meals.add(Meal(meal: tmp.elementAt(index)));
         tmp.removeAt(index);
       }
 
-      debugPrint("meals length ${meals.length}");
-      debugPrint("Count ${count}");
-      List<BoardPosition> positions = [];
+      debugPrint("meals length ${cat.meals.length} cuisine ${cat.cuisine}");
+      debugPrint("Count ${count} / ${mealsCount}");
+      List<BoardPosition>? positions = positionsMap[count];
 
-
-      if (count == 6) {
-        int? nineX = startPositions[9]?.x;
-        debugPrint("Start position of 9 ${nineX}");
-        if (nineX == -1) {
-          int cornerIndex = _random.nextInt(corners.length);
-          positions = generatePatterns(
-              corners[cornerIndex].x, corners[cornerIndex].y, count);
-
-          startPositions[6] = corners[cornerIndex];
-          corners.removeAt(cornerIndex);
-        } else {
-          BoardPosition position =
-              corners.firstWhere((position) => position.x == nineX);
-          positions = generatePatterns(position.x, position.y, count);
-
-          startPositions[6] = position;
-          corners.remove(position);
-        }
-      }
-
-      if (count == 9) {
-        int? sixX = startPositions[6]?.x;
-        debugPrint("Start position of 6 ${sixX}");
-
-        if (sixX == -1) {
-          int cornerIndex = _random.nextInt(corners.length);
-          positions = generatePatterns(
-              corners[cornerIndex].x, corners[cornerIndex].y, count);
-          startPositions[9] = corners[cornerIndex];
-          corners.removeAt(cornerIndex);
-        } else {
-          BoardPosition position =
-              corners.firstWhere((position) => position.x == sixX);
-          positions = generatePatterns(position.x, position.y, count);
-
-          startPositions[9] = position;
-          corners.remove(position);
-        }
-      }
-
-      if (count == 10) {
-        int cornerIndex = _random.nextInt(corners.length);
-        int cornerX = corners[cornerIndex].x;
-        int cornerY = corners[cornerIndex].y;
-        positions = generatePatterns(cornerX, cornerY, count);
-        startPositions[10] = corners[cornerIndex];
-        corners.removeAt(cornerIndex);
-
-        BoardPosition sameXPosition =
-            corners.firstWhere((position) => position.x == cornerX);
-        corners.remove(sameXPosition);
+      for (var element in positions!) {
+        debugPrint("Position $element");
       }
 
       List<Ingredient> ingredients = [];
@@ -357,7 +305,7 @@ class Data {
 
       int index = 0;
 
-      for (var position in positions) {
+      for (var position in positions!) {
         int x = position.x;
         int y = position.y;
 
@@ -368,8 +316,6 @@ class Data {
             cat: cat,
           );
           index++;
-        } else {
-          products[y - 1][x - 1] = defaultProduct.copyWith(position: BoardPosition(x: x, y: y));
         }
       }
     }
@@ -377,18 +323,18 @@ class Data {
     return products;
   }
 
-  List<BoardPosition> generatePatterns(int x, int y, int elementsCount) {
-    switch (elementsCount) {
-      case 6:
-        return _createPositions(x, y, 3, 2);
-      case 9:
-        return _createPositions(x, y, 3, 3);
-      case 10:
-        return _createPositions(x, y, 2, 5);
-      default:
-        return [];
-    }
-  }
+  // List<BoardPosition> generatePatterns(int x, int y, int elementsCount) {
+  //   switch (elementsCount) {
+  //     case 6:
+  //       return _createPositions(x, y, 3, 2);
+  //     case 9:
+  //       return _createPositions(x, y, 3, 3);
+  //     case 10:
+  //       return _createPositions(x, y, 2, 5);
+  //     default:
+  //       return [];
+  //   }
+  // }
 
   Map<int, List<BoardPosition>> _createBoard(int x, int y) {
     Map<int, List<BoardPosition>> tiles = {};
@@ -430,16 +376,14 @@ class Data {
         tilesTenIngredients.add(BoardPosition(x: j, y: 4));
       }
 
-      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
-
       tiles.putIfAbsent(10, () => tilesTenIngredients);
     }
 
     if (x == 1 && y == 5) {
       List<BoardPosition> tilesSixIngredients = [];
 
-      for (int i = 1; i <= 2; i++) {
-        for (int j = 3; j <= 5; j++) {
+      for (int i = 3; i <= 5; i++) {
+        for (int j = 1; j <= 2; j++) {
           tilesSixIngredients.add(BoardPosition(x: j, y: i));
         }
       }
@@ -468,14 +412,11 @@ class Data {
         }
       }
 
-      for (int i = 3; i <= 5; i++) {
+      for (int i = 1; i <= 3; i++) {
         tilesTenIngredients.add(BoardPosition(x: 4, y: i));
       }
 
-      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
-
       tiles.putIfAbsent(10, () => tilesTenIngredients);
-
     }
 
     if (x == 5 && y == 1) {
@@ -488,7 +429,6 @@ class Data {
       }
 
       tiles.putIfAbsent(6, () => tilesSixIngredients);
-
 
       List<BoardPosition> tilesNineIngredients = [];
 
@@ -516,8 +456,6 @@ class Data {
         tilesTenIngredients.add(BoardPosition(x: 2, y: i));
       }
 
-      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
-
       tiles.putIfAbsent(10, () => tilesTenIngredients);
     }
 
@@ -541,31 +479,29 @@ class Data {
       }
 
       for (int j = 1; j <= 3; j++) {
-        tilesNineIngredients.add(BoardPosition(x: 1, y: j));
+        tilesNineIngredients.add(BoardPosition(x: j, y: 1));
       }
 
       tiles.putIfAbsent(9, () => tilesNineIngredients);
 
       List<BoardPosition> tilesTenIngredients = [];
 
-      for (int i = 1; i <= 2; i++) {
-        for (int j = 3; j <= 5; j++) {
+      for (int i = 3; i <= 5; i++) {
+        for (int j = 1; j <= 2; j++) {
           tilesTenIngredients.add(BoardPosition(x: j, y: i));
         }
       }
 
       for (int j = 1; j <= 3; j++) {
-        tilesTenIngredients.add(BoardPosition(x: 2, y: 2));
+        tilesTenIngredients.add(BoardPosition(x: j, y: 2));
       }
-
-      tilesTenIngredients.add(const BoardPosition(x: 4, y: 3));
 
       tiles.putIfAbsent(10, () => tilesTenIngredients);
     }
 
     return tiles;
-
   }
+
   List<BoardPosition> _createPositions(
       int x, int y, int horizontalCount, int verticalCount) {
     List<BoardPosition> tiles = [];
