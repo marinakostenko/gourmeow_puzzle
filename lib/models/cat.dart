@@ -10,14 +10,17 @@ class Cat {
   int livesCount;
   Cuisine cuisine;
   BoardPosition position;
+  List<BoardPosition> positions;
 
-  Cat(
-      {required this.color,
-      required this.meal,
-        required this.meals,
-      required this.livesCount,
-      required this.cuisine,
-      required this.position});
+  Cat({
+    required this.color,
+    required this.meal,
+    required this.meals,
+    required this.livesCount,
+    required this.cuisine,
+    required this.position,
+    required this.positions,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -29,7 +32,8 @@ class Cat {
           meals == other.meals &&
           livesCount == other.livesCount &&
           cuisine == other.cuisine &&
-          position == other.position;
+          position == other.position &&
+          positions == other.positions;
 
   @override
   int get hashCode =>
@@ -38,5 +42,6 @@ class Cat {
       meals.hashCode ^
       livesCount.hashCode ^
       cuisine.hashCode ^
-      position.hashCode;
+      position.hashCode ^
+      positions.hashCode;
 }

@@ -35,7 +35,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     emit(
       SlidePuzzleState(
          puzzle: puzzle,
-        // numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
+       //  numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
       ),
     );
   }

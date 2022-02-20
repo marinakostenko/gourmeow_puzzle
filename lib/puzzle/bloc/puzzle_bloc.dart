@@ -198,6 +198,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         livesCount: -1,
         cuisine: Cuisine.none,
         position: const BoardPosition(x: -1, y: -1),
+        positions: [],
       );
 
       emptyProducts.add(product);

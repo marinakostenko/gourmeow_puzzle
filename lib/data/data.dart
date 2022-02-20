@@ -10,20 +10,34 @@ import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/models/recipe.dart';
 
 class Data {
+
   List<List<Product>> shuffleProducts(
       int dimension, List<List<Product>> products) {
+    final List<List<Product>> sortedProducts = [];
+    for (int y = 0; y < dimension; y++) {
+      var productsList = <Product>[];
+      for (int x = 0; x < dimension; x++) {
+        Product product = products[y][x].copyWith();
+        productsList.add(product);
+      }
+      sortedProducts.add(productsList);
+    }
+
     final List<List<Product>> shuffleProducts = [];
     final _random = Random();
 
     for (int y = 1; y <= dimension; y++) {
       var shuffledX = <Product>[];
       for (int x = 1; x <= dimension; x++) {
+        var currentProduct = sortedProducts[y - 1][x - 1];
+
         int randomY = _random.nextInt(products.length);
         int randomX = _random.nextInt(products[randomY].length);
 
         var product = products.elementAt(randomY).elementAt(randomX);
 
         product.position = BoardPosition(x: x, y: y);
+        product.cat = currentProduct.cat;
 
         shuffledX.add(product);
 
@@ -51,6 +65,7 @@ class Data {
       livesCount: -1,
       cuisine: Cuisine.none,
       position: const BoardPosition(x: -1, y: -1),
+      positions: [],
     ),
   );
 
@@ -194,6 +209,7 @@ class Data {
       livesCount: 3,
       cuisine: Cuisine.american,
       position: const BoardPosition(x: -1, y: -1),
+      positions: [],
     );
     Cat greenCat = Cat(
       color: Colors.green,
@@ -202,6 +218,7 @@ class Data {
       livesCount: 3,
       cuisine: Cuisine.french,
       position: const BoardPosition(x: -1, y: -1),
+      positions: [],
     );
     Cat gingerCat = Cat(
       color: Colors.orange,
@@ -210,6 +227,7 @@ class Data {
       livesCount: 3,
       cuisine: Cuisine.asian,
       position: const BoardPosition(x: -1, y: -1),
+      positions: [],
     );
 
     cats.add(blueCat);
@@ -263,11 +281,6 @@ class Data {
     Map<int, List<BoardPosition>> positionsMap =
         _createBoard(corners[cornerIndex].x, corners[cornerIndex].y);
     debugPrint("Corner ${corners[cornerIndex]}");
-    positionsMap.forEach((key, value) {
-      for (var element in value) {
-        debugPrint("Ingredients count ${key} ${element}");
-      }
-    });
 
     //assign meals for each cat from meals list
     for (var entry in sortedCatsMap.entries) {
@@ -288,9 +301,7 @@ class Data {
       debugPrint("Count ${count} / ${mealsCount}");
       List<BoardPosition>? positions = positionsMap[count];
 
-      for (var element in positions!) {
-        debugPrint("Position $element");
-      }
+      cat.positions = positions!;
 
       List<Ingredient> ingredients = [];
 
@@ -305,7 +316,7 @@ class Data {
 
       int index = 0;
 
-      for (var position in positions!) {
+      for (var position in positions) {
         int x = position.x;
         int y = position.y;
 
@@ -320,21 +331,10 @@ class Data {
       }
     }
 
-    return products;
-  }
+    var shuffled = shuffleProducts(size, products);
 
-  // List<BoardPosition> generatePatterns(int x, int y, int elementsCount) {
-  //   switch (elementsCount) {
-  //     case 6:
-  //       return _createPositions(x, y, 3, 2);
-  //     case 9:
-  //       return _createPositions(x, y, 3, 3);
-  //     case 10:
-  //       return _createPositions(x, y, 2, 5);
-  //     default:
-  //       return [];
-  //   }
-  // }
+    return shuffled;
+  }
 
   Map<int, List<BoardPosition>> _createBoard(int x, int y) {
     Map<int, List<BoardPosition>> tiles = {};
@@ -497,38 +497,6 @@ class Data {
       }
 
       tiles.putIfAbsent(10, () => tilesTenIngredients);
-    }
-
-    return tiles;
-  }
-
-  List<BoardPosition> _createPositions(
-      int x, int y, int horizontalCount, int verticalCount) {
-    List<BoardPosition> tiles = [];
-    if (x == 1 && y == 1) {
-      for (int i = 1; i <= verticalCount; i++) {
-        for (int j = 1; j <= horizontalCount; j++) {
-          tiles.add(BoardPosition(x: j, y: i));
-        }
-      }
-    } else if (x == 1 && y == 5) {
-      for (int i = 6 - verticalCount; i <= 5; i++) {
-        for (int j = 1; j <= horizontalCount; j++) {
-          tiles.add(BoardPosition(x: j, y: i));
-        }
-      }
-    } else if (x == 5 && y == 1) {
-      for (int i = 1; i <= verticalCount; i++) {
-        for (int j = 6 - horizontalCount; j <= 5; j++) {
-          tiles.add(BoardPosition(x: j, y: i));
-        }
-      }
-    } else if (x == 5 && y == 5) {
-      for (int i = 6 - verticalCount; i <= 5; i++) {
-        for (int j = 6 - horizontalCount; j <= 5; j++) {
-          tiles.add(BoardPosition(x: j, y: i));
-        }
-      }
     }
 
     return tiles;
