@@ -39,7 +39,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     for (var cat in cats) {
       var matchingProducts = _checkSolution(cat);
 
-      numberOfCorrectProducts = numberOfCorrectProducts + matchingProducts.length;
+      numberOfCorrectProducts =
+          numberOfCorrectProducts + matchingProducts.length;
 
       debugPrint(matchingProducts
           .map((set) => set
@@ -54,6 +55,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
       SlidePuzzleState(
         puzzle: puzzle,
         numberOfCorrectTiles: numberOfCorrectProducts,
+        puzzleStatus: PuzzleStatus.incomplete,
       ),
     );
   }
@@ -90,7 +92,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         for (var cat in cats) {
           var matchingProducts = _checkSolution(cat);
 
-          numberOfCorrectProducts = numberOfCorrectProducts + matchingProducts.length;
+          numberOfCorrectProducts =
+              numberOfCorrectProducts + matchingProducts.length;
 
           debugPrint(matchingProducts
               .map((set) => set
@@ -100,7 +103,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         }
 
         PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
-        if(numberOfCorrectProducts == 8) {
+        if (numberOfCorrectProducts == 8) {
           puzzleStatus = PuzzleStatus.complete;
         }
 
@@ -222,7 +225,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     return mealsOnBoardByCat;
   }
 
-
   Set<Ingredient> _createIngredientSet(Set<Product> products) {
     Set<Ingredient> ingredients = {};
 
@@ -232,16 +234,4 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
 
     return ingredients;
   }
-
-// void _onSlidePuzzleReset(SlidePuzzleReset event, Emitter<SlidePuzzleState> emit) {
-//   final puzzle = _generatePuzzle(_size);
-//   emit(
-//     PuzzleState(
-//       puzzle: puzzle.sort(),
-//       numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
-//     ),
-//   );
-// }
-
-
 }

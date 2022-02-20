@@ -65,6 +65,12 @@ class SlidePuzzleView extends StatelessWidget {
     var productTable = puzzle.products;
     var products = <Widget>[];
 
+    var puzzleStatus = context.select((SlidePuzzleBloc bloc) => bloc.state.puzzleStatus);
+
+    if (puzzleStatus == PuzzleStatus.complete) {
+      return _gameFinishOverlay(context);
+    }
+
     for (List<Product> productsList in productTable) {
       for (Product product in productsList) {
         products.add(itemBuilder(context, product));
@@ -144,6 +150,58 @@ class SlidePuzzleView extends StatelessWidget {
         ),
       ),
 
+    );
+  }
+
+  Widget _gameFinishOverlay(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.lightBlue.withOpacity(0.8),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.lightBlue.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            padding: EdgeInsets.all(10.0),
+            child: const Text(
+              "Game over You made it!",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 48, color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+              ).copyWith(
+                backgroundColor:
+                MaterialStateProperty.all(Colors.white.withOpacity(0.8)),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+              ),
+              onPressed: () {
+                context
+                    .read<SlidePuzzleBloc>()
+                    .add(const SlidePuzzleInitialized(shufflePuzzle: true, size: 6));
+              },
+              child: const Text(
+                "Restart",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 32, color: Colors.indigo),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
