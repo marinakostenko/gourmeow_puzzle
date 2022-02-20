@@ -34,10 +34,14 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     cats = data.keys.first;
     productsList = data.values.first;
 
-    for (var cat in cats) {
-      var matching = _checkSolution(cat);
+    int numberOfCorrectProducts = 0;
 
-      debugPrint(matching
+    for (var cat in cats) {
+      var matchingProducts = _checkSolution(cat);
+
+      numberOfCorrectProducts = numberOfCorrectProducts + matchingProducts.length;
+
+      debugPrint(matchingProducts
           .map((set) => set
               .map((product) => product.ingredient.ingredient.name)
               .toString())
@@ -49,7 +53,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     emit(
       SlidePuzzleState(
         puzzle: puzzle,
-        numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
+        numberOfCorrectTiles: numberOfCorrectProducts,
       ),
     );
   }
@@ -81,14 +85,23 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
             "${productsList[whiteSpaceProductPosition.y - 1][whiteSpaceProductPosition.x - 1].ingredient} and "
             "${productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1].ingredient}");
 
-        for (var cat in cats) {
-          var matching = _checkSolution(cat);
+        int numberOfCorrectProducts = 0;
 
-          debugPrint(matching
+        for (var cat in cats) {
+          var matchingProducts = _checkSolution(cat);
+
+          numberOfCorrectProducts = numberOfCorrectProducts + matchingProducts.length;
+
+          debugPrint(matchingProducts
               .map((set) => set
                   .map((product) => product.ingredient.ingredient.name)
                   .toString())
               .toString());
+        }
+
+        PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
+        if(numberOfCorrectProducts == 8) {
+          puzzleStatus = PuzzleStatus.complete;
         }
 
         puzzle = Puzzle(products: productsList);
@@ -96,9 +109,10 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
           emit(
             state.copyWith(
               puzzle: puzzle,
-              puzzleStatus: PuzzleStatus.complete,
+              puzzleStatus: puzzleStatus,
               tileMovementStatus: TileMovementStatus.moved,
               numberOfMoves: state.numberOfMoves + 1,
+              numberOfCorrectTiles: numberOfCorrectProducts,
             ),
           );
         } else {
@@ -207,7 +221,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
 
     return mealsOnBoardByCat;
   }
-
 
 
   Set<Ingredient> _createIngredientSet(Set<Product> products) {

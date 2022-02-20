@@ -50,9 +50,4 @@ class Puzzle extends Equatable {
     }
     return true;
   }
-
-  int getNumberOfCorrectTiles() {
-    var numberOfCorrectTiles = 0;
-    return numberOfCorrectTiles;
-  }
 }
