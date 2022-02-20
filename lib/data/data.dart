@@ -237,8 +237,9 @@ class Data {
     return cats;
   }
 
-  List<List<Product>> generateSolvableProductsList(int size) {
+  Map<List<Cat>, List<List<Product>>> generateSolvableProductsList(int size) {
     List<List<Product>> products = [];
+    List<Cat> catsReturn = [];
     for (int j = 1; j <= size; j++) {
       var productsList = <Product>[];
       for (int i = 1; i <= size; i++) {
@@ -329,11 +330,13 @@ class Data {
           index++;
         }
       }
+
+      catsReturn.add(cat);
     }
 
     var shuffled = shuffleProducts(size, products);
 
-    return shuffled;
+    return {catsReturn : shuffled};
   }
 
   Map<int, List<BoardPosition>> _createBoard(int x, int y) {

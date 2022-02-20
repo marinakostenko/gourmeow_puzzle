@@ -6,17 +6,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:gourmeow_puzzle/data/data.dart';
 import 'package:gourmeow_puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
+import 'package:gourmeow_puzzle/models/ingredient.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/models/puzzle.dart';
 
 part 'slide_puzzle_event.dart';
+
 part 'slide_puzzle_state.dart';
 
 class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
   SlidePuzzleBloc() : super(const SlidePuzzleState()) {
     on<SlidePuzzleInitialized>(_onSlidePuzzleInitialized);
     on<ProductTapped>(_onProductTapped);
-   // on<SlidePuzzleReset>(_onSlidePuzzleReset);
+    // on<SlidePuzzleReset>(_onSlidePuzzleReset);
   }
 
   List<List<Product>> productsList = [];
@@ -24,18 +27,29 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
   Puzzle puzzle = const Puzzle(products: []);
 
   void _onSlidePuzzleInitialized(
-      SlidePuzzleInitialized event,
-      Emitter<SlidePuzzleState> emit,
-      ) {
+    SlidePuzzleInitialized event,
+    Emitter<SlidePuzzleState> emit,
+  ) {
+    var data = Data().generateSolvableProductsList(5);
+    cats = data.keys.first;
+    productsList = data.values.first;
 
-    productsList = Data().generateSolvableProductsList(5);
+    for (var cat in cats) {
+      var matching = _checkSolution(cat);
+
+      debugPrint(matching
+          .map((set) => set
+              .map((product) => product.ingredient.ingredient.name)
+              .toString())
+          .toString());
+    }
 
     Puzzle puzzle = Puzzle(products: productsList);
 
     emit(
       SlidePuzzleState(
-         puzzle: puzzle,
-       //  numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
+        puzzle: puzzle,
+        numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
       ),
     );
   }
@@ -44,7 +58,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     debugPrint("Product tapped");
     final tappedProduct = event.product;
     if (state.puzzleStatus == PuzzleStatus.incomplete) {
-      debugPrint("Tile is movable ${state.puzzle.isTileMovable(tappedProduct)}");
+      debugPrint(
+          "Tile is movable ${state.puzzle.isTileMovable(tappedProduct)}");
       if (state.puzzle.isTileMovable(tappedProduct)) {
         Product whiteSpaceProduct = state.puzzle.getWhitespaceTile();
         BoardPosition whiteSpaceProductPosition = whiteSpaceProduct.position;
@@ -54,14 +69,28 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
 
         tappedProduct.position = whiteSpaceProductPosition;
         tappedProduct.cat = whiteSpaceCat;
-        productsList[whiteSpaceProductPosition.y - 1][whiteSpaceProductPosition.x - 1] = tappedProduct;
+        productsList[whiteSpaceProductPosition.y - 1]
+            [whiteSpaceProductPosition.x - 1] = tappedProduct;
 
         whiteSpaceProduct.position = tappedProductPosition;
         whiteSpaceProduct.cat = tappedProductCat;
-        productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1] = whiteSpaceProduct;
+        productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1] =
+            whiteSpaceProduct;
 
-        debugPrint("${productsList[whiteSpaceProductPosition.y - 1][whiteSpaceProductPosition.x - 1].ingredient} and "
+        debugPrint(
+            "${productsList[whiteSpaceProductPosition.y - 1][whiteSpaceProductPosition.x - 1].ingredient} and "
             "${productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1].ingredient}");
+
+        for (var cat in cats) {
+          var matching = _checkSolution(cat);
+
+          debugPrint(matching
+              .map((set) => set
+                  .map((product) => product.ingredient.ingredient.name)
+                  .toString())
+              .toString());
+        }
+
         puzzle = Puzzle(products: productsList);
         if (puzzle.isComplete()) {
           emit(
@@ -93,89 +122,113 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     }
   }
 
-  // void _onSlidePuzzleReset(SlidePuzzleReset event, Emitter<SlidePuzzleState> emit) {
-  //   final puzzle = _generatePuzzle(_size);
-  //   emit(
-  //     PuzzleState(
-  //       puzzle: puzzle.sort(),
-  //       numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
-  //     ),
-  //   );
-  // }
+  List<Set<Product>> _checkSolution(Cat cat) {
+    List<Set<Product>> mealsOnBoardByCat = [];
 
-  /// Build a randomized, solvable puzzle of the given size.
-  // Puzzle _generatePuzzle(int size, {bool shuffle = true}) {
-  //   final correctPositions = <Position>[];
-  //   final currentPositions = <Position>[];
-  //   final whitespacePosition = Position(x: size, y: size);
-  //
-  //   // Create all possible board positions.
-  //   for (var y = 1; y <= size; y++) {
-  //     for (var x = 1; x <= size; x++) {
-  //       if (x == size && y == size) {
-  //         correctPositions.add(whitespacePosition);
-  //         currentPositions.add(whitespacePosition);
-  //       } else {
-  //         final position = Position(x: x, y: y);
-  //         correctPositions.add(position);
-  //         currentPositions.add(position);
-  //       }
-  //     }
-  //   }
-  //
-  //   if (shuffle) {
-  //     // Randomize only the current tile posistions.
-  //     currentPositions.shuffle(random);
-  //   }
-  //
-  //   var tiles = _getTileListFromPositions(
-  //     size,
-  //     correctPositions,
-  //     currentPositions,
-  //   );
-  //
-  //   var puzzle = Puzzle(tiles: tiles);
-  //
-  //   if (shuffle) {
-  //     // Assign the tiles new current positions until the puzzle is solvable and
-  //     // zero tiles are in their correct position.
-  //     while (!puzzle.isSolvable() || puzzle.getNumberOfCorrectTiles() != 0) {
-  //       currentPositions.shuffle(random);
-  //       tiles = _getTileListFromPositions(
-  //         size,
-  //         correctPositions,
-  //         currentPositions,
-  //       );
-  //       puzzle = Puzzle(tiles: tiles);
-  //     }
-  //   }
-  //
-  //   return puzzle;
-  // }
+    List<BoardPosition> positions = cat.positions;
+    List<Meals> catMeals = [];
+    for (var meal in cat.meals) {
+      catMeals.add(meal.meal);
+    }
 
-  // /// Build a list of tiles - giving each tile their correct position and a
-  // /// current position.
-  // List<Tile> _getTileListFromPositions(
-  //     int size,
-  //     List<Position> correctPositions,
-  //     List<Position> currentPositions,
-  //     ) {
-  //   final whitespacePosition = Position(x: size, y: size);
-  //   return [
-  //     for (int i = 1; i <= size * size; i++)
-  //       if (i == size * size)
-  //         Tile(
-  //           value: i,
-  //           correctPosition: whitespacePosition,
-  //           currentPosition: currentPositions[i - 1],
-  //           isWhitespace: true,
-  //         )
-  //       else
-  //         Tile(
-  //           value: i,
-  //           correctPosition: correctPositions[i - 1],
-  //           currentPosition: currentPositions[i - 1],
-  //         )
-  //   ];
-  // }
+    for (BoardPosition position in positions) {
+      productsList[position.y - 1][position.x - 1].isSelected = false;
+    }
+
+    for (BoardPosition position in positions) {
+      int x = position.x - 1;
+      int y = position.y - 1;
+
+      //go horizontally
+      if (positions.contains(BoardPosition(x: position.x + 2, y: position.y))) {
+        Product product1 = productsList[y][x];
+        Product product2 = productsList[y][x + 1];
+        Product product3 = productsList[y][x + 2];
+
+        Set<Product> products = {product1, product2, product3};
+
+        if (!product1.isSelected &&
+            !product2.isSelected &&
+            !product3.isSelected) {
+          var currIngredients = _createIngredientSet(products);
+
+          for (var entries in Data().mealIngredients.entries) {
+            var ingredients = entries.key;
+
+            if (ingredients.difference(currIngredients).isEmpty) {
+              for (Product product in products) {
+                int x = product.position.x - 1;
+                int y = product.position.y - 1;
+
+                productsList[y][x].isSelected = true;
+              }
+
+              if (catMeals.contains(entries.value.meal)) {
+                mealsOnBoardByCat.add(products);
+              }
+            }
+          }
+        }
+      }
+
+      //go vertically
+
+      if (positions.contains(BoardPosition(x: position.x, y: position.y + 2))) {
+        Product product1 = productsList[y][x];
+        Product product2 = productsList[y + 1][x];
+        Product product3 = productsList[y + 2][x];
+
+        Set<Product> products = {product1, product2, product3};
+
+        if (!product1.isSelected &&
+            !product2.isSelected &&
+            !product3.isSelected) {
+          var currIngredients = _createIngredientSet(products);
+
+          for (var entries in Data().mealIngredients.entries) {
+            var ingredients = entries.key;
+
+            if (ingredients.difference(currIngredients).isEmpty) {
+              for (Product product in products) {
+                int x = product.position.x - 1;
+                int y = product.position.y - 1;
+
+                productsList[y][x].isSelected = true;
+              }
+
+              if (catMeals.contains(entries.value.meal)) {
+                mealsOnBoardByCat.add(products);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return mealsOnBoardByCat;
+  }
+
+
+
+  Set<Ingredient> _createIngredientSet(Set<Product> products) {
+    Set<Ingredient> ingredients = {};
+
+    for (Product product in products) {
+      ingredients.add(product.ingredient);
+    }
+
+    return ingredients;
+  }
+
+// void _onSlidePuzzleReset(SlidePuzzleReset event, Emitter<SlidePuzzleState> emit) {
+//   final puzzle = _generatePuzzle(_size);
+//   emit(
+//     PuzzleState(
+//       puzzle: puzzle.sort(),
+//       numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
+//     ),
+//   );
+// }
+
+
 }
