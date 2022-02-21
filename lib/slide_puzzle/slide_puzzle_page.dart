@@ -8,6 +8,7 @@ import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
+import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/product_builder_widget.dart';
 
 class SlidePuzzlePage extends StatelessWidget {
@@ -60,13 +61,18 @@ class SlidePuzzleView extends StatelessWidget {
 
   Widget buildPuzzle(BuildContext context) {
     var puzzle = context.select((SlidePuzzleBloc bloc) => bloc.state.puzzle);
-    var count = context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfMoves);
-    debugPrint("Numer of moves count $count");
+    var count =
+        context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfMoves);
+    var numberOfTilesLeft =
+        context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfCorrectTiles);
+    var cats = context.select((SlidePuzzleBloc bloc) => bloc.cats);
+    debugPrint("Number of moves count $count");
 
     var productTable = puzzle.products;
     var products = <Widget>[];
 
-    var puzzleStatus = context.select((SlidePuzzleBloc bloc) => bloc.state.puzzleStatus);
+    var puzzleStatus =
+        context.select((SlidePuzzleBloc bloc) => bloc.state.puzzleStatus);
 
     if (puzzleStatus == PuzzleStatus.complete) {
       return _gameFinishOverlay(context);
@@ -74,7 +80,7 @@ class SlidePuzzleView extends StatelessWidget {
 
     for (List<Product> productsList in productTable) {
       for (Product product in productsList) {
-        products.add(itemBuilder(context, product));
+        products.add(_itemBuilder(context, product));
       }
     }
 
@@ -85,16 +91,22 @@ class SlidePuzzleView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        boardBuilder(context, 5, products),
+        _boardBuilder(context, 5, products),
+        Column(
+          children: [
+            CatsBuilder(cats: cats),
+            _statistics(count, numberOfTilesLeft),
+          ],
+        ),
       ],
     );
   }
 
-  Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
+  Widget _boardBuilder(BuildContext context, int size, List<Widget> products) {
     return Container(
       padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.width,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.height / 1.2,
       child: Column(
         children: [
           const Gap(10),
@@ -115,12 +127,43 @@ class SlidePuzzleView extends StatelessWidget {
     );
   }
 
-  Widget itemBuilder(BuildContext context, Product product) {
+  Widget _statistics(int moves, int dishes) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          child: Text(
+            "Number of moves $moves",
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 24,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        Container(
+          child: Text(
+            "Number of prepared dishes $dishes",
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 24,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _itemBuilder(BuildContext context, Product product) {
     return TextButton(
       onPressed: () {
         context.read<SlidePuzzleBloc>().add(ProductTapped(product));
       },
-      child: ProductBuilder(product: product, size: Size(100, 100),),
+      child: ProductBuilder(
+        product: product,
+        size: Size(100, 100),
+      ),
     );
   }
 
@@ -156,13 +199,12 @@ class SlidePuzzleView extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
               ).copyWith(
                 backgroundColor:
-                MaterialStateProperty.all(Colors.white.withOpacity(0.8)),
+                    MaterialStateProperty.all(Colors.white.withOpacity(0.8)),
                 foregroundColor: MaterialStateProperty.all(Colors.white),
               ),
               onPressed: () {
-                context
-                    .read<SlidePuzzleBloc>()
-                    .add(const SlidePuzzleInitialized(shufflePuzzle: true, size: 6));
+                context.read<SlidePuzzleBloc>().add(
+                    const SlidePuzzleInitialized(shufflePuzzle: true, size: 6));
               },
               child: const Text(
                 "Restart",

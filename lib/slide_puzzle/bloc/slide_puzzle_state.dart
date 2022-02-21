@@ -19,10 +19,7 @@ class SlidePuzzleState extends Equatable {
 
   final TileMovementStatus tileMovementStatus;
 
-
   final int numberOfCorrectTiles;
-
-  int get numberOfTilesLeft => puzzle.products.length - numberOfCorrectTiles - 1;
 
   final int numberOfMoves;
 

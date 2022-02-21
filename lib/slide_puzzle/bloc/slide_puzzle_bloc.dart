@@ -122,8 +122,10 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
           emit(
             state.copyWith(
               puzzle: puzzle,
+              puzzleStatus: puzzleStatus,
               tileMovementStatus: TileMovementStatus.moved,
               numberOfMoves: state.numberOfMoves + 1,
+              numberOfCorrectTiles: numberOfCorrectProducts,
             ),
           );
         }
