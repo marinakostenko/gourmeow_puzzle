@@ -199,6 +199,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         cuisine: Cuisine.none,
         position: const BoardPosition(x: -1, y: -1),
         positions: [],
+        image: const AssetImage("assets/images/default.png"),
       );
 
       emptyProducts.add(product);

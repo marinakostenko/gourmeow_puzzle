@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:gourmeow_puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 
@@ -11,6 +12,7 @@ class Cat {
   Cuisine cuisine;
   BoardPosition position;
   List<BoardPosition> positions;
+  AssetImage image;
 
   Cat({
     required this.color,
@@ -20,6 +22,7 @@ class Cat {
     required this.cuisine,
     required this.position,
     required this.positions,
+    required this.image,
   });
 
   @override
@@ -33,7 +36,8 @@ class Cat {
           livesCount == other.livesCount &&
           cuisine == other.cuisine &&
           position == other.position &&
-          positions == other.positions;
+          positions == other.positions &&
+          image == other.image;
 
   @override
   int get hashCode =>
@@ -43,5 +47,6 @@ class Cat {
       livesCount.hashCode ^
       cuisine.hashCode ^
       position.hashCode ^
-      positions.hashCode;
+      positions.hashCode ^
+      image.hashCode;
 }

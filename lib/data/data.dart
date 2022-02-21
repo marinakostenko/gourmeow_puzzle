@@ -66,6 +66,7 @@ class Data {
       cuisine: Cuisine.none,
       position: const BoardPosition(x: -1, y: -1),
       positions: [],
+      image: const AssetImage("assets/images/default.png"),
     ),
   );
 
@@ -210,15 +211,17 @@ class Data {
       cuisine: Cuisine.american,
       position: const BoardPosition(x: -1, y: -1),
       positions: [],
+      image: const AssetImage("assets/images/cats/american_cat.png"),
     );
     Cat greenCat = Cat(
-      color: Colors.green,
+      color: Colors.pinkAccent,
       meal: const Meal(meal: Meals.none),
       meals: [],
       livesCount: 3,
       cuisine: Cuisine.french,
       position: const BoardPosition(x: -1, y: -1),
       positions: [],
+      image: const AssetImage("assets/images/cats/french_cat.png"),
     );
     Cat gingerCat = Cat(
       color: Colors.orange,
@@ -228,6 +231,7 @@ class Data {
       cuisine: Cuisine.asian,
       position: const BoardPosition(x: -1, y: -1),
       positions: [],
+      image: const AssetImage("assets/images/cats/asian_cat.png"),
     );
 
     cats.add(blueCat);

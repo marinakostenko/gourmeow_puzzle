@@ -185,21 +185,27 @@ class PuzzleView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
+          height: MediaQuery.of(context).size.height,
           width: 200,
           child: ListView(
             // scrollDirection: Axis.horizontal,
             children: List.generate(cats.length, (index) {
               Cat cat = cats.elementAt(index);
+              AssetImage image = cat.image;
 
               return Container(
                 margin: const EdgeInsets.all(10),
                 alignment: Alignment.center,
-                height: 100,
+                height: 200,
                 width: 200,
                 decoration: BoxDecoration(
-                  color: cat.color,
+                 // color: cat.color,
                   borderRadius: BorderRadius.circular(5),
+                  image: DecorationImage(
+                    image: image,
+                    alignment: Alignment.center,
+                    repeat: ImageRepeat.noRepeat,
+                  ),
                 ),
                 child: Text(
                   cat.meal.meal.name + "\n" + cat.livesCount.toString(),
