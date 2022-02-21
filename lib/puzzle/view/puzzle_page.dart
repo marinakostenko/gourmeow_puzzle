@@ -9,6 +9,7 @@ import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
 import 'package:gourmeow_puzzle/timer/ticker.dart';
 import 'package:gourmeow_puzzle/timer/timer_countdown.dart';
+import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 
 import 'drag_drop_widget.dart';
 
@@ -184,38 +185,7 @@ class PuzzleView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: 200,
-          child: ListView(
-            // scrollDirection: Axis.horizontal,
-            children: List.generate(cats.length, (index) {
-              Cat cat = cats.elementAt(index);
-              AssetImage image = cat.image;
-
-              return Container(
-                margin: const EdgeInsets.all(10),
-                alignment: Alignment.center,
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                 // color: cat.color,
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                    image: image,
-                    alignment: Alignment.center,
-                    repeat: ImageRepeat.noRepeat,
-                  ),
-                ),
-                child: Text(
-                  cat.meal.meal.name + "\n" + cat.livesCount.toString(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                ),
-              );
-            }),
-          ),
-        ),
+        CatsBuilder(cats: cats),
         Container(
           width: 100,
           height: 100,
