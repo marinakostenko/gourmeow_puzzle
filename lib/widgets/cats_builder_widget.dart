@@ -45,7 +45,7 @@ class CatsBuilder extends StatelessWidget {
   }
 
   Widget _mealAndLives(Cat cat) {
-    if (cat.meal == Meals.none && !cat.meals.isEmpty) {
+    if (cat.meal.meal == Meals.none && cat.meals.isNotEmpty) {
       return Container();
     }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
+import 'package:gourmeow_puzzle/widgets/product_builder_widget.dart';
 
 class DragDrop extends StatelessWidget {
   final Product product;
@@ -24,19 +25,19 @@ class DragDrop extends StatelessWidget {
         maxSimultaneousDrags: 1,
         data: product,
         dragAnchorStrategy: pointerDragAnchorStrategy,
-        feedback: _productCard(product, Colors.black),
+        feedback: ProductBuilder(product: product, size: Size(50, 50),),
         onDragStarted: () async {
           onDragStart(product);
         },
         childWhenDragging: Container(),
-        child: _productCard(product, Colors.black),
+        child: ProductBuilder(product: product, size: Size(50, 50)),
       );
     }
 
     if (product.draggable == Drag.drop) {
       return DragTarget<Product>(
         builder: (context, candidateItems, rejectedItem) {
-          return _productCard(product, Colors.indigo);
+          return ProductBuilder(product: product, size: Size(50, 50));
         },
         onAccept: (Product targetProduct) {
           onDragAccept(product, targetProduct);
@@ -45,44 +46,5 @@ class DragDrop extends StatelessWidget {
     }
 
     return Container();
-  }
-
-  Widget _productCard(Product product, Color textColor) {
-    String productName = product.ingredient.ingredient.name;
-    AssetImage image = product.ingredient.ingredient.ingredientImage;
-
-    if(product.meal.meal != Meals.none) {
-      productName = product.meal.meal.name;
-      image = product.meal.meal.mealImage;
-    }
-
-    Color backgroundColor = (product.cat.color != Colors.white)
-        ? product.cat.color
-        : Colors.blueGrey;
-    Color borderColor = (product.isSelected) ? Colors.yellow : Colors.transparent;
-
-    if(product.ingredient.ingredient == Ingredients.none && product.meal.meal == Meals.none) {
-      productName = "";
-      backgroundColor = (product.cat.color != Colors.white)
-          ? product.cat.color
-          : Colors.transparent;
-      borderColor = Colors.transparent;
-    }
-
-    return Container(
-      alignment: Alignment.center,
-      height: 20,
-      width: 20,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-            image: image,
-            alignment: Alignment.center,
-            repeat: ImageRepeat.noRepeat,
-          ),
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(width: 2, color: borderColor),
-      ),
-    );
   }
 }

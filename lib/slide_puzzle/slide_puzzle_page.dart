@@ -8,6 +8,7 @@ import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
+import 'package:gourmeow_puzzle/widgets/product_builder_widget.dart';
 
 class SlidePuzzlePage extends StatelessWidget {
   const SlidePuzzlePage({Key? key}) : super(key: key);
@@ -115,41 +116,11 @@ class SlidePuzzleView extends StatelessWidget {
   }
 
   Widget itemBuilder(BuildContext context, Product product) {
-    AssetImage image = product.ingredient.ingredient.ingredientImage;
-
-    Color backgroundColor = (product.cat.color != Colors.white)
-        ? product.cat.color
-        : Colors.white;
-    Color borderColor = (product.isSelected) ? Colors.yellow : Colors.transparent;
-
-    if(product.ingredient.ingredient == Ingredients.none) {
-      backgroundColor = (product.cat.color != Colors.white)
-          ? product.cat.color
-          : Colors.transparent;
-      borderColor = Colors.transparent;
-    }
-
     return TextButton(
       onPressed: () {
         context.read<SlidePuzzleBloc>().add(ProductTapped(product));
       },
-      child: Container(
-        margin: EdgeInsets.all(10),
-        alignment: Alignment.center,
-        height: 80,
-        width: 80,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: image,
-            alignment: Alignment.center,
-            repeat: ImageRepeat.noRepeat,
-          ),
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(width: 2, color: borderColor),
-        ),
-      ),
-
+      child: ProductBuilder(product: product, size: Size(100, 100),),
     );
   }
 
