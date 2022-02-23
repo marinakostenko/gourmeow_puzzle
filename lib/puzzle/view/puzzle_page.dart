@@ -14,20 +14,24 @@ import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 
 import 'drag_drop_widget.dart';
 
-class PuzzlePage extends StatelessWidget {
+class PuzzlePage extends StatefulWidget {
   const PuzzlePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const PuzzleView();
-  }
+  _PuzzlePageState createState() => _PuzzlePageState();
 }
 
-class PuzzleView extends StatelessWidget {
-  const PuzzleView({Key? key}) : super(key: key);
+class _PuzzlePageState extends State<PuzzlePage> {
+  dynamic size;
+  dynamic ratio;
+  dynamic boardHeightWidth;
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    ratio = size.width / size.height;
+    boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -128,35 +132,51 @@ class PuzzleView extends StatelessWidget {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        boardBuilder(context, 6, products),
-        catBuilder(context, cats),
-      ],
-    );
+    if (ratio < 1) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _boardBuilder(context, 6, products),
+          CatsBuilder(cats: cats),
+          timeBuilder(context, cats),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _boardBuilder(context, 6, products),
+          Column(
+            children: [
+              CatsBuilder(cats: cats),
+              timeBuilder(context, cats),
+            ],
+          ),
+        ],
+      );
+    }
   }
 
-  Widget boardBuilder(BuildContext context, int size, List<Widget> products) {
+  Widget _boardBuilder(BuildContext context, int boardSize, List<Widget> products) {
+    double boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
+
     return Container(
-      padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.height / 1.2,
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(boardHeightWidth * 0.01),
+      height: boardHeightWidth,
+      width: boardHeightWidth,
       child: Column(
         children: [
-          const Gap(10),
           GridView.count(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
-            crossAxisCount: size,
+            crossAxisCount: boardSize,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
+            mainAxisSpacing: boardHeightWidth * 0.01,
+            crossAxisSpacing: boardHeightWidth * 0.01,
             children: products,
-          ),
-          const Gap(
-            10,
           ),
         ],
       ),
@@ -184,11 +204,10 @@ class PuzzleView extends StatelessWidget {
     );
   }
 
-  Widget catBuilder(BuildContext context, List<Cat> cats) {
+  Widget timeBuilder(BuildContext context, List<Cat> cats) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        CatsBuilder(cats: cats),
         Container(
           width: 100,
           height: 100,
