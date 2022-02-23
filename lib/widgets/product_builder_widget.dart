@@ -47,6 +47,7 @@ class ProductBuilder extends StatelessWidget {
         image: DecorationImage(
           image: image,
           alignment: Alignment.center,
+          fit: BoxFit.fill,
           repeat: ImageRepeat.noRepeat,
         ),
         color: backgroundColor,

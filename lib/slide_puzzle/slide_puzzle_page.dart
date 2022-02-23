@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
@@ -17,13 +16,15 @@ class SlidePuzzlePage extends StatefulWidget {
 }
 
 class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
-  late Size size;
-  late double ratio;
+  dynamic size;
+  dynamic ratio;
+  dynamic boardHeightWidth;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     ratio = size.width / size.height;
+    boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
 
     return Scaffold(
       appBar: AppBar(
@@ -114,19 +115,18 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         ],
       );
     }
-
   }
 
   Widget _boardBuilder(
       BuildContext context, int boardSize, List<Widget> products) {
     double boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
     return Container(
-      //padding: EdgeInsets.all(boardHeightWidth * 0.01),
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(boardHeightWidth * 0.01),
       height: boardHeightWidth,
       width: boardHeightWidth,
       child: Column(
         children: [
-         // Gap(boardHeightWidth * 0.01),
           GridView.count(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
@@ -136,48 +136,58 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
             crossAxisSpacing: boardHeightWidth * 0.01,
             children: products,
           ),
-         // Gap(boardHeightWidth * 0.01),
         ],
       ),
     );
   }
 
   Widget _statistics(int moves, int dishes) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          child: Text(
-            "Number of moves $moves",
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 24,
-              color: Colors.white,
+    double fontSize = ratio < 1 ? size.height * 0.03 : size.width * 0.015;
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(fontSize),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            child: Text(
+              "Number of moves $moves",
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: fontSize,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
             ),
           ),
-        ),
-        Container(
-          child: Text(
-            "Number of prepared dishes $dishes",
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 24,
-              color: Colors.white,
+          SizedBox(
+            height: fontSize * 0.8,
+          ),
+          Container(
+            child: Text(
+              "Prepared dishes $dishes / 8",
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: fontSize,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _itemBuilder(BuildContext context, Product product) {
-    return TextButton(
+    double itemSize = boardHeightWidth / 5;
+    return MaterialButton(
+      padding: EdgeInsets.zero,
       onPressed: () {
         context.read<SlidePuzzleBloc>().add(ProductTapped(product));
       },
       child: ProductBuilder(
         product: product,
-        size: Size(100, 100),
+        size: Size(itemSize, itemSize),
       ),
     );
   }

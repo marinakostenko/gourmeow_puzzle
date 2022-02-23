@@ -12,20 +12,28 @@ class Recipes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () => {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return RecipesModal(
-                 cuisine: cuisine,
-              );
-            }),
-      },
-      icon: const Icon(
-        Icons.book_rounded,
-        size: 20,
-        color: Colors.white,
+    Size size = MediaQuery.of(context).size;
+    double ratio = size.width / size.height;
+    double iconSize = ratio < 1 ? size.width * 0.05 : size.height * 0.05;
+
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(iconSize * 0.1),
+      child: IconButton(
+        onPressed: () => {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return RecipesModal(
+                  cuisine: cuisine,
+                );
+              }),
+        },
+        icon: Icon(
+          Icons.book_rounded,
+          size: iconSize,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -11,11 +11,19 @@ class CatsBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double ratio = size.width / size.height;
+
+    double catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.5;
+    double catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.5;
+
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
-      width: MediaQuery.of(context).size.width * 0.5,
+      height: catsHeight,
+      width: catsWidth,
       child: ListView(
         scrollDirection: Axis.horizontal,
+        physics: const NeverScrollableScrollPhysics(),
+
         children: List.generate(cats.length, (index) {
           Cat cat = cats.elementAt(index);
           AssetImage image = cat.image;
@@ -25,10 +33,9 @@ class CatsBuilder extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.all(10),
                 alignment: Alignment.center,
-                height: 200,
-                width: 200,
+                height: catsHeight * 0.5,
+                width: catsWidth / 3.5,
                 decoration: BoxDecoration(
-                  // color: cat.color,
                   borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
                     image: image,
@@ -37,7 +44,7 @@ class CatsBuilder extends StatelessWidget {
                   ),
                 ),
               ),
-              _mealAndLives(cat),
+              _mealAndLives(cat, Size(catsWidth, catsHeight)),
               _recipes(cat),
             ],
           );
@@ -46,7 +53,7 @@ class CatsBuilder extends StatelessWidget {
     );
   }
 
-  Widget _mealAndLives(Cat cat) {
+  Widget _mealAndLives(Cat cat, Size size) {
     if (cat.meal.meal == Meals.none && cat.meals.isNotEmpty) {
       return Container();
     }
@@ -56,8 +63,8 @@ class CatsBuilder extends StatelessWidget {
         Container(
           margin: const EdgeInsets.all(10),
           alignment: Alignment.center,
-          height: 100,
-          width: 100,
+          height: size.width * 0.2,
+          width: size.width * 0.2,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: cat.meal.meal.mealImage,
@@ -70,16 +77,16 @@ class CatsBuilder extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(3, (index) {
             if (index < cat.livesCount) {
-              return const Icon(
+              return Icon(
                 CupertinoIcons.heart_fill,
                 color: Colors.red,
-                size: 20,
+                size: size.width * 0.05,
               );
             } else {
-              return const Icon(
+              return Icon(
                 CupertinoIcons.heart,
                 color: Colors.red,
-                size: 20,
+                size: size.width * 0.05,
               );
             }
           }),

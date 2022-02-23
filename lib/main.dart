@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gourmeow_puzzle/config/main_theme.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/puzzle/view/puzzle_page.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
@@ -20,9 +21,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Gourmeow Puzzle',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: MainThemeData.themeData(),
         home: const MainPage(),
       ),
     );
