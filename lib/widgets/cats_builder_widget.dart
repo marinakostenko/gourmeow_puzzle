@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
+import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 
 class CatsBuilder extends StatelessWidget {
   final List<Cat> cats;
@@ -37,6 +38,7 @@ class CatsBuilder extends StatelessWidget {
                 ),
               ),
               _mealAndLives(cat),
+              _recipes(cat),
             ],
           );
         }),
@@ -68,13 +70,13 @@ class CatsBuilder extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(3, (index) {
             if (index < cat.livesCount) {
-              return Icon(
+              return const Icon(
                 CupertinoIcons.heart_fill,
                 color: Colors.red,
                 size: 20,
               );
             } else {
-              return Icon(
+              return const Icon(
                 CupertinoIcons.heart,
                 color: Colors.red,
                 size: 20,
@@ -83,6 +85,13 @@ class CatsBuilder extends StatelessWidget {
           }),
         ),
       ],
+    );
+  }
+
+  Widget _recipes(Cat cat) {
+    return Recipes(
+      isMobile: false,
+      cuisine: cat.cuisine,
     );
   }
 }

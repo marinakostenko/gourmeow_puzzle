@@ -5,7 +5,7 @@ class RecipesState extends Equatable {
 
   const RecipesState({
     this.recipes = const <Recipe>[],
-  });
+});
 
   RecipesState copyWith({
     List<Recipe>? recipes,
@@ -17,6 +17,6 @@ class RecipesState extends Equatable {
 
   @override
   List<Object?> get props => [
-        recipes,
-      ];
+    recipes,
+  ];
 }

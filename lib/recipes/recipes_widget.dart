@@ -1,36 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/recipe.dart';
 import 'package:gourmeow_puzzle/recipes/bloc/recipes_bloc.dart';
 
 class Recipes extends StatelessWidget {
   final bool isMobile;
+  final Cuisine cuisine;
 
-  const Recipes({Key? key, required this.isMobile}) : super(key: key);
+  const Recipes({Key? key, required this.isMobile, required this.cuisine})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: () => {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return RecipesModal(
-                      isMobile: isMobile,
-                    );
-                  }),
-            },
-        icon: const Icon(
-          Icons.book_rounded,
-          size: 20,
-        ));
+      onPressed: () => {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return RecipesModal(
+                isMobile: isMobile, cuisine: cuisine,
+              );
+            }),
+      },
+      icon: const Icon(
+        Icons.book_rounded,
+        size: 20,
+        color: Colors.white,
+      ),
+    );
   }
 }
 
 class RecipesModal extends StatefulWidget {
   final bool isMobile;
+  final Cuisine cuisine;
 
-  const RecipesModal({Key? key, required this.isMobile}) : super(key: key);
+  const RecipesModal({Key? key, required this.isMobile, required this.cuisine}) : super(key: key);
 
   @override
   _RecipesModalState createState() => _RecipesModalState();
@@ -40,16 +46,18 @@ class _RecipesModalState extends State<RecipesModal> {
   dynamic size;
   dynamic dialogWidth;
   dynamic dialogHeight;
+  dynamic cuisine = Cuisine.none;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    cuisine = widget.cuisine;
     dialogWidth = widget.isMobile ? size.width * 0.95 : size.width * 0.8;
     dialogHeight = widget.isMobile ? size.height * 0.6 : size.height * 0.9;
 
     return BlocProvider<RecipesBloc>(
       create: (context) {
-        return RecipesBloc()..add(const RecipesInitialized());
+        return RecipesBloc()..add(RecipesInitialized(cuisine));
       },
       child: BlocBuilder<RecipesBloc, RecipesState>(
         builder: (context, state) {
@@ -79,6 +87,7 @@ class _RecipesModalState extends State<RecipesModal> {
   }
 
   Widget _dialogView(List<Recipe> recipes) {
+
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -96,6 +105,7 @@ class _RecipesModalState extends State<RecipesModal> {
   }
 
   Widget _recipeRow(Recipe recipe) {
+
     return Container(
       margin: const EdgeInsets.all(30),
       child: Row(
@@ -111,7 +121,7 @@ class _RecipesModalState extends State<RecipesModal> {
                 alignment: Alignment.center,
                 repeat: ImageRepeat.noRepeat,
               ),
-              color: Colors.black12,
+              color: recipe.dishColor,
               borderRadius: BorderRadius.circular(5),
             ),
           ),
@@ -134,7 +144,7 @@ class _RecipesModalState extends State<RecipesModal> {
                 alignment: Alignment.center,
                 repeat: ImageRepeat.noRepeat,
               ),
-              color: Colors.black12,
+              color: recipe.dishColor,
               borderRadius: BorderRadius.circular(5),
             ),
           ),
@@ -157,7 +167,7 @@ class _RecipesModalState extends State<RecipesModal> {
                 alignment: Alignment.center,
                 repeat: ImageRepeat.noRepeat,
               ),
-              color: Colors.black12,
+              color: recipe.dishColor,
               borderRadius: BorderRadius.circular(5),
             ),
           ),
@@ -180,7 +190,7 @@ class _RecipesModalState extends State<RecipesModal> {
                 alignment: Alignment.center,
                 repeat: ImageRepeat.noRepeat,
               ),
-              color: Colors.black12,
+              color: recipe.dishColor,
               borderRadius: BorderRadius.circular(5),
             ),
           ),

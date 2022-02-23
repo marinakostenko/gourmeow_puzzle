@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
@@ -31,7 +32,7 @@ class PuzzleView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         actions: const [
-          Recipes(isMobile: false),
+          Recipes(isMobile: false, cuisine: Cuisine.none,),
         ],
       ),
       backgroundColor: Colors.black,

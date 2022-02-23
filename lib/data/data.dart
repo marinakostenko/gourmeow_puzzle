@@ -6,11 +6,11 @@ import 'package:gourmeow_puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/ingredient.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/models/recipe.dart';
 
 class Data {
-
   List<List<Product>> shuffleProducts(
       int dimension, List<List<Product>> products) {
     final List<List<Product>> sortedProducts = [];
@@ -340,7 +340,7 @@ class Data {
 
     var shuffled = shuffleProducts(size, products);
 
-    return {catsReturn : shuffled};
+    return {catsReturn: shuffled};
   }
 
   Map<int, List<BoardPosition>> _createBoard(int x, int y) {
@@ -590,15 +590,39 @@ class Data {
   List<Recipe> recipesList() {
     List<Recipe> recipes = [];
 
+    List<Meals> asianMeals = CuisineExt.getMealsByCuisine(Cuisine.asian);
+    List<Meals> americanMeals = CuisineExt.getMealsByCuisine(Cuisine.american);
+    List<Meals> frenchMeals = CuisineExt.getMealsByCuisine(Cuisine.french);
+
     mealIngredients.forEach((key, value) {
       List<AssetImage> ingredientImages = [];
       for (var element in key) {
         ingredientImages.add(element.ingredient.ingredientImage);
       }
+      Cuisine cuisine = Cuisine.none;
+      Color dishColor = Colors.black12;
+
+      if (asianMeals.contains(value.meal)) {
+        cuisine = Cuisine.asian;
+        dishColor = Colors.orange;
+      }
+      if (americanMeals.contains(value.meal)) {
+        cuisine = Cuisine.american;
+        dishColor = Colors.blue;
+      }
+      if (frenchMeals.contains(value.meal)) {
+        cuisine = Cuisine.french;
+        dishColor = Colors.pinkAccent;
+      }
+
       Recipe recipe = Recipe(
-          meal: value.meal,
-          mealImage: value.meal.mealImage,
-          ingredientsImages: ingredientImages);
+        meal: value.meal,
+        mealImage: value.meal.mealImage,
+        ingredientsImages: ingredientImages,
+        cuisine: cuisine,
+        dishColor: dishColor,
+      );
+
       recipes.add(recipe);
     });
 

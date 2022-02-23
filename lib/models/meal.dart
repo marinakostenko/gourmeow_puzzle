@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import 'cat.dart';
+
 class Meal extends Equatable {
   final Meals meal;
 

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:gourmeow_puzzle/models/cat.dart';
-import 'package:gourmeow_puzzle/models/ingredient.dart';
+import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
-import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
@@ -29,7 +27,10 @@ class SlidePuzzleView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         actions: const [
-          Recipes(isMobile: false),
+          Recipes(
+            isMobile: false,
+            cuisine: Cuisine.none,
+          ),
         ],
       ),
       backgroundColor: Colors.black,
@@ -63,8 +64,8 @@ class SlidePuzzleView extends StatelessWidget {
     var puzzle = context.select((SlidePuzzleBloc bloc) => bloc.state.puzzle);
     var count =
         context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfMoves);
-    var numberOfTilesLeft =
-        context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfCorrectTiles);
+    var numberOfTilesLeft = context
+        .select((SlidePuzzleBloc bloc) => bloc.state.numberOfCorrectTiles);
     var cats = context.select((SlidePuzzleBloc bloc) => bloc.cats);
     debugPrint("Number of moves count $count");
 

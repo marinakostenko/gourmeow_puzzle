@@ -19,7 +19,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
   SlidePuzzleBloc() : super(const SlidePuzzleState()) {
     on<SlidePuzzleInitialized>(_onSlidePuzzleInitialized);
     on<ProductTapped>(_onProductTapped);
-    // on<SlidePuzzleReset>(_onSlidePuzzleReset);
   }
 
   List<List<Product>> productsList = [];

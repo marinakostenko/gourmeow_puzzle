@@ -8,8 +8,9 @@ abstract class RecipesEvent extends Equatable {
 }
 
 class RecipesInitialized extends RecipesEvent {
-  const RecipesInitialized();
+  final Cuisine cuisine;
+  const RecipesInitialized(this.cuisine);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [cuisine];
 }
