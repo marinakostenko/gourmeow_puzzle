@@ -9,31 +9,32 @@ import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/product_builder_widget.dart';
 
-class SlidePuzzlePage extends StatelessWidget {
+class SlidePuzzlePage extends StatefulWidget {
   const SlidePuzzlePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const SlidePuzzleView();
-  }
+  _SlidePuzzlePageState createState() => _SlidePuzzlePageState();
 }
 
-class SlidePuzzleView extends StatelessWidget {
-  const SlidePuzzleView({Key? key}) : super(key: key);
+class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
+  late Size size;
+  late double ratio;
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    ratio = size.width / size.height;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.primaryVariant,
         actions: const [
           Recipes(
-            isMobile: false,
             cuisine: Cuisine.none,
           ),
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 530),
         child: MultiBlocProvider(
@@ -85,44 +86,57 @@ class SlidePuzzleView extends StatelessWidget {
       }
     }
 
-    final size = puzzle.getDimension();
-    if (size == 0) return const CircularProgressIndicator();
+    final puzzleSize = puzzle.getDimension();
+    if (puzzleSize == 0) return const CircularProgressIndicator();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _boardBuilder(context, 5, products),
-        Column(
-          children: [
-            CatsBuilder(cats: cats),
-            _statistics(count, numberOfTilesLeft),
-          ],
-        ),
-      ],
-    );
+    if (ratio < 1) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _statistics(count, numberOfTilesLeft),
+          _boardBuilder(context, 5, products),
+          CatsBuilder(cats: cats),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _boardBuilder(context, 5, products),
+          Column(
+            children: [
+              CatsBuilder(cats: cats),
+              _statistics(count, numberOfTilesLeft),
+            ],
+          ),
+        ],
+      );
+    }
+
   }
 
-  Widget _boardBuilder(BuildContext context, int size, List<Widget> products) {
+  Widget _boardBuilder(
+      BuildContext context, int boardSize, List<Widget> products) {
+    double boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
     return Container(
-      padding: const EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.height / 1.2,
+      //padding: EdgeInsets.all(boardHeightWidth * 0.01),
+      height: boardHeightWidth,
+      width: boardHeightWidth,
       child: Column(
         children: [
-          const Gap(10),
+         // Gap(boardHeightWidth * 0.01),
           GridView.count(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
-            crossAxisCount: size,
+            crossAxisCount: boardSize,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
+            mainAxisSpacing: boardHeightWidth * 0.01,
+            crossAxisSpacing: boardHeightWidth * 0.01,
             children: products,
           ),
-          const Gap(
-            10,
-          ),
+         // Gap(boardHeightWidth * 0.01),
         ],
       ),
     );

@@ -5,10 +5,9 @@ import 'package:gourmeow_puzzle/models/recipe.dart';
 import 'package:gourmeow_puzzle/recipes/bloc/recipes_bloc.dart';
 
 class Recipes extends StatelessWidget {
-  final bool isMobile;
   final Cuisine cuisine;
 
-  const Recipes({Key? key, required this.isMobile, required this.cuisine})
+  const Recipes({Key? key,  required this.cuisine})
       : super(key: key);
 
   @override
@@ -19,7 +18,7 @@ class Recipes extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return RecipesModal(
-                isMobile: isMobile, cuisine: cuisine,
+                 cuisine: cuisine,
               );
             }),
       },
@@ -33,10 +32,9 @@ class Recipes extends StatelessWidget {
 }
 
 class RecipesModal extends StatefulWidget {
-  final bool isMobile;
   final Cuisine cuisine;
 
-  const RecipesModal({Key? key, required this.isMobile, required this.cuisine}) : super(key: key);
+  const RecipesModal({Key? key, required this.cuisine}) : super(key: key);
 
   @override
   _RecipesModalState createState() => _RecipesModalState();
@@ -47,13 +45,16 @@ class _RecipesModalState extends State<RecipesModal> {
   dynamic dialogWidth;
   dynamic dialogHeight;
   dynamic cuisine = Cuisine.none;
+  dynamic ratio;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    ratio = size.width / size.height;
+
     cuisine = widget.cuisine;
-    dialogWidth = widget.isMobile ? size.width * 0.95 : size.width * 0.8;
-    dialogHeight = widget.isMobile ? size.height * 0.6 : size.height * 0.9;
+    dialogWidth = ratio < 1 ? size.width * 0.95 : size.width * 0.8;
+    dialogHeight = ratio < 1 ? size.height * 0.6 : size.height * 0.9;
 
     return BlocProvider<RecipesBloc>(
       create: (context) {

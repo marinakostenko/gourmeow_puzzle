@@ -32,7 +32,9 @@ class PuzzleView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         actions: const [
-          Recipes(isMobile: false, cuisine: Cuisine.none,),
+          Recipes(
+            cuisine: Cuisine.none,
+          ),
         ],
       ),
       backgroundColor: Colors.black,

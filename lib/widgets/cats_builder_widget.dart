@@ -12,7 +12,7 @@ class CatsBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.6,
       width: MediaQuery.of(context).size.width * 0.5,
       child: ListView(
         scrollDirection: Axis.horizontal,
@@ -90,7 +90,6 @@ class CatsBuilder extends StatelessWidget {
 
   Widget _recipes(Cat cat) {
     return Recipes(
-      isMobile: false,
       cuisine: cat.cuisine,
     );
   }
