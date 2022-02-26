@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gourmeow_puzzle/audio_player/bloc/audio_control_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/widgets/audio_control_widget.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
+import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_button.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/product_builder_widget.dart';
 
@@ -26,7 +28,6 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     size = MediaQuery.of(context).size;
     ratio = size.width / size.height;
     boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
-
 
     return Scaffold(
       appBar: AppBar(
@@ -49,6 +50,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
                   const SlidePuzzleInitialized(shufflePuzzle: true, size: 5),
                 ),
             ),
+            BlocProvider(create: (context) => AudioControlBloc()),
           ],
           child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -86,7 +88,10 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
 
     for (List<Product> productsList in productTable) {
       for (Product product in productsList) {
-        products.add(_itemBuilder(context, product));
+        products.add(SlidePuzzleButton(
+            product: product,
+            itemSize: boardHeightWidth / 5,
+            state: context.select((SlidePuzzleBloc bloc) => bloc.state)));
       }
     }
 

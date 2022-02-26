@@ -5,6 +5,8 @@ import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/puzzle/view/puzzle_page.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
 
+import 'audio_player/bloc/audio_control_bloc.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -17,6 +19,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => PuzzleBloc(),
+        ),
+        BlocProvider(
+        create: (context) => AudioControlBloc(),
         ),
       ],
       child: MaterialApp(
