@@ -54,6 +54,7 @@ class _RecipesModalState extends State<RecipesModal> {
   dynamic dialogHeight;
   dynamic cuisine = Cuisine.none;
   dynamic ratio;
+  dynamic iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +62,9 @@ class _RecipesModalState extends State<RecipesModal> {
     ratio = size.width / size.height;
 
     cuisine = widget.cuisine;
-    dialogWidth = ratio < 1 ? size.width * 0.95 : size.width * 0.8;
-    dialogHeight = ratio < 1 ? size.height * 0.6 : size.height * 0.9;
+    dialogWidth = ratio < 1 ? size.width * 0.95 : size.width * 0.7;
+    dialogHeight = ratio < 1 ? size.height * 0.8 : size.height * 0.9;
+    iconSize = ratio < 1 ? size.width * 0.15 : size.height * 0.2;
 
     return BlocProvider<RecipesBloc>(
       create: (context) {
@@ -83,9 +85,9 @@ class _RecipesModalState extends State<RecipesModal> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primaryVariant,
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(width: 5, color: Colors.brown),
+                border: Border.all(width: 5, color: Colors.white),
               ),
               child: _dialogView(state.recipes),
             ),
@@ -114,7 +116,6 @@ class _RecipesModalState extends State<RecipesModal> {
   }
 
   Widget _recipeRow(Recipe recipe) {
-
     return Container(
       margin: const EdgeInsets.all(30),
       child: Row(
@@ -122,8 +123,8 @@ class _RecipesModalState extends State<RecipesModal> {
         children: [
           Container(
             alignment: Alignment.center,
-            height: 100,
-            width: 100,
+            height: iconSize,
+            width: iconSize,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: recipe.mealImage,
@@ -134,19 +135,20 @@ class _RecipesModalState extends State<RecipesModal> {
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-          const SizedBox(
-            width: 40,
-            height: 30,
+          Container(
+            alignment: Alignment.center,
+            width: iconSize * 0.3,
+            height: iconSize,
             child: Text(
               "=",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),
           Container(
             alignment: Alignment.center,
-            height: 100,
-            width: 100,
+            height: iconSize,
+            width: iconSize,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: recipe.ingredientsImages[0],
@@ -157,19 +159,20 @@ class _RecipesModalState extends State<RecipesModal> {
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-          const SizedBox(
-            width: 40,
-            height: 40,
+          Container(
+            alignment: Alignment.center,
+            width: iconSize * 0.3,
+            height: iconSize,
             child: Text(
               "+",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),
           Container(
             alignment: Alignment.center,
-            height: 100,
-            width: 100,
+            height: iconSize,
+            width: iconSize,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: recipe.ingredientsImages[1],
@@ -180,19 +183,20 @@ class _RecipesModalState extends State<RecipesModal> {
               borderRadius: BorderRadius.circular(5),
             ),
           ),
-          const SizedBox(
-            width: 40,
-            height: 40,
+          Container(
+            alignment: Alignment.center,
+            width: iconSize * 0.3,
+            height: iconSize,
             child: Text(
               "+",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),
           Container(
             alignment: Alignment.center,
-            height: 100,
-            width: 100,
+            height: iconSize,
+            width: iconSize,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: recipe.ingredientsImages[2],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gourmeow_puzzle/audio_player/widgets/audio_control_widget.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
@@ -26,10 +27,12 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     ratio = size.width / size.height;
     boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
 
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primaryVariant,
         actions: const [
+          AudioControl(),
           Recipes(
             cuisine: Cuisine.none,
           ),
