@@ -38,6 +38,7 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
 
   late AnimationController _controller;
   late Animation<double> _scale;
+  late Animation<Color?> _colorTween;
 
   @override
   void initState() {
@@ -55,8 +56,9 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
       ),
     );
 
-    // Delay the initialization of the audio player for performance reasons,
-    // to avoid dropping frames when the theme is changed.
+    _colorTween = ColorTween(begin: Colors.transparent, end: Colors.yellow.withOpacity(1))
+        .animate(_controller);
+
     _timer = Timer(const Duration(seconds: 1), () {
       _audioPlayer = widget._audioPlayerFactory()
         ..setAsset('audio/tile_move.mp3');
@@ -94,17 +96,29 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
           },
           child: ScaleTransition(
             scale: _scale,
-            child: MaterialButton(
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                context
-                    .read<SlidePuzzleBloc>()
-                    .add(ProductTapped(widget.product));
-                unawaited(_audioPlayer?.replay());
-              },
-              child: ProductBuilder(
-                product: widget.product,
-                size: Size(widget.itemSize, widget.itemSize),
+            child: AnimatedBuilder(
+              animation: _colorTween,
+              builder: (BuildContext context, Widget? child) => OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(width: 5, color: _colorTween.value!),
+                  padding: EdgeInsets.zero,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                ),
+                //padding: EdgeInsets.zero,
+                onPressed: () {
+                  context
+                      .read<SlidePuzzleBloc>()
+                      .add(ProductTapped(widget.product));
+                  unawaited(_audioPlayer?.replay());
+                },
+                child: ProductBuilder(
+                  product: widget.product,
+                  size: Size(widget.itemSize, widget.itemSize),
+                ),
               ),
             ),
           ),

@@ -7,5 +7,5 @@ abstract class PuzzleThemeAnimationDuration {
 
   static const logoChange = Duration(milliseconds: 530);
 
-  static const puzzleTileScale = Duration(milliseconds: 230);
+  static const puzzleTileScale = Duration(milliseconds: 130);
 }
