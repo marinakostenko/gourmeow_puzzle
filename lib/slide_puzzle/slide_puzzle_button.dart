@@ -59,7 +59,7 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
     // to avoid dropping frames when the theme is changed.
     _timer = Timer(const Duration(seconds: 1), () {
       _audioPlayer = widget._audioPlayerFactory()
-        ..setAsset('assets/audio/tile_move.mp3');
+        ..setAsset('audio/tile_move.mp3');
     });
   }
 
@@ -73,9 +73,6 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
   @override
   Widget build(BuildContext context) {
     final size = widget.state.puzzle.getDimension();
-    final puzzleIncomplete =
-        context.select((SlidePuzzleBloc bloc) => bloc.state.puzzleStatus) ==
-            PuzzleStatus.incomplete;
 
     final movementDuration = const Duration(milliseconds: 370);
 

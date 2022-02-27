@@ -75,6 +75,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         .select((SlidePuzzleBloc bloc) => bloc.state.numberOfCorrectTiles);
     var cats = context.select((SlidePuzzleBloc bloc) => bloc.cats);
     debugPrint("Number of moves count $count");
+    debugPrint("Number of tiles left $numberOfTilesLeft");
 
     var productTable = puzzle.products;
     var products = <Widget>[];
