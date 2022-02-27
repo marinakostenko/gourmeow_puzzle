@@ -62,6 +62,7 @@ class Data {
       color: Colors.white,
       meal: const Meal(meal: Meals.none),
       meals: [],
+      servedMeals: [],
       livesCount: -1,
       cuisine: Cuisine.none,
       position: const BoardPosition(x: -1, y: -1),
@@ -207,6 +208,7 @@ class Data {
       color: Colors.blue,
       meal: const Meal(meal: Meals.none),
       meals: [],
+      servedMeals: [],
       livesCount: 3,
       cuisine: Cuisine.american,
       position: const BoardPosition(x: -1, y: -1),
@@ -217,6 +219,7 @@ class Data {
       color: Colors.pinkAccent,
       meal: const Meal(meal: Meals.none),
       meals: [],
+      servedMeals: [],
       livesCount: 3,
       cuisine: Cuisine.french,
       position: const BoardPosition(x: -1, y: -1),
@@ -227,6 +230,7 @@ class Data {
       color: Colors.orange,
       meal: const Meal(meal: Meals.none),
       meals: [],
+      servedMeals: [],
       livesCount: 3,
       cuisine: Cuisine.asian,
       position: const BoardPosition(x: -1, y: -1),
@@ -256,10 +260,10 @@ class Data {
 
     List<Cat> cats = defaultCatsList();
 
-    //5 to 5 -> 24 products 3 cats = 8 products -> 3 products 3 products 2 products
+    ///5 to 5 -> 24 products 3 cats = 8 products -> 3 products 3 products 2 products
     var nums = <int>[10, 9, 6];
 
-    //decide randomly which cat will have 2 and 3 meals
+    ///decide randomly which cat will have 2 and 3 meals
     Map<Cat, int> catsMap = {};
     final _random = Random();
 
@@ -274,7 +278,7 @@ class Data {
     Map<Cat, int> sortedCatsMap = LinkedHashMap.fromIterable(sortedKeys,
         key: (k) => k, value: (k) => catsMap[k]!);
 
-    //create board
+    ///create board
     List<BoardPosition> corners = [
       const BoardPosition(x: 1, y: 1),
       const BoardPosition(x: 1, y: 5),
@@ -287,7 +291,7 @@ class Data {
         _createBoard(corners[cornerIndex].x, corners[cornerIndex].y);
     debugPrint("Corner ${corners[cornerIndex]}");
 
-    //assign meals for each cat from meals list
+    ///assign meals for each cat from meals list
     for (var entry in sortedCatsMap.entries) {
       Cat cat = entry.key;
       int? count = entry.value;

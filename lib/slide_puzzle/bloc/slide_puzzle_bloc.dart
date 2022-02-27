@@ -36,15 +36,14 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     int numberOfCorrectProducts = 0;
 
     for (var cat in cats) {
-      var matchingProducts = _checkSolution(cat);
+      var servedMeals = _checkSolution(cat);
+      cat.servedMeals = servedMeals;
 
       numberOfCorrectProducts =
-          numberOfCorrectProducts + matchingProducts.length;
+          numberOfCorrectProducts + servedMeals.length;
 
-      debugPrint(matchingProducts
-          .map((set) => set
-              .map((product) => product.ingredient.ingredient.name)
-              .toString())
+      debugPrint(servedMeals
+          .map((set) => set.meal.name)
           .toString());
     }
 
@@ -89,15 +88,14 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         int numberOfCorrectProducts = 0;
 
         for (var cat in cats) {
-          var matchingProducts = _checkSolution(cat);
+          var servedMeals = _checkSolution(cat);
+          cat.servedMeals = servedMeals;
 
           numberOfCorrectProducts =
-              numberOfCorrectProducts + matchingProducts.length;
+              numberOfCorrectProducts + servedMeals.length;
 
-          debugPrint(matchingProducts
-              .map((set) => set
-                  .map((product) => product.ingredient.ingredient.name)
-                  .toString())
+          debugPrint(servedMeals
+              .map((set) => set.meal.name)
               .toString());
         }
 
@@ -140,11 +138,10 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     }
   }
 
-  List<Set<Product>> _checkSolution(Cat cat) {
-    List<Set<Product>> mealsOnBoardByCat = [];
-
+  List<Meal> _checkSolution(Cat cat) {
     List<BoardPosition> positions = cat.positions;
     List<Meals> catMeals = [];
+    List<Meal> servedMeals = [];
     for (var meal in cat.meals) {
       catMeals.add(meal.meal);
     }
@@ -157,7 +154,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
       int x = position.x - 1;
       int y = position.y - 1;
 
-      //go horizontally
+      ///go horizontally
       if (positions.contains(BoardPosition(x: position.x + 2, y: position.y))) {
         Product product1 = productsList[y][x];
         Product product2 = productsList[y][x + 1];
@@ -182,14 +179,14 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
               }
 
               if (catMeals.contains(entries.value.meal)) {
-                mealsOnBoardByCat.add(products);
+                servedMeals.add(Meal(meal: entries.value.meal));
               }
             }
           }
         }
       }
 
-      //go vertically
+      ///go vertically
 
       if (positions.contains(BoardPosition(x: position.x, y: position.y + 2))) {
         Product product1 = productsList[y][x];
@@ -215,7 +212,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
               }
 
               if (catMeals.contains(entries.value.meal)) {
-                mealsOnBoardByCat.add(products);
+                servedMeals.add(Meal(meal: entries.value.meal));
               }
             }
           }
@@ -223,7 +220,9 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
       }
     }
 
-    return mealsOnBoardByCat;
+
+
+    return servedMeals;
   }
 
   Set<Ingredient> _createIngredientSet(Set<Product> products) {

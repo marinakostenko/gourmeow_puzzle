@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
@@ -138,7 +137,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _boardBuilder(context, 6, products),
-          CatsBuilder(cats: cats),
+          CatsBuilder(
+            cats: cats,
+          ),
           timeBuilder(context, cats),
         ],
       );
@@ -150,7 +151,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
           _boardBuilder(context, 6, products),
           Column(
             children: [
-              CatsBuilder(cats: cats),
+              CatsBuilder(
+                cats: cats,
+              ),
               timeBuilder(context, cats),
             ],
           ),
@@ -159,7 +162,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
   }
 
-  Widget _boardBuilder(BuildContext context, int boardSize, List<Widget> products) {
+  Widget _boardBuilder(
+      BuildContext context, int boardSize, List<Widget> products) {
     double boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
 
     return Container(

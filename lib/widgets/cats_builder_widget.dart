@@ -4,18 +4,28 @@ import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 
-class CatsBuilder extends StatelessWidget {
+class CatsBuilder extends StatefulWidget {
   final List<Cat> cats;
 
   const CatsBuilder({Key? key, required this.cats}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double ratio = size.width / size.height;
+  _CatsBuilderState createState() => _CatsBuilderState();
+}
 
-    double catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.5;
-    double catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.5;
+class _CatsBuilderState extends State<CatsBuilder> {
+  dynamic size;
+  dynamic ratio;
+  dynamic catsWidth;
+  dynamic catsHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    ratio = size.width / size.height;
+
+    catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.5;
+    catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.5;
 
     return SizedBox(
       height: catsHeight,
@@ -23,9 +33,8 @@ class CatsBuilder extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         physics: const NeverScrollableScrollPhysics(),
-
-        children: List.generate(cats.length, (index) {
-          Cat cat = cats.elementAt(index);
+        children: List.generate(widget.cats.length, (index) {
+          Cat cat = widget.cats.elementAt(index);
           AssetImage image = cat.image;
 
           return Column(
@@ -44,7 +53,8 @@ class CatsBuilder extends StatelessWidget {
                   ),
                 ),
               ),
-              _mealAndLives(cat, Size(catsWidth, catsHeight)),
+              _mealAndLives(cat),
+              _table(cat),
               _recipes(cat),
             ],
           );
@@ -53,7 +63,7 @@ class CatsBuilder extends StatelessWidget {
     );
   }
 
-  Widget _mealAndLives(Cat cat, Size size) {
+  Widget _mealAndLives(Cat cat) {
     if (cat.meal.meal == Meals.none && cat.meals.isNotEmpty) {
       return Container();
     }
@@ -63,8 +73,8 @@ class CatsBuilder extends StatelessWidget {
         Container(
           margin: const EdgeInsets.all(10),
           alignment: Alignment.center,
-          height: size.width * 0.2,
-          width: size.width * 0.2,
+          height: catsWidth * 0.2,
+          width: catsWidth * 0.2,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: cat.meal.meal.mealImage,
@@ -99,5 +109,42 @@ class CatsBuilder extends StatelessWidget {
     return Recipes(
       cuisine: cat.cuisine,
     );
+  }
+
+  Widget _table(Cat cat) {
+    if (cat.meal.meal == Meals.none && cat.meals.isNotEmpty) {
+      return Container(
+        margin: const EdgeInsets.all(10),
+        alignment: Alignment.center,
+        height: catsHeight * 0.22,
+        width: catsWidth / 3.5,
+        decoration: BoxDecoration(
+          color: Colors.brown,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(cat.servedMeals.length, (index) {
+            Meal meal = cat.servedMeals.elementAt(index);
+            AssetImage image = meal.meal.mealImage;
+
+            return Container(
+              alignment: Alignment.center,
+              height: catsWidth * 0.08,
+              width: catsWidth * 0.08,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                image: DecorationImage(
+                  image: image,
+                  alignment: Alignment.center,
+                  repeat: ImageRepeat.noRepeat,
+                ),
+              ),
+            );
+          }),
+        ),
+      );
+    }
+
+    return Container();
   }
 }

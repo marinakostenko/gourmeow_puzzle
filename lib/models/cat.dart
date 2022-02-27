@@ -8,6 +8,7 @@ class Cat {
   Color color;
   Meal meal;
   List<Meal> meals;
+  List<Meal> servedMeals;
   int livesCount;
   Cuisine cuisine;
   BoardPosition position;
@@ -18,6 +19,7 @@ class Cat {
     required this.color,
     required this.meal,
     required this.meals,
+    required this.servedMeals,
     required this.livesCount,
     required this.cuisine,
     required this.position,
@@ -33,6 +35,7 @@ class Cat {
           color == other.color &&
           meal == other.meal &&
           meals == other.meals &&
+          servedMeals == other.servedMeals &&
           livesCount == other.livesCount &&
           cuisine == other.cuisine &&
           position == other.position &&
@@ -44,6 +47,7 @@ class Cat {
       color.hashCode ^
       meal.hashCode ^
       meals.hashCode ^
+      servedMeals.hashCode ^
       livesCount.hashCode ^
       cuisine.hashCode ^
       position.hashCode ^

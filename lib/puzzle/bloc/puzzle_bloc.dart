@@ -195,6 +195,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
         color: Colors.white,
         meal: const Meal(meal: Meals.none),
         meals: [],
+        servedMeals: [],
         livesCount: -1,
         cuisine: Cuisine.none,
         position: const BoardPosition(x: -1, y: -1),

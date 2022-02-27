@@ -106,7 +106,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         children: [
           _statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
-          CatsBuilder(cats: cats),
+          CatsBuilder(cats: cats,),
         ],
       );
     } else {
