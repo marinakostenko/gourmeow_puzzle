@@ -39,12 +39,9 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
       var servedMeals = _checkSolution(cat);
       cat.servedMeals = servedMeals;
 
-      numberOfCorrectProducts =
-          numberOfCorrectProducts + servedMeals.length;
+      numberOfCorrectProducts = numberOfCorrectProducts + servedMeals.length;
 
-      debugPrint(servedMeals
-          .map((set) => set.meal.name)
-          .toString());
+      debugPrint(servedMeals.map((set) => set.meal.name).toString());
     }
 
     Puzzle puzzle = Puzzle(products: productsList);
@@ -94,9 +91,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
           numberOfCorrectProducts =
               numberOfCorrectProducts + servedMeals.length;
 
-          debugPrint(servedMeals
-              .map((set) => set.meal.name)
-              .toString());
+          debugPrint(servedMeals.map((set) => set.meal.name).toString());
         }
 
         PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
@@ -142,8 +137,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     List<BoardPosition> positions = cat.positions;
     List<Meals> catMeals = [];
     List<Meal> servedMeals = [];
-    for (var meal in cat.meals) {
-      catMeals.add(meal.meal);
+    for (var meal in CuisineExt.getMealsByCuisine(cat.cuisine)) {
+      catMeals.add(meal);
     }
 
     for (BoardPosition position in positions) {
@@ -170,7 +165,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
           for (var entries in Data().mealIngredients.entries) {
             var ingredients = entries.key;
 
-            if (ingredients.difference(currIngredients).isEmpty) {
+            if (ingredients.difference(currIngredients).isEmpty &&
+                catMeals.contains(entries.value.meal)) {
               for (Product product in products) {
                 int x = product.position.x - 1;
                 int y = product.position.y - 1;
@@ -178,9 +174,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
                 productsList[y][x].isSelected = true;
               }
 
-              if (catMeals.contains(entries.value.meal)) {
-                servedMeals.add(Meal(meal: entries.value.meal));
-              }
+              servedMeals.add(Meal(meal: entries.value.meal));
             }
           }
         }
@@ -203,7 +197,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
           for (var entries in Data().mealIngredients.entries) {
             var ingredients = entries.key;
 
-            if (ingredients.difference(currIngredients).isEmpty) {
+            if (ingredients.difference(currIngredients).isEmpty &&
+                catMeals.contains(entries.value.meal)) {
               for (Product product in products) {
                 int x = product.position.x - 1;
                 int y = product.position.y - 1;
@@ -211,17 +206,12 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
                 productsList[y][x].isSelected = true;
               }
 
-              if (catMeals.contains(entries.value.meal)) {
-                servedMeals.add(Meal(meal: entries.value.meal));
-              }
+              servedMeals.add(Meal(meal: entries.value.meal));
             }
           }
         }
       }
     }
-
-
-
     return servedMeals;
   }
 
