@@ -31,7 +31,6 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryVariant,
         actions: const [
           AudioControl(),
           Recipes(
@@ -216,7 +215,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           Container(
             decoration: BoxDecoration(
               color: Colors.lightBlue.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(10),
             ),
             padding: EdgeInsets.all(10.0),
             child: const Text(

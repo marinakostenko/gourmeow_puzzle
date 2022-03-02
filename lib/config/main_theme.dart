@@ -20,18 +20,18 @@ class MainThemeData {
   }
 
   static const _colorScheme = ColorScheme(
-    primary: Color(0xff263238),
-    primaryVariant: Color(0xff4f5b62),
-    secondary: Color(0xffbf360c),
-    secondaryVariant: Color(0xff870000),
-    background: Color(0xff263238),
+    primary: Color(0xff3949ab),
+    primaryVariant: Color(0xff00227b),
+    secondary: Color(0xff607d8b),
+    secondaryVariant: Color(0xff8eacbb),
+    background: Color(0xff3949ab),
     surface: Colors.black12,
     onBackground: Colors.white,
     onSurface: Colors.black,
     error: Colors.red,
     onError: Colors.white,
     onPrimary: Colors.white,
-    onSecondary: Colors.white,
+    onSecondary: Colors.black,
     brightness: Brightness.dark,
   );
 }

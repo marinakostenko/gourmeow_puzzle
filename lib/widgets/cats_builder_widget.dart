@@ -120,6 +120,7 @@ class _CatsBuilderState extends State<CatsBuilder> {
         width: catsWidth / 3.5,
         decoration: BoxDecoration(
           color: Colors.brown,
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

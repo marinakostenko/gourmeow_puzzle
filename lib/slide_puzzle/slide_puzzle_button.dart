@@ -104,7 +104,7 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
                   padding: EdgeInsets.zero,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(5),
+                      Radius.circular(10),
                     ),
                   ),
                 ),

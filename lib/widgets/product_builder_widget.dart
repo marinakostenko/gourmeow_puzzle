@@ -51,7 +51,7 @@ class ProductBuilder extends StatelessWidget {
           repeat: ImageRepeat.noRepeat,
         ),
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(width: 2, color: borderColor),
       ),
     );
