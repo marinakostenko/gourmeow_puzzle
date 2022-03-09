@@ -11,6 +11,7 @@ class SlidePuzzleState extends Equatable {
     this.tileMovementStatus = TileMovementStatus.nothingTapped,
     this.numberOfCorrectTiles = 0,
     this.numberOfMoves = 0,
+    this.cats = const <Cat>[],
   });
 
   final Puzzle puzzle;
@@ -23,12 +24,15 @@ class SlidePuzzleState extends Equatable {
 
   final int numberOfMoves;
 
+  final List<Cat> cats;
+
   SlidePuzzleState copyWith({
     Puzzle? puzzle,
     PuzzleStatus? puzzleStatus,
     TileMovementStatus? tileMovementStatus,
     int? numberOfCorrectTiles,
     int? numberOfMoves,
+    List<Cat>? cats,
   }) {
     return SlidePuzzleState(
       puzzle: puzzle ?? this.puzzle,
@@ -36,6 +40,7 @@ class SlidePuzzleState extends Equatable {
       tileMovementStatus: tileMovementStatus ?? this.tileMovementStatus,
       numberOfCorrectTiles: numberOfCorrectTiles ?? this.numberOfCorrectTiles,
       numberOfMoves: numberOfMoves ?? this.numberOfMoves,
+      cats: cats ?? this.cats,
     );
   }
 
@@ -46,5 +51,6 @@ class SlidePuzzleState extends Equatable {
     tileMovementStatus,
     numberOfCorrectTiles,
     numberOfMoves,
+    cats,
   ];
 }

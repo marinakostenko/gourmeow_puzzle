@@ -51,6 +51,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         puzzle: puzzle,
         numberOfCorrectTiles: numberOfCorrectProducts,
         puzzleStatus: PuzzleStatus.incomplete,
+        cats: cats,
       ),
     );
   }
@@ -95,7 +96,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         }
 
         PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
-        if (numberOfCorrectProducts == 8) {
+        if (numberOfCorrectProducts == 1) {
           puzzleStatus = PuzzleStatus.complete;
         }
 
@@ -108,6 +109,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
               tileMovementStatus: TileMovementStatus.moved,
               numberOfMoves: state.numberOfMoves + 1,
               numberOfCorrectTiles: numberOfCorrectProducts,
+              cats: cats,
             ),
           );
         } else {
@@ -118,6 +120,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
               tileMovementStatus: TileMovementStatus.moved,
               numberOfMoves: state.numberOfMoves + 1,
               numberOfCorrectTiles: numberOfCorrectProducts,
+              cats: cats,
             ),
           );
         }
