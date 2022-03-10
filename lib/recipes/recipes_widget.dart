@@ -7,8 +7,7 @@ import 'package:gourmeow_puzzle/recipes/bloc/recipes_bloc.dart';
 class Recipes extends StatelessWidget {
   final Cuisine cuisine;
 
-  const Recipes({Key? key,  required this.cuisine})
-      : super(key: key);
+  const Recipes({Key? key, required this.cuisine}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +15,25 @@ class Recipes extends StatelessWidget {
     double ratio = size.width / size.height;
     double iconSize = ratio < 1 ? size.width * 0.05 : size.height * 0.05;
 
-    return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.all(iconSize * 0.1),
-      child: IconButton(
-        onPressed: () => {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return RecipesModal(
-                  cuisine: cuisine,
-                );
-              }),
-        },
-        icon: Icon(
-          Icons.book_rounded,
-          size: iconSize,
-          color: Colors.white,
+    return Material(
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.all(iconSize * 0.1),
+        child: IconButton(
+          onPressed: () => {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return RecipesModal(
+                    cuisine: cuisine,
+                  );
+                }),
+          },
+          icon: Icon(
+            Icons.book_rounded,
+            size: iconSize,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -98,7 +99,6 @@ class _RecipesModalState extends State<RecipesModal> {
   }
 
   Widget _dialogView(List<Recipe> recipes) {
-
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -141,7 +141,10 @@ class _RecipesModalState extends State<RecipesModal> {
             height: iconSize,
             child: Text(
               "=",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),
@@ -165,7 +168,10 @@ class _RecipesModalState extends State<RecipesModal> {
             height: iconSize,
             child: Text(
               "+",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),
@@ -189,7 +195,10 @@ class _RecipesModalState extends State<RecipesModal> {
             height: iconSize,
             child: Text(
               "+",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ),

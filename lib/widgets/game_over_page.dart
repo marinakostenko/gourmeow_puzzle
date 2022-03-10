@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
+import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
+import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
+import 'package:provider/src/provider.dart';
 
 import 'cats_builder_widget.dart';
 
@@ -14,61 +18,70 @@ class GameOverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.lightBlue.withOpacity(0.8),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.all(10.0),
-              child: const Text(
-                "Game over You made it!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 48, color: Colors.white),
+    return BlocProvider<SlidePuzzleBloc>(
+      create: (context) {
+        return SlidePuzzleBloc();
+      },
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Material(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: 100,
+            ),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: const Text(
+                      "Game over You made it!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 48, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(20),
+                      ).copyWith(
+                        backgroundColor: MaterialStateProperty.all(
+                            Colors.white.withOpacity(0.8)),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push<void>(
+                          MaterialPageRoute(
+                            builder: (context) => const SlidePuzzlePage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Restart",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 32, color: Colors.indigo),
+                      ),
+                    ),
+                  ),
+                  Hero(
+                    tag: 'cats-hero',
+                    child: CatsBuilder(
+                      cats: cats,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(20),
-                ).copyWith(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.white.withOpacity(0.8)),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                onPressed: () {
-                  // context.read<SlidePuzzleBloc>().add(
-                  //     const SlidePuzzleInitialized(shufflePuzzle: true, size: 6));
-                },
-                child: const Text(
-                  "Restart",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 32, color: Colors.indigo),
-                ),
-              ),
-            ),
-            Hero(
-              tag: 'cats-hero',
-              child: CatsBuilder(
-                cats: cats,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

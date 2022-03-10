@@ -11,7 +11,6 @@ import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_button.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/game_over_page.dart';
-import 'package:gourmeow_puzzle/widgets/product_builder_widget.dart';
 
 class SlidePuzzlePage extends StatefulWidget {
   const SlidePuzzlePage({Key? key}) : super(key: key);
@@ -59,34 +58,12 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
                 minHeight: 100,
               ),
               child: LayoutBuilder(builder: (context, constraints) {
-                return _pageBuilder(context);
+                return buildPuzzle(context);
               }),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _pageBuilder(BuildContext context) {
-    var puzzleStatus =
-        context.select((SlidePuzzleBloc bloc) => bloc.state.puzzleStatus);
-    var cats = context.select((SlidePuzzleBloc bloc) => bloc.cats);
-
-    return BlocConsumer<SlidePuzzleBloc, SlidePuzzleState>(
-      listener: (context, state) {
-        if (state.puzzleStatus == PuzzleStatus.complete) {
-          Navigator.of(context).push<void>(
-            MaterialPageRoute(
-              builder: (context) =>
-                  GameOverPage(moves: 1, dishes: 1, cats: state.cats),
-            ),
-          );
-        }
-      },
-      builder: (context, state) {
-        return buildPuzzle(context);
-      },
     );
   }
 
@@ -96,24 +73,12 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfMoves);
     var numberOfTilesLeft = context
         .select((SlidePuzzleBloc bloc) => bloc.state.numberOfCorrectTiles);
-    var cats = context.select((SlidePuzzleBloc bloc) => bloc.cats);
+
     debugPrint("Number of moves count $count");
     debugPrint("Number of tiles left $numberOfTilesLeft");
 
     var productTable = puzzle.products;
     var products = <Widget>[];
-
-    var puzzleStatus =
-        context.select((SlidePuzzleBloc bloc) => bloc.state.puzzleStatus);
-
-    // if (puzzleStatus == PuzzleStatus.complete) {
-    //   Navigator.of(context).push<void>(
-    //     MaterialPageRoute(
-    //       builder: (context) =>
-    //           GameOverPage(moves: count, dishes: numberOfTilesLeft, cats: cats),
-    //     ),
-    //   );
-    // }
 
     for (List<Product> productsList in productTable) {
       for (Product product in productsList) {
@@ -134,12 +99,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         children: [
           _statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
-          Hero(
-            tag: 'cats-hero',
-            child: CatsBuilder(
-              cats: cats,
-            ),
-          ),
+          _catsBuilder(context),
         ],
       );
     } else {
@@ -150,7 +110,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           _boardBuilder(context, 5, products),
           Column(
             children: [
-              CatsBuilder(cats: cats),
+              _catsBuilder(context),
               _statistics(count, numberOfTilesLeft),
             ],
           ),
@@ -180,6 +140,30 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _catsBuilder(BuildContext context) {
+    return BlocConsumer<SlidePuzzleBloc, SlidePuzzleState>(
+      listener: (context, state) {
+        if (state.puzzleStatus == PuzzleStatus.complete) {
+          Navigator.of(context).push<void>(
+            PageRouteBuilder(
+              transitionDuration: Duration(seconds: 2),
+              pageBuilder: (_, __, ___) =>
+                  GameOverPage(moves: 1, dishes: 1, cats: state.cats),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Hero(
+          tag: 'cats-hero',
+          child: CatsBuilder(
+            cats: state.cats,
+          ),
+        );
+      },
     );
   }
 
