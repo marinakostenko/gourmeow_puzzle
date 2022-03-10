@@ -147,7 +147,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     return BlocConsumer<SlidePuzzleBloc, SlidePuzzleState>(
       listener: (context, state) {
         if (state.puzzleStatus == PuzzleStatus.complete) {
-          Navigator.of(context).push<void>(
+          Navigator.of(context, rootNavigator: true).pushReplacement(
             PageRouteBuilder(
               transitionDuration: Duration(seconds: 2),
               pageBuilder: (_, __, ___) =>
