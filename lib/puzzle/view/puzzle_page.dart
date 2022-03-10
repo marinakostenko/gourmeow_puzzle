@@ -6,9 +6,9 @@ import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
-import 'package:gourmeow_puzzle/timer/bloc/timer_bloc.dart';
 import 'package:gourmeow_puzzle/timer/ticker.dart';
-import 'package:gourmeow_puzzle/timer/timer_countdown.dart';
+import 'package:gourmeow_puzzle/timer/timer_count_down/bloc/timer_bloc.dart';
+import 'package:gourmeow_puzzle/timer/timer_count_down/timer_count_down.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 
 import 'drag_drop_widget.dart';

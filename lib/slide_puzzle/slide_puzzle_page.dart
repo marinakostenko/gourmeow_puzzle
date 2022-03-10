@@ -3,12 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/bloc/audio_control_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/widgets/audio_control_widget.dart';
-import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_button.dart';
+import 'package:gourmeow_puzzle/timer/ticker.dart';
+import 'package:gourmeow_puzzle/timer/timer_count_up/bloc/timer_count_up_bloc.dart';
+import 'package:gourmeow_puzzle/timer/timer_count_up/timer_count_up.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/game_over_page.dart';
 
@@ -32,11 +34,9 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         actions: const [
           AudioControl(),
-          Recipes(
-            cuisine: Cuisine.none,
-          ),
         ],
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -51,6 +51,9 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
                 ),
             ),
             BlocProvider(create: (context) => AudioControlBloc()),
+            BlocProvider(
+              create: (context) => TimerCountUpBloc(ticker: const Ticker())..add(const TimerCountUpStarted()),
+            ),
           ],
           child: SingleChildScrollView(
             child: ConstrainedBox(
@@ -107,13 +110,9 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          _statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
-          Column(
-            children: [
-              _catsBuilder(context),
-              _statistics(count, numberOfTilesLeft),
-            ],
-          ),
+          _catsBuilder(context),
         ],
       );
     }
@@ -121,10 +120,10 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
 
   Widget _boardBuilder(
       BuildContext context, int boardSize, List<Widget> products) {
-    double boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.height * 0.8;
+    double boardHeightWidth = ratio < 1 ? size.width * 0.8 : size.width * 0.35;
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.all(boardHeightWidth * 0.01),
+      margin: EdgeInsets.only(top: boardHeightWidth * 0.1),
       height: boardHeightWidth,
       width: boardHeightWidth,
       child: Column(
@@ -147,6 +146,8 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     return BlocConsumer<SlidePuzzleBloc, SlidePuzzleState>(
       listener: (context, state) {
         if (state.puzzleStatus == PuzzleStatus.complete) {
+          context.read<TimerCountUpBloc>().add(const TimerCountUpStopped());
+
           Navigator.of(context, rootNavigator: true).pushReplacement(
             PageRouteBuilder(
               transitionDuration: Duration(seconds: 2),
@@ -169,13 +170,20 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
 
   Widget _statistics(int moves, int dishes) {
     double fontSize = ratio < 1 ? size.height * 0.03 : size.width * 0.015;
+    double sectionWidth = ratio < 1 ? size.width : size.width * 0.25;
+
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.all(fontSize),
+      width: sectionWidth,
+      //  margin: EdgeInsets.all(fontSize),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          TimerCountUp(iconSize: fontSize,),
+          SizedBox(
+            height: fontSize * 0.8,
+          ),
           Container(
             child: Text(
               "Number of moves $moves",
@@ -198,6 +206,9 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
                 color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
+          ),
+          const Recipes(
+            cuisine: Cuisine.none,
           ),
         ],
       ),

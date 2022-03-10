@@ -24,7 +24,7 @@ class _CatsBuilderState extends State<CatsBuilder> {
     size = MediaQuery.of(context).size;
     ratio = size.width / size.height;
 
-    catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.5;
+    catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.3;
     catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.5;
 
     return SizedBox(
@@ -127,19 +127,10 @@ class _CatsBuilderState extends State<CatsBuilder> {
           children: List.generate(cat.servedMeals.length, (index) {
             Meal meal = cat.servedMeals.elementAt(index);
             AssetImage image = meal.meal.mealImage;
-
-            return Container(
-              alignment: Alignment.center,
-              height: catsWidth * 0.08,
-              width: catsWidth * 0.08,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                image: DecorationImage(
-                  image: image,
-                  alignment: Alignment.center,
-                  repeat: ImageRepeat.noRepeat,
-                ),
-              ),
+            return ExpandableMeal(
+              cardSize: catsWidth * 0.08,
+              image: image,
+              color: cat.color,
             );
           }),
         ),
@@ -147,5 +138,94 @@ class _CatsBuilderState extends State<CatsBuilder> {
     }
 
     return Container();
+  }
+}
+
+class ExpandableMeal extends StatefulWidget {
+  final double cardSize;
+  final AssetImage image;
+  final Color color;
+
+  const ExpandableMeal(
+      {Key? key,
+      required this.cardSize,
+      required this.image,
+      required this.color})
+      : super(key: key);
+
+  @override
+  _ExpandableMealState createState() => _ExpandableMealState();
+}
+
+class _ExpandableMealState extends State<ExpandableMeal>
+    with SingleTickerProviderStateMixin {
+  static const Duration duration = Duration(milliseconds: 300);
+  bool selected = false;
+
+  late double size;
+
+  void toggleExpanded() {
+    setState(() {
+      selected = !selected;
+    });
+  }
+
+  @override
+  Widget build(context) {
+    size = selected ? widget.cardSize * 1.5 : widget.cardSize;
+    return GestureDetector(
+      onTap: () => toggleExpanded(),
+      child: Card(
+        color: widget.color,
+        child: AnimatedContainer(
+          duration: duration,
+          width: size,
+          height: size,
+          curve: Curves.ease,
+          child: AnimatedCrossFade(
+            duration: duration,
+            firstCurve: Curves.bounceInOut,
+            secondCurve: Curves.bounceInOut,
+            crossFadeState:
+                selected ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            layoutBuilder:
+                (topChild, topChildKey, bottomChild, bottomChildKey) {
+              return Stack(
+                children: [
+                  Positioned(
+                    key: bottomChildKey,
+                    child: bottomChild,
+                  ),
+                  Positioned(
+                    key: topChildKey,
+                    child: topChild,
+                  ),
+                ],
+              );
+            },
+            firstChild: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: widget.image,
+                  alignment: Alignment.center,
+                  repeat: ImageRepeat.noRepeat,
+                ),
+              ),
+            ),
+            secondChild: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: widget.image,
+                  alignment: Alignment.center,
+                  repeat: ImageRepeat.noRepeat,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

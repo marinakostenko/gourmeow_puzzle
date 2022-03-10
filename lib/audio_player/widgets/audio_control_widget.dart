@@ -8,23 +8,28 @@ class AudioControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     double ratio = size.width / size.height;
     double iconSize = ratio < 1 ? size.width * 0.05 : size.height * 0.05;
 
-    final audioMuted = context.select((AudioControlBloc bloc) => bloc.state.muted);
-    final audioAsset = audioMuted ? const AssetImage("assets/images/simple_on.png") : const AssetImage("assets/images/simple_off.png");
+    final audioMuted =
+        context.select((AudioControlBloc bloc) => bloc.state.muted);
+    final audioAsset = audioMuted
+        ? const AssetImage("assets/images/simple_on.png")
+        : const AssetImage("assets/images/simple_off.png");
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => context.read<AudioControlBloc>().add(AudioToggled()),
-        child: AnimatedSwitcher(
-          duration: PuzzleThemeAnimationDuration.backgroundColorChange,
-          child: Image(
-            image: audioAsset,
-            width: iconSize,
+    return Container(
+      margin: EdgeInsets.only(right: iconSize),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () => context.read<AudioControlBloc>().add(AudioToggled()),
+          child: AnimatedSwitcher(
+            duration: PuzzleThemeAnimationDuration.backgroundColorChange,
+            child: Image(
+              image: audioAsset,
+              width: iconSize,
+            ),
           ),
         ),
       ),

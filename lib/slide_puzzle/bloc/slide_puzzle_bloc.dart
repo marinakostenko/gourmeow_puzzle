@@ -96,7 +96,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         }
 
         PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
-        if (numberOfCorrectProducts == 1) {
+        if (numberOfCorrectProducts == 2) {
           puzzleStatus = PuzzleStatus.complete;
         }
 

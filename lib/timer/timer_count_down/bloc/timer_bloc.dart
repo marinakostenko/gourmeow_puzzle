@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../ticker.dart';
+import '../../ticker.dart';
 
 part 'timer_event.dart';
 
@@ -34,7 +34,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
     emit(TimerRunInProgress(event.duration));
     _tickerSubscription?.cancel();
     _tickerSubscription = _ticker
-        .tick(ticks: event.duration)
+        .tickDown(ticks: event.duration)
         .listen((duration) => add(TimerTicked(duration: duration)));
   }
 

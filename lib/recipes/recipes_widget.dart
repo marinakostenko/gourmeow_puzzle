@@ -13,13 +13,16 @@ class Recipes extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double ratio = size.width / size.height;
-    double iconSize = ratio < 1 ? size.width * 0.05 : size.height * 0.05;
+    double iconSize = ratio < 1 ? size.width * 0.04 : size.height * 0.04;
 
     return Material(
       child: Container(
         alignment: Alignment.center,
-        margin: EdgeInsets.all(iconSize * 0.1),
+        margin: EdgeInsets.all(iconSize * 0.01),
+        height: iconSize,
+        width: iconSize,
         child: IconButton(
+          alignment: Alignment.center,
           onPressed: () => {
             showDialog(
                 context: context,
