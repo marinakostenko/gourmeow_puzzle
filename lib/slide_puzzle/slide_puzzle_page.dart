@@ -13,6 +13,7 @@ import 'package:gourmeow_puzzle/timer/timer_count_up/bloc/timer_count_up_bloc.da
 import 'package:gourmeow_puzzle/timer/timer_count_up/timer_count_up.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/game_over_page.dart';
+import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
 
 class SlidePuzzlePage extends StatefulWidget {
   const SlidePuzzlePage({Key? key}) : super(key: key);
@@ -100,7 +101,8 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _statistics(count, numberOfTilesLeft),
+          Statistics(moves: count, dishes: numberOfTilesLeft,),
+          //_statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
           _catsBuilder(context),
         ],
@@ -110,7 +112,8 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _statistics(count, numberOfTilesLeft),
+          Statistics(moves: count, dishes: numberOfTilesLeft,),
+          //_statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
           _catsBuilder(context),
         ],
@@ -162,6 +165,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           tag: 'cats-hero',
           child: CatsBuilder(
             cats: state.cats,
+            displayMenu: true,
           ),
         );
       },
@@ -175,7 +179,6 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     return Container(
       alignment: Alignment.center,
       width: sectionWidth,
-      //  margin: EdgeInsets.all(fontSize),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -139,6 +141,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           _boardBuilder(context, 6, products),
           CatsBuilder(
             cats: cats,
+            displayMenu: true,
           ),
           timeBuilder(context, cats),
         ],
@@ -153,6 +156,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
             children: [
               CatsBuilder(
                 cats: cats,
+                displayMenu: true,
               ),
               timeBuilder(context, cats),
             ],

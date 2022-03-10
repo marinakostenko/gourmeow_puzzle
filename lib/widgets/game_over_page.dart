@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
+import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
 
 import 'cats_builder_widget.dart';
 
@@ -57,7 +58,7 @@ class GameOverPage extends StatelessWidget {
                   child: const Text(
                     "Restart",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 32, color: Colors.indigo),
+                    style: TextStyle(fontSize: 20, color: Colors.indigo),
                   ),
                 ),
               ),
@@ -65,8 +66,10 @@ class GameOverPage extends StatelessWidget {
                 tag: 'cats-hero',
                 child: CatsBuilder(
                   cats: cats,
+                  displayMenu: false,
                 ),
               ),
+              Statistics(moves: moves, dishes: dishes,),
             ],
           ),
         ),

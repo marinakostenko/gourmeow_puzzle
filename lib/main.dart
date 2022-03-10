@@ -4,6 +4,8 @@ import 'package:gourmeow_puzzle/config/main_theme.dart';
 import 'package:gourmeow_puzzle/puzzle/bloc/puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/puzzle/view/puzzle_page.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
+import 'package:gourmeow_puzzle/timer/ticker.dart';
+import 'package:gourmeow_puzzle/timer/timer_count_up/bloc/timer_count_up_bloc.dart';
 
 import 'audio_player/bloc/audio_control_bloc.dart';
 
@@ -22,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
         create: (context) => AudioControlBloc(),
+        ),
+        BlocProvider(
+          create: (context) => TimerCountUpBloc(ticker: const Ticker()),
         ),
       ],
       child: MaterialApp(

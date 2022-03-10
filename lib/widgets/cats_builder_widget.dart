@@ -6,8 +6,9 @@ import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 
 class CatsBuilder extends StatefulWidget {
   final List<Cat> cats;
+  final bool displayMenu;
 
-  const CatsBuilder({Key? key, required this.cats}) : super(key: key);
+  const CatsBuilder({Key? key, required this.cats, required this.displayMenu}) : super(key: key);
 
   @override
   _CatsBuilderState createState() => _CatsBuilderState();
@@ -106,9 +107,13 @@ class _CatsBuilderState extends State<CatsBuilder> {
   }
 
   Widget _recipes(Cat cat) {
-    return Recipes(
-      cuisine: cat.cuisine,
-    );
+    if(widget.displayMenu) {
+      return Recipes(
+        cuisine: cat.cuisine,
+      );
+    }
+
+    return Container();
   }
 
   Widget _table(Cat cat) {
