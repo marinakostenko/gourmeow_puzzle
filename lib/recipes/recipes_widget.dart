@@ -21,8 +21,7 @@ class Recipes extends StatelessWidget {
         margin: EdgeInsets.all(iconSize * 0.01),
         height: iconSize,
         width: iconSize,
-        child: IconButton(
-          alignment: Alignment.center,
+        child: MaterialButton(
           onPressed: () => {
             showDialog(
                 context: context,
@@ -32,7 +31,7 @@ class Recipes extends StatelessWidget {
                   );
                 }),
           },
-          icon: Icon(
+          child: Icon(
             Icons.book_rounded,
             size: iconSize,
             color: Colors.white,

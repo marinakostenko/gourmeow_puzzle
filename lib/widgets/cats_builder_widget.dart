@@ -39,14 +39,12 @@ class _CatsBuilderState extends State<CatsBuilder> {
           AssetImage image = cat.image;
 
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.all(10),
-                alignment: Alignment.center,
                 height: catsHeight * 0.5,
-                width: catsWidth / 3.5,
+                width: catsWidth / 3,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
                     image: image,
                     alignment: Alignment.center,
@@ -72,7 +70,6 @@ class _CatsBuilderState extends State<CatsBuilder> {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.all(10),
           alignment: Alignment.center,
           height: catsWidth * 0.2,
           width: catsWidth * 0.2,
@@ -119,13 +116,14 @@ class _CatsBuilderState extends State<CatsBuilder> {
   Widget _table(Cat cat) {
     if (cat.meal.meal == Meals.none && cat.meals.isNotEmpty) {
       return Container(
-        margin: const EdgeInsets.all(10),
-        alignment: Alignment.center,
-        height: catsHeight * 0.22,
-        width: catsWidth / 3.5,
-        decoration: BoxDecoration(
-          color: Colors.brown,
-          borderRadius: BorderRadius.circular(10),
+        height: catsHeight * 0.3,
+        width: catsWidth / 3,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/table.png"),
+            alignment: Alignment.center,
+            repeat: ImageRepeat.noRepeat,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -133,9 +131,8 @@ class _CatsBuilderState extends State<CatsBuilder> {
             Meal meal = cat.servedMeals.elementAt(index);
             AssetImage image = meal.meal.mealImage;
             return ExpandableMeal(
-              cardSize: catsWidth * 0.08,
+              cardSize: catsWidth * 0.1,
               image: image,
-              color: cat.color,
             );
           }),
         ),
@@ -149,13 +146,11 @@ class _CatsBuilderState extends State<CatsBuilder> {
 class ExpandableMeal extends StatefulWidget {
   final double cardSize;
   final AssetImage image;
-  final Color color;
 
   const ExpandableMeal(
       {Key? key,
       required this.cardSize,
-      required this.image,
-      required this.color})
+      required this.image,})
       : super(key: key);
 
   @override
@@ -181,8 +176,10 @@ class _ExpandableMealState extends State<ExpandableMeal>
     return GestureDetector(
       onTap: () => toggleExpanded(),
       child: Card(
-        color: widget.color,
+        color: Colors.transparent,
+        elevation: 0,
         child: AnimatedContainer(
+          alignment: Alignment.center,
           duration: duration,
           width: size,
           height: size,
