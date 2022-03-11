@@ -16,6 +16,7 @@ class MainThemeData {
         color: _colorScheme.background,
         iconTheme: IconThemeData(color: _colorScheme.secondary),
       ),
+      fontFamily: 'Balthazar',
     );
   }
 

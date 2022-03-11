@@ -8,7 +8,8 @@ class CatsBuilder extends StatefulWidget {
   final List<Cat> cats;
   final bool displayMenu;
 
-  const CatsBuilder({Key? key, required this.cats, required this.displayMenu}) : super(key: key);
+  const CatsBuilder({Key? key, required this.cats, required this.displayMenu})
+      : super(key: key);
 
   @override
   _CatsBuilderState createState() => _CatsBuilderState();
@@ -26,7 +27,7 @@ class _CatsBuilderState extends State<CatsBuilder> {
     ratio = size.width / size.height;
 
     catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.3;
-    catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.5;
+    catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.55;
 
     return SizedBox(
       height: catsHeight,
@@ -104,9 +105,18 @@ class _CatsBuilderState extends State<CatsBuilder> {
   }
 
   Widget _recipes(Cat cat) {
-    if(widget.displayMenu) {
+    String cuisine =
+        cat.cuisine.name[0].toUpperCase() + cat.cuisine.name.substring(1);
+    double fontSize = ratio < 1 ? size.width * 0.02 : size.height * 0.02;
+
+    if (widget.displayMenu) {
       return Recipes(
         cuisine: cat.cuisine,
+        text: Text(
+          "$cuisine menu",
+          style: TextStyle(fontSize: fontSize, color: cat.color, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
       );
     }
 
@@ -147,11 +157,11 @@ class ExpandableMeal extends StatefulWidget {
   final double cardSize;
   final AssetImage image;
 
-  const ExpandableMeal(
-      {Key? key,
-      required this.cardSize,
-      required this.image,})
-      : super(key: key);
+  const ExpandableMeal({
+    Key? key,
+    required this.cardSize,
+    required this.image,
+  }) : super(key: key);
 
   @override
   _ExpandableMealState createState() => _ExpandableMealState();

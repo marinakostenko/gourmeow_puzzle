@@ -39,6 +39,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         actions: const [
           Recipes(
             cuisine: Cuisine.none,
+            text: Text("Menu"),
           ),
         ],
       ),

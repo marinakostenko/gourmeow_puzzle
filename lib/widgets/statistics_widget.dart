@@ -57,6 +57,7 @@ class Statistics extends StatelessWidget {
             ),
             const Recipes(
               cuisine: Cuisine.none,
+              text: Text("Menu"),
             ),
           ],
         ),

@@ -6,21 +6,20 @@ import 'package:gourmeow_puzzle/recipes/bloc/recipes_bloc.dart';
 
 class Recipes extends StatelessWidget {
   final Cuisine cuisine;
+  final Text text;
 
-  const Recipes({Key? key, required this.cuisine}) : super(key: key);
+  const Recipes({Key? key, required this.cuisine, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double ratio = size.width / size.height;
-    double iconSize = ratio < 1 ? size.width * 0.04 : size.height * 0.04;
+    double iconSize = ratio < 1 ? size.width * 0.1 : size.height * 0.1;
 
     return Material(
       child: Container(
         alignment: Alignment.center,
         margin: EdgeInsets.all(iconSize * 0.01),
-        height: iconSize,
-        width: iconSize,
         child: MaterialButton(
           onPressed: () => {
             showDialog(
@@ -31,10 +30,19 @@ class Recipes extends StatelessWidget {
                   );
                 }),
           },
-          child: Icon(
-            Icons.book_rounded,
-            size: iconSize,
-            color: Colors.white,
+          child: Container(
+            padding: EdgeInsets.all(iconSize * 0.1),
+            alignment: Alignment.center,
+            height: iconSize,
+            width: iconSize,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/menu.png"),
+                alignment: Alignment.center,
+                repeat: ImageRepeat.noRepeat,
+              ),
+            ),
+            child: text,
           ),
         ),
       ),

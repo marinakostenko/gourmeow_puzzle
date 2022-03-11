@@ -212,6 +212,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           ),
           const Recipes(
             cuisine: Cuisine.none,
+            text: Text("Menu"),
           ),
         ],
       ),
