@@ -21,11 +21,11 @@ class MainThemeData {
   }
 
   static const _colorScheme = ColorScheme(
-    primary: Color(0xff3949ab),
+    primary: Color(0xff487487),
     primaryVariant: Color(0xff00227b),
     secondary: Color(0xff607d8b),
     secondaryVariant: Color(0xff8eacbb),
-    background: Color(0xff3949ab),
+    background: Color(0xff487487),
     surface: Colors.black12,
     onBackground: Colors.white,
     onSurface: Colors.black,

@@ -29,9 +29,19 @@ class _CatsBuilderState extends State<CatsBuilder> {
     catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.3;
     catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.55;
 
-    return SizedBox(
+    return Container(
       height: catsHeight,
       width: catsWidth,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+        image: DecorationImage(
+          image: AssetImage("assets/images/restaurant_background.png"),
+          fit: BoxFit.fill,
+          repeat: ImageRepeat.repeatX,
+        ),
+      ),
       child: ListView(
         scrollDirection: Axis.horizontal,
         physics: const NeverScrollableScrollPhysics(),
@@ -42,19 +52,22 @@ class _CatsBuilderState extends State<CatsBuilder> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: catsHeight * 0.5,
+              SizedBox(height: catsHeight * 0.2,),
+              SizedBox(
+                height: catsHeight * 0.3,
                 width: catsWidth / 3,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: image,
-                    alignment: Alignment.center,
-                    repeat: ImageRepeat.noRepeat,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: image,
+                      alignment: Alignment.center,
+                      repeat: ImageRepeat.noRepeat,
+                    ),
                   ),
                 ),
               ),
-              _mealAndLives(cat),
               _table(cat),
+              _mealAndLives(cat),
               _recipes(cat),
             ],
           );
@@ -114,7 +127,10 @@ class _CatsBuilderState extends State<CatsBuilder> {
         cuisine: cat.cuisine,
         text: Text(
           "$cuisine menu",
-          style: TextStyle(fontSize: fontSize, color: cat.color, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: fontSize,
+              color: cat.color,
+              fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       );
@@ -137,6 +153,7 @@ class _CatsBuilderState extends State<CatsBuilder> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: List.generate(cat.servedMeals.length, (index) {
             Meal meal = cat.servedMeals.elementAt(index);
             AssetImage image = meal.meal.mealImage;
