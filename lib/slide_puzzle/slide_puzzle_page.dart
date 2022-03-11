@@ -101,7 +101,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Statistics(moves: count, dishes: numberOfTilesLeft,),
+          Statistics(moves: count, dishes: numberOfTilesLeft, displayMenu: true,),
           //_statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
           _catsBuilder(context),
@@ -112,7 +112,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Statistics(moves: count, dishes: numberOfTilesLeft,),
+          Statistics(moves: count, dishes: numberOfTilesLeft, displayMenu: true,),
           //_statistics(count, numberOfTilesLeft),
           _boardBuilder(context, 5, products),
           _catsBuilder(context),

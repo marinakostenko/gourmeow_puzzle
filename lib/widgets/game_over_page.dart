@@ -69,7 +69,7 @@ class GameOverPage extends StatelessWidget {
                   displayMenu: false,
                 ),
               ),
-              Statistics(moves: moves, dishes: dishes,),
+              Statistics(moves: moves, dishes: dishes, displayMenu: false,),
             ],
           ),
         ),

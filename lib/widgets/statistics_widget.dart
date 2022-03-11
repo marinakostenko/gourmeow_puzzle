@@ -5,10 +5,11 @@ import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/timer/timer_count_up/timer_count_up.dart';
 
 class Statistics extends StatelessWidget {
-  const Statistics({Key? key, required this.moves, required this.dishes})
+  const Statistics({Key? key, required this.moves, required this.dishes, required this.displayMenu})
       : super(key: key);
   final int moves;
   final int dishes;
+  final bool displayMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +56,21 @@ class Statistics extends StatelessWidget {
                 ),
               ),
             ),
-            const Recipes(
-              cuisine: Cuisine.none,
-              text: Text("Menu"),
-            ),
+           _recipes(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _recipes() {
+    if (displayMenu) {
+      return const Recipes(
+        cuisine: Cuisine.none,
+        text: Text("Menu"),
+      );
+    }
+
+    return Container();
   }
 }

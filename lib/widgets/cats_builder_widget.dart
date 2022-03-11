@@ -151,7 +151,10 @@ class _CatsBuilderState extends State<CatsBuilder> {
             repeat: ImageRepeat.noRepeat,
           ),
         ),
-        child: Row(
+        child: Container(
+          padding: const EdgeInsets.only(top: 10),
+          alignment: Alignment.topCenter,
+          child:Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: List.generate(cat.servedMeals.length, (index) {
@@ -163,7 +166,7 @@ class _CatsBuilderState extends State<CatsBuilder> {
             );
           }),
         ),
-      );
+      ),);
     }
 
     return Container();
