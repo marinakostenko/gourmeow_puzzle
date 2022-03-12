@@ -1,19 +1,47 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:gourmeow_puzzle/helpers/audio_players.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_page.dart';
 import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'cats_builder_widget.dart';
 
-class GameOverPage extends StatelessWidget {
+class GameOverPage extends StatefulWidget {
   final int moves;
   final int dishes;
   final List<Cat> cats;
   final int seconds;
 
-  const GameOverPage(
-      {Key? key, required this.moves, required this.dishes, required this.cats, required this.seconds})
-      : super(key: key);
+  final AudioPlayerFactory _audioPlayerFactory;
+
+  const GameOverPage({
+    Key? key,
+    AudioPlayerFactory? audioPlayer,
+    required this.moves,
+    required this.dishes,
+    required this.cats,
+    required this.seconds,
+  })  : _audioPlayerFactory = audioPlayer ?? getAudioPlayer,
+        super(key: key);
+
+  @override
+  _GameOverPageState createState() => _GameOverPageState();
+}
+
+class _GameOverPageState extends State<GameOverPage> {
+  late final AudioPlayer _successAudioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _successAudioPlayer = widget._audioPlayerFactory()
+      ..setAsset('assets/audio/success.mp3');
+    unawaited(_successAudioPlayer.play());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +94,15 @@ class GameOverPage extends StatelessWidget {
               Hero(
                 tag: 'cats-hero',
                 child: CatsBuilder(
-                  cats: cats,
+                  cats: widget.cats,
                   displayMenu: false,
                 ),
               ),
               Statistics(
-                moves: moves,
-                dishes: dishes,
+                moves: widget.moves,
+                dishes: widget.dishes,
                 completed: true,
-                seconds: seconds,
+                seconds: widget.seconds,
               ),
             ],
           ),
