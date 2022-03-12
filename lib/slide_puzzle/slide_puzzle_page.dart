@@ -3,16 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/bloc/audio_control_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/widgets/audio_control_widget.dart';
-import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
-import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/slide_puzzle_button.dart';
 import 'package:gourmeow_puzzle/timer/ticker.dart';
 import 'package:gourmeow_puzzle/timer/timer_count_up/bloc/timer_count_up_bloc.dart';
-import 'package:gourmeow_puzzle/timer/timer_count_up/timer_count_up.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/game_over_page.dart';
+import 'package:gourmeow_puzzle/widgets/logo.dart';
 import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
 
 class SlidePuzzlePage extends StatefulWidget {
@@ -36,7 +34,9 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
 
     return Scaffold(
       appBar: AppBar(
+        title: const LogoImage(),
         elevation: 0,
+        centerTitle: false,
         actions: const [
           AudioControl(),
         ],
@@ -164,8 +164,12 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           Navigator.of(context, rootNavigator: true).pushReplacement(
             PageRouteBuilder(
               transitionDuration: Duration(seconds: 2),
-              pageBuilder: (_, __, ___) =>
-                  GameOverPage(moves: 1, dishes: 1, cats: state.cats, seconds: secondsElapsed,),
+              pageBuilder: (_, __, ___) => GameOverPage(
+                moves: 1,
+                dishes: 1,
+                cats: state.cats,
+                seconds: secondsElapsed,
+              ),
             ),
           );
         }
