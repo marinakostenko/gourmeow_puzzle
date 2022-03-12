@@ -52,7 +52,9 @@ class _CatsBuilderState extends State<CatsBuilder> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: catsHeight * 0.2,),
+              SizedBox(
+                height: catsHeight * 0.2,
+              ),
               SizedBox(
                 height: catsHeight * 0.3,
                 width: catsWidth / 3,
@@ -154,19 +156,20 @@ class _CatsBuilderState extends State<CatsBuilder> {
         child: Container(
           padding: const EdgeInsets.only(top: 10),
           alignment: Alignment.topCenter,
-          child:Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: List.generate(cat.servedMeals.length, (index) {
-            Meal meal = cat.servedMeals.elementAt(index);
-            AssetImage image = meal.meal.mealImage;
-            return ExpandableMeal(
-              cardSize: catsWidth * 0.1,
-              image: image,
-            );
-          }),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: List.generate(cat.servedMeals.length, (index) {
+              Meal meal = cat.servedMeals.elementAt(index);
+              AssetImage image = meal.meal.mealImage;
+              return ExpandableMeal(
+                cardSize: catsWidth * 0.1,
+                image: image,
+              );
+            }),
+          ),
         ),
-      ),);
+      );
     }
 
     return Container();

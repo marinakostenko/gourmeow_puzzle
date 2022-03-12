@@ -9,6 +9,7 @@ import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'cats_builder_widget.dart';
+import 'logo.dart';
 
 class GameOverPage extends StatefulWidget {
   final int moves;
@@ -49,8 +50,13 @@ class _GameOverPageState extends State<GameOverPage> {
     String scoreToShare =
         "Puzzle completed with only ${widget.moves} moves in ${_formatDuration(Duration(seconds: widget.seconds))}";
 
-    return Material(
-      child: ConstrainedBox(
+    return Scaffold(
+      appBar: AppBar(
+        title: const LogoImage(),
+        elevation: 0,
+        centerTitle: false,
+      ),
+      body: ConstrainedBox(
         constraints: const BoxConstraints(
           minHeight: 100,
         ),

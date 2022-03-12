@@ -22,9 +22,9 @@ class LogoImage extends StatelessWidget {
           Text(
             "GourMeow",
             style: TextStyle(
-                color: Colors.yellow,
-                fontSize: imageSize,
-                fontFamily: 'Balthazar'),
+              color: Colors.yellow,
+              fontSize: imageSize,
+            ),
           )
         ],
       ),

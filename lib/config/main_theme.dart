@@ -23,16 +23,16 @@ class MainThemeData {
   static const _colorScheme = ColorScheme(
     primary: Color(0xff487487),
     primaryVariant: Color(0xff00227b),
-    secondary: Color(0xff607d8b),
-    secondaryVariant: Color(0xff8eacbb),
+    secondary: Color(0xffffeb3b),
+    secondaryVariant: Color(0xffffff72),
     background: Color(0xff487487),
     surface: Colors.black12,
-    onBackground: Colors.white,
+    onBackground: Color(0xffffeb3b),
     onSurface: Colors.black,
     error: Colors.red,
     onError: Colors.white,
     onPrimary: Colors.white,
-    onSecondary: Colors.black,
+    onSecondary: Color(0xff487487),
     brightness: Brightness.dark,
   );
 }

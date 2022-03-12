@@ -10,7 +10,6 @@ class TimerCountUp extends StatelessWidget {
     required this.iconSize,
     required this.completed,
     required this.seconds,
-
   }) : super(key: key);
 
   final double iconSize;
@@ -39,11 +38,13 @@ class TimerCountUp extends StatelessWidget {
             child: Text(
               _formatDuration(timeElapsed),
               key: ValueKey(secondsElapsed),
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.secondary),
             ),
           ),
-          const Icon(
+          Icon(
             Icons.timer,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.secondaryVariant,
           ),
         ],
       ),

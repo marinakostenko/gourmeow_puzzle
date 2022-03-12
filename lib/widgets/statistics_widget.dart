@@ -47,7 +47,7 @@ class Statistics extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: fontSize * 0.8,
+              height: fontSize,
             ),
             Container(
               child: Text(
