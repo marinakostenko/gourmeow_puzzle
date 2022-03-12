@@ -5,11 +5,12 @@ import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
 import 'package:gourmeow_puzzle/timer/timer_count_up/timer_count_up.dart';
 
 class Statistics extends StatelessWidget {
-  const Statistics({Key? key, required this.moves, required this.dishes, required this.displayMenu})
+  const Statistics({Key? key, required this.moves, required this.dishes, required this.completed, required this.seconds})
       : super(key: key);
   final int moves;
   final int dishes;
-  final bool displayMenu;
+  final bool completed;
+  final int seconds;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,8 @@ class Statistics extends StatelessWidget {
           children: [
             TimerCountUp(
               iconSize: fontSize,
+              completed: completed,
+              seconds: seconds,
             ),
             SizedBox(
               height: fontSize * 0.8,
@@ -64,7 +67,7 @@ class Statistics extends StatelessWidget {
   }
 
   Widget _recipes() {
-    if (displayMenu) {
+    if (!completed) {
       return const Recipes(
         cuisine: Cuisine.none,
         text: Text("Menu"),

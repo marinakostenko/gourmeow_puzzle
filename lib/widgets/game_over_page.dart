@@ -9,9 +9,10 @@ class GameOverPage extends StatelessWidget {
   final int moves;
   final int dishes;
   final List<Cat> cats;
+  final int seconds;
 
   const GameOverPage(
-      {Key? key, required this.moves, required this.dishes, required this.cats})
+      {Key? key, required this.moves, required this.dishes, required this.cats, required this.seconds})
       : super(key: key);
 
   @override
@@ -69,7 +70,12 @@ class GameOverPage extends StatelessWidget {
                   displayMenu: false,
                 ),
               ),
-              Statistics(moves: moves, dishes: dishes, displayMenu: false,),
+              Statistics(
+                moves: moves,
+                dishes: dishes,
+                completed: true,
+                seconds: seconds,
+              ),
             ],
           ),
         ),

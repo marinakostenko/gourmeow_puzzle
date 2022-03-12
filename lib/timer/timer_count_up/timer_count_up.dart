@@ -8,16 +8,26 @@ class TimerCountUp extends StatelessWidget {
   const TimerCountUp({
     Key? key,
     required this.iconSize,
+    required this.completed,
+    required this.seconds,
+
   }) : super(key: key);
 
   final double iconSize;
+  final bool completed;
+  final int seconds;
 
   @override
   Widget build(BuildContext context) {
     final secondsElapsed =
         context.select((TimerCountUpBloc bloc) => bloc.state.secondsElapsed);
 
-    final timeElapsed = Duration(seconds: secondsElapsed);
+    dynamic timeElapsed = Duration(seconds: secondsElapsed);
+
+    if (completed) {
+      context.read<TimerCountUpBloc>().add(const TimerCountUpStopped());
+      timeElapsed = Duration(seconds: seconds);
+    }
 
     return Container(
       child: Row(
@@ -29,7 +39,6 @@ class TimerCountUp extends StatelessWidget {
             child: Text(
               _formatDuration(timeElapsed),
               key: ValueKey(secondsElapsed),
-
             ),
           ),
           const Icon(

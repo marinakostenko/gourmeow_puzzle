@@ -26,6 +26,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
   dynamic size;
   dynamic ratio;
   dynamic boardHeightWidth;
+  dynamic secondsElapsed;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,8 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
             ),
             BlocProvider(create: (context) => AudioControlBloc()),
             BlocProvider(
-              create: (context) => TimerCountUpBloc(ticker: const Ticker())..add(const TimerCountUpStarted()),
+              create: (context) => TimerCountUpBloc(ticker: const Ticker())
+                ..add(const TimerCountUpStarted()),
             ),
           ],
           child: SingleChildScrollView(
@@ -77,6 +79,8 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         context.select((SlidePuzzleBloc bloc) => bloc.state.numberOfMoves);
     var numberOfTilesLeft = context
         .select((SlidePuzzleBloc bloc) => bloc.state.numberOfCorrectTiles);
+    secondsElapsed =
+        context.select((TimerCountUpBloc bloc) => bloc.state.secondsElapsed);
 
     debugPrint("Number of moves count $count");
     debugPrint("Number of tiles left $numberOfTilesLeft");
@@ -101,8 +105,12 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Statistics(moves: count, dishes: numberOfTilesLeft, displayMenu: true,),
-          //_statistics(count, numberOfTilesLeft),
+          Statistics(
+            completed: false,
+            moves: count,
+            dishes: numberOfTilesLeft,
+            seconds: secondsElapsed,
+          ),
           _boardBuilder(context, 5, products),
           _catsBuilder(context),
         ],
@@ -112,8 +120,12 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Statistics(moves: count, dishes: numberOfTilesLeft, displayMenu: true,),
-          //_statistics(count, numberOfTilesLeft),
+          Statistics(
+            moves: count,
+            dishes: numberOfTilesLeft,
+            completed: false,
+            seconds: secondsElapsed,
+          ),
           _boardBuilder(context, 5, products),
           _catsBuilder(context),
         ],
@@ -149,13 +161,11 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     return BlocConsumer<SlidePuzzleBloc, SlidePuzzleState>(
       listener: (context, state) {
         if (state.puzzleStatus == PuzzleStatus.complete) {
-          context.read<TimerCountUpBloc>().add(const TimerCountUpStopped());
-
           Navigator.of(context, rootNavigator: true).pushReplacement(
             PageRouteBuilder(
               transitionDuration: Duration(seconds: 2),
               pageBuilder: (_, __, ___) =>
-                  GameOverPage(moves: 1, dishes: 1, cats: state.cats),
+                  GameOverPage(moves: 1, dishes: 1, cats: state.cats, seconds: secondsElapsed,),
             ),
           );
         }
@@ -169,53 +179,6 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
           ),
         );
       },
-    );
-  }
-
-  Widget _statistics(int moves, int dishes) {
-    double fontSize = ratio < 1 ? size.height * 0.03 : size.width * 0.015;
-    double sectionWidth = ratio < 1 ? size.width : size.width * 0.25;
-
-    return Container(
-      alignment: Alignment.center,
-      width: sectionWidth,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TimerCountUp(iconSize: fontSize,),
-          SizedBox(
-            height: fontSize * 0.8,
-          ),
-          Container(
-            child: Text(
-              "Number of moves $moves",
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: fontSize,
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: fontSize * 0.8,
-          ),
-          Container(
-            child: Text(
-              "Prepared dishes $dishes / 8",
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: fontSize,
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          const Recipes(
-            cuisine: Cuisine.none,
-            text: Text("Menu"),
-          ),
-        ],
-      ),
     );
   }
 }
