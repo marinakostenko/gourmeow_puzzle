@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,7 +11,6 @@ import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/models/puzzle.dart';
 
 part 'slide_puzzle_event.dart';
-
 part 'slide_puzzle_state.dart';
 
 class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
@@ -96,7 +94,7 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         }
 
         PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
-        if (numberOfCorrectProducts == 1) {
+        if (numberOfCorrectProducts == 8) {
           puzzleStatus = PuzzleStatus.complete;
         }
 

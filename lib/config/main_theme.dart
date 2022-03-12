@@ -22,7 +22,7 @@ class MainThemeData {
 
   static const _colorScheme = ColorScheme(
     primary: Color(0xff487487),
-    primaryVariant: Color(0xff00227b),
+    primaryVariant: Color(0xff18485a),
     secondary: Color(0xffffeb3b),
     secondaryVariant: Color(0xffffff72),
     background: Color(0xff487487),

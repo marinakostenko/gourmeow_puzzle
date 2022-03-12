@@ -97,8 +97,8 @@ class _RecipesModalState extends State<RecipesModal> {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: Theme.of(context).colorScheme.primaryVariant,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(width: 5, color: Colors.white),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(width: 5, color: Theme.of(context).colorScheme.secondary),
               ),
               child: _dialogView(state.recipes),
             ),

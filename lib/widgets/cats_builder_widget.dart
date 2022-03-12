@@ -26,12 +26,13 @@ class _CatsBuilderState extends State<CatsBuilder> {
     size = MediaQuery.of(context).size;
     ratio = size.width / size.height;
 
-    catsWidth = ratio < 1 ? size.width * 0.9 : size.width * 0.3;
+    catsWidth = ratio < 1 ? size.width * 0.8 : size.width * 0.3;
     catsHeight = ratio < 1 ? size.height * 0.5 : size.height * 0.55;
 
     return Container(
       height: catsHeight,
       width: catsWidth,
+      margin: EdgeInsets.all(10),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10),

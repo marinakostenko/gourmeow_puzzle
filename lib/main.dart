@@ -59,6 +59,11 @@ class MainPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              width: ratio < 1 ? size.width * 0.7 : size.height * 0.7,
+              height: ratio < 1 ? size.width * 0.7 : size.height * 0.7,
+              child:  Image.asset('assets/images/completed_board.png'),
+            ),
+            Container(
               child: TextButton(
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.all(30),
@@ -81,24 +86,6 @@ class MainPage extends StatelessWidget {
                 ),
               ),
             ),
-            // Container(
-            //   width: 200,
-            //   height: 200,
-            //   margin: EdgeInsets.all(30),
-            //   child: TextButton(
-            //     onPressed: () {
-            //       Navigator.of(context).push<void>(
-            //         MaterialPageRoute(
-            //           builder: (context) => const PuzzlePage(),
-            //         ),
-            //       );
-            //     },
-            //     child: const Text(
-            //       "Endless mode",
-            //       style: TextStyle(fontSize: 32),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
