@@ -22,10 +22,10 @@ class Puzzle extends Equatable {
   Product getWhitespaceTile() {
     Product defaultProduct = Data().defaultProduct;
 
-    for(int y = 0; y < products.length; y++) {
-      for(int x = 0; x < products[0].length; x++) {
+    for (int y = 0; y < products.length; y++) {
+      for (int x = 0; x < products[0].length; x++) {
         Ingredients ingredient = products[y][x].ingredient.ingredient;
-        if(ingredient == Ingredients.none) {
+        if (ingredient == Ingredients.none) {
           return products[y][x];
         }
       }
@@ -40,14 +40,22 @@ class Puzzle extends Equatable {
   bool isTileMovable(Product productTile) {
     final whitespaceTile = getWhitespaceTile();
     debugPrint("White space tile ${whitespaceTile.position}");
-    if (productTile.ingredient.ingredient == whitespaceTile.ingredient.ingredient) {
+    if (productTile.ingredient.ingredient ==
+        whitespaceTile.ingredient.ingredient) {
       return false;
     }
 
-    if (whitespaceTile.position.x != productTile.position.x - 1 && whitespaceTile.position.x != productTile.position.x + 1 &&
-        whitespaceTile.position.y != productTile.position.y - 1 && whitespaceTile.position.y != productTile.position.y + 1) {
-      return false;
+    if ((whitespaceTile.position.x == productTile.position.x - 1 &&
+            whitespaceTile.position.y == productTile.position.y) ||
+        (whitespaceTile.position.x == productTile.position.x + 1 &&
+            whitespaceTile.position.y == productTile.position.y) ||
+        (whitespaceTile.position.x == productTile.position.x &&
+            whitespaceTile.position.y == productTile.position.y - 1) ||
+        (whitespaceTile.position.x == productTile.position.x &&
+            whitespaceTile.position.y == productTile.position.y + 1)) {
+      return true;
     }
-    return true;
+
+    return false;
   }
 }
