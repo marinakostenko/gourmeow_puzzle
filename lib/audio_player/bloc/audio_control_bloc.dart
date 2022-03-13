@@ -11,7 +11,6 @@ class AudioControlBloc extends Bloc<AudioControlEvent, AudioControlState> {
   }
 
   void _onAudioToggled(AudioToggled event, Emitter<AudioControlState> emit) {
-    debugPrint("Muted ${!state.muted}");
     emit(AudioControlState(muted: !state.muted));
   }
 }

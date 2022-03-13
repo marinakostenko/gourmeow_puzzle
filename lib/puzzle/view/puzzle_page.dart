@@ -15,6 +15,7 @@ import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 
 import 'drag_drop_widget.dart';
 
+///class for 'endless' tetris like mode puzzle, not supported in V1
 class PuzzlePage extends StatefulWidget {
   const PuzzlePage({Key? key}) : super(key: key);
 

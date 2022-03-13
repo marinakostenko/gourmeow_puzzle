@@ -108,7 +108,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
             seconds: secondsElapsed,
           ),
           _boardBuilder(context, 5, products),
-          _catsBuilder(context),
+          _catsBuilder(context, count, numberOfTilesLeft),
         ],
       );
     } else {
@@ -123,7 +123,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
             seconds: secondsElapsed,
           ),
           _boardBuilder(context, 5, products),
-          _catsBuilder(context),
+          _catsBuilder(context, count, numberOfTilesLeft),
         ],
       );
     }
@@ -153,7 +153,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     );
   }
 
-  Widget _catsBuilder(BuildContext context) {
+  Widget _catsBuilder(BuildContext context, moves, dishes) {
     return BlocConsumer<SlidePuzzleBloc, SlidePuzzleState>(
       listener: (context, state) {
         if (state.puzzleStatus == PuzzleStatus.complete) {
@@ -161,8 +161,8 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
             PageRouteBuilder(
               transitionDuration: const Duration(seconds: 2),
               pageBuilder: (_, __, ___) => GameOverPage(
-                moves: 1,
-                dishes: 1,
+                moves: moves,
+                dishes: dishes,
                 cats: state.cats,
                 seconds: secondsElapsed,
               ),

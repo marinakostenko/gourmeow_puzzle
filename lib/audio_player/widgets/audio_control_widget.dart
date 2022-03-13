@@ -15,8 +15,8 @@ class AudioControl extends StatelessWidget {
     final audioMuted =
         context.select((AudioControlBloc bloc) => bloc.state.muted);
     final audioAsset = audioMuted
-        ? const AssetImage("assets/images/simple_on.png")
-        : const AssetImage("assets/images/simple_off.png");
+        ? const AssetImage("assets/images/simple_off.png")
+        : const AssetImage("assets/images/simple_on.png");
 
     return Container(
       margin: EdgeInsets.only(right: iconSize),

@@ -16,6 +16,7 @@ part 'puzzle_event.dart';
 
 part 'puzzle_state.dart';
 
+///bloc for 'endless' tetris like mode puzzle, not supported in V1
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   PuzzleBloc() : super(const PuzzleState()) {
     on<PuzzleInitialized>(_onPuzzleInitialized);
@@ -35,7 +36,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     PuzzleInitialized event,
     Emitter<PuzzleState> emit,
   ) {
-    debugPrint("initialized");
+
     productsList = createDefaultProductsList(event.size);
 
     cats = Data().defaultCatsList();

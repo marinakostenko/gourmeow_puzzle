@@ -39,7 +39,6 @@ class Puzzle extends Equatable {
 
   bool isTileMovable(Product productTile) {
     final whitespaceTile = getWhitespaceTile();
-    debugPrint("White space tile ${whitespaceTile.position}");
     if (productTile.ingredient.ingredient ==
         whitespaceTile.ingredient.ingredient) {
       return false;

@@ -43,7 +43,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
 
       numberOfCorrectProducts = numberOfCorrectProducts + servedMeals.length;
 
-      debugPrint(servedMeals.map((set) => set.meal.name).toString());
     }
 
     Puzzle puzzle = Puzzle(products: productsList);
@@ -59,11 +58,8 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
   }
 
   void _onProductTapped(ProductTapped event, Emitter<SlidePuzzleState> emit) {
-    debugPrint("Product tapped");
     final tappedProduct = event.product;
     if (state.puzzleStatus == PuzzleStatus.incomplete) {
-      debugPrint(
-          "Tile is movable ${state.puzzle.isTileMovable(tappedProduct)}");
       if (state.puzzle.isTileMovable(tappedProduct)) {
         Product whiteSpaceProduct = state.puzzle.getWhitespaceTile();
         BoardPosition whiteSpaceProductPosition = whiteSpaceProduct.position;
@@ -81,9 +77,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1] =
             whiteSpaceProduct;
 
-        debugPrint(
-            "${productsList[whiteSpaceProductPosition.y - 1][whiteSpaceProductPosition.x - 1].ingredient} and "
-            "${productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1].ingredient}");
 
         int numberOfCorrectProducts = 0;
 
@@ -93,8 +86,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
 
           numberOfCorrectProducts =
               numberOfCorrectProducts + servedMeals.length;
-
-          debugPrint(servedMeals.map((set) => set.meal.name).toString());
         }
 
         PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
@@ -274,7 +265,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
     int cornerIndex = _random.nextInt(corners.length);
     Map<int, List<BoardPosition>> positionsMap =
         _createBoard(corners[cornerIndex].x, corners[cornerIndex].y);
-    debugPrint("Corner ${corners[cornerIndex]}");
 
     ///assign meals for each cat from meals list
     for (var entry in sortedCatsMap.entries) {
@@ -291,8 +281,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         tmp.removeAt(index);
       }
 
-      debugPrint("meals length ${cat.meals.length} cuisine ${cat.cuisine}");
-      debugPrint("Count ${count} / ${mealsCount}");
       List<BoardPosition>? positions = positionsMap[count];
 
       cat.positions = positions!;

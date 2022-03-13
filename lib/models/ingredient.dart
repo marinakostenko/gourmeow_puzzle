@@ -122,7 +122,6 @@ extension IngredientsExt on Ingredients {
       }
 
       if(count < 2) {
-        debugPrint("Ingredient ${ingredient.name}");
         return ingredient;
       }
     }

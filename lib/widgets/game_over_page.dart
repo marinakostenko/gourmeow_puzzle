@@ -56,68 +56,70 @@ class _GameOverPageState extends State<GameOverPage> {
         elevation: 0,
         centerTitle: false,
       ),
-      body: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minHeight: 100,
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: const Text(
-                  "Well done! Your guests can eat now!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
-              ),
-              Statistics(
-                moves: widget.moves,
-                dishes: widget.dishes,
-                completed: true,
-                seconds: widget.seconds,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FacebookButton(score: scoreToShare),
-                  TwitterButton(
-                    score: scoreToShare,
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 100,
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Text(
+                    "Well done! Your guests can eat now!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, color: Colors.white),
                   ),
-                ],
-              ),
-              Hero(
-                tag: 'cats-hero',
-                child: CatsBuilder(
-                  cats: widget.cats,
-                  displayMenu: false,
                 ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.all(20),
-                ).copyWith(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                Statistics(
+                  moves: widget.moves,
+                  dishes: widget.dishes,
+                  completed: true,
+                  seconds: widget.seconds,
                 ),
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const SlidePuzzlePage(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FacebookButton(score: scoreToShare),
+                    TwitterButton(
+                      score: scoreToShare,
                     ),
-                  );
-                },
-                child: Text(
-                  "Restart",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).colorScheme.primary),
+                  ],
                 ),
-              ),
-            ],
+                Hero(
+                  tag: 'cats-hero',
+                  child: CatsBuilder(
+                    cats: widget.cats,
+                    displayMenu: false,
+                  ),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.all(20),
+                  ).copyWith(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const SlidePuzzlePage(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Restart",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
