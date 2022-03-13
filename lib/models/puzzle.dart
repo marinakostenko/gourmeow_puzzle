@@ -34,7 +34,7 @@ class Puzzle extends Equatable {
   }
 
   bool isComplete() {
-    return false;//(tiles.length - 1) - getNumberOfCorrectTiles() == 0;
+    return false;
   }
 
   bool isTileMovable(Product productTile) {
@@ -44,8 +44,8 @@ class Puzzle extends Equatable {
       return false;
     }
 
-    if (whitespaceTile.position.x != productTile.position.x &&
-        whitespaceTile.position.y != productTile.position.y) {
+    if (whitespaceTile.position.x != productTile.position.x - 1 && whitespaceTile.position.x != productTile.position.x + 1 &&
+        whitespaceTile.position.y != productTile.position.y - 1 && whitespaceTile.position.y != productTile.position.y + 1) {
       return false;
     }
     return true;

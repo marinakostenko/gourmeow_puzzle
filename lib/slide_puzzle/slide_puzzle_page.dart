@@ -82,9 +82,6 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
     secondsElapsed =
         context.select((TimerCountUpBloc bloc) => bloc.state.secondsElapsed);
 
-    debugPrint("Number of moves count $count");
-    debugPrint("Number of tiles left $numberOfTilesLeft");
-
     var productTable = puzzle.products;
     var products = <Widget>[];
 

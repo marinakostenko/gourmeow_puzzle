@@ -60,7 +60,6 @@ class ProductBuilder extends StatelessWidget {
 
 
 class AnimatedTextButton extends ImplicitlyAnimatedWidget {
-  /// {@macro animated_text_button}
   const AnimatedTextButton({
     Key? key,
     required this.child,
@@ -71,16 +70,10 @@ class AnimatedTextButton extends ImplicitlyAnimatedWidget {
     VoidCallback? onEnd,
   }) : super(key: key, curve: curve, duration: duration, onEnd: onEnd);
 
-  /// Typically the button's label.
   final Widget child;
 
-  /// Called when the button is tapped or otherwise activated.
   final VoidCallback? onPressed;
 
-  /// The target text style of this button, must not be null.
-  ///
-  /// When this property is changed, the style will
-  /// be animated over [duration] time.
   final ButtonStyle style;
 
   @override
@@ -111,17 +104,10 @@ class _AnimatedTextButtonState
   }
 }
 
-/// The tween for [ButtonStyle].
 class ButtonStyleTween extends Tween<ButtonStyle> {
-  /// Creates a button style tween.
-  ///
-  /// The [begin] and [end] properties must be non-null before the tween is
-  /// first used, but the arguments can be null if the values are going to be
-  /// filled in later.
   ButtonStyleTween({ButtonStyle? begin, ButtonStyle? end})
       : super(begin: begin, end: end);
 
-  /// Returns the value this variable has at the given animation clock value.
   @override
   ButtonStyle lerp(double t) => ButtonStyle.lerp(begin, end, t)!;
 }
