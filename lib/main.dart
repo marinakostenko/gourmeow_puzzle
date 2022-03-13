@@ -60,15 +60,6 @@ class MainPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Container(
-              //   padding: EdgeInsets.all(fontSize),
-              //   width: ratio < 1 ? size.width * 0.8 : size.width * 0.3,
-              //   child: Text(
-              //       "Goal of puzzle is to fill tiles correspondent to guest color with proper meals",
-              //     style: TextStyle(color: Theme.of(context).colorScheme.onBackground, fontSize: fontSize * 0.5),
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
               SizedBox(
                 width: ratio < 1 ? size.width : size.height * 0.7,
                 height: ratio < 1 ? size.width : size.height * 0.7,
