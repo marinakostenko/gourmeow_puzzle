@@ -10,7 +10,7 @@ import 'package:gourmeow_puzzle/timer/ticker.dart';
 import 'package:gourmeow_puzzle/timer/timer_count_up/bloc/timer_count_up_bloc.dart';
 import 'package:gourmeow_puzzle/widgets/cats_builder_widget.dart';
 import 'package:gourmeow_puzzle/widgets/game_over_page.dart';
-import 'package:gourmeow_puzzle/widgets/logo.dart';
+import 'package:gourmeow_puzzle/widgets/logo_widget.dart';
 import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
 
 class SlidePuzzlePage extends StatefulWidget {
@@ -52,7 +52,6 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
                   const SlidePuzzleInitialized(shufflePuzzle: true, size: 5),
                 ),
             ),
-            BlocProvider(create: (context) => AudioControlBloc()),
             BlocProvider(
               create: (context) => TimerCountUpBloc(ticker: const Ticker())
                 ..add(const TimerCountUpStarted()),
@@ -160,7 +159,7 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         if (state.puzzleStatus == PuzzleStatus.complete) {
           Navigator.of(context, rootNavigator: true).pushReplacement(
             PageRouteBuilder(
-              transitionDuration: Duration(seconds: 2),
+              transitionDuration: const Duration(seconds: 2),
               pageBuilder: (_, __, ___) => GameOverPage(
                 moves: 1,
                 dishes: 1,

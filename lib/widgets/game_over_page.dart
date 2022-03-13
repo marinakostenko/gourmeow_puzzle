@@ -9,7 +9,7 @@ import 'package:gourmeow_puzzle/widgets/statistics_widget.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'cats_builder_widget.dart';
-import 'logo.dart';
+import 'logo_widget.dart';
 
 class GameOverPage extends StatefulWidget {
   final int moves;

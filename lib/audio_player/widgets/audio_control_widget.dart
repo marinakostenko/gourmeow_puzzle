@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/audio_player/bloc/audio_control_bloc.dart';
 import 'package:provider/src/provider.dart';
 
@@ -26,6 +27,7 @@ class AudioControl extends StatelessWidget {
           child: Image(
             image: audioAsset,
             width: iconSize,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
       ),

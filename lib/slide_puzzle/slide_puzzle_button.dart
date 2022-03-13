@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gourmeow_puzzle/audio_player/bloc/audio_control_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/widgets/audio_control_listener.dart';
 import 'package:gourmeow_puzzle/config/main_theme_animation_duration.dart';
 import 'package:gourmeow_puzzle/helpers/audio_players.dart';
@@ -78,7 +77,7 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
   Widget build(BuildContext context) {
     final size = widget.state.puzzle.getDimension();
 
-    final movementDuration = const Duration(milliseconds: 370);
+    const movementDuration = Duration(milliseconds: 370);
 
     return AudioControlListener(
       audioPlayer: _audioPlayer,
@@ -115,9 +114,6 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
                   context
                       .read<SlidePuzzleBloc>()
                       .add(ProductTapped(widget.product));
-
-                  // debugPrint(
-                  //     "Muted ${context.select((AudioControlBloc bloc) => bloc.state.muted)}");
 
                   unawaited(_audioPlayer?.replay());
                 },
