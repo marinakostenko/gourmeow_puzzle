@@ -41,7 +41,7 @@ class _GameOverPageState extends State<GameOverPage> {
     super.initState();
 
     _successAudioPlayer = widget._audioPlayerFactory()
-      ..setAsset('assets/audio/success.mp3');
+      ..setAsset('assets/audio/tada.wav');
     unawaited(_successAudioPlayer.play());
   }
 

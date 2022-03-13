@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:gourmeow_puzzle/helpers/product_helper.dart';
 import 'package:gourmeow_puzzle/models/board_position.dart';
 import 'package:gourmeow_puzzle/models/cat.dart';
 import 'package:gourmeow_puzzle/models/ingredient.dart';
@@ -35,7 +36,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     Emitter<PuzzleState> emit,
   ) {
     debugPrint("initialized");
-    productsList = Data().defaultProductsList(event.size);
+    productsList = createDefaultProductsList(event.size);
 
     cats = Data().defaultCatsList();
     puzzle = Puzzle(products: productsList);
@@ -500,5 +501,41 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     }
 
     return ingredients;
+  }
+
+  List<List<Product>> createDefaultProductsList(int size) {
+    final Map<Ingredients, int> defaultProductsMap = {};
+    final defaultProducts = Data().allProductsList();
+
+    for (var product in defaultProducts) {
+      defaultProductsMap.putIfAbsent(product.ingredient.ingredient, () => 2);
+    }
+
+    List<List<Product>> productsTable = [];
+
+    var _random = Random();
+
+    for (int j = 1; j <= size; j++) {
+      var products = <Product>[];
+      for (int i = 1; i <= size; i++) {
+        while (true) {
+          int rand = _random.nextInt(defaultProducts.length - 1);
+          Product product = defaultProducts[rand].copyWith();
+
+          int count = defaultProductsMap[product.ingredient.ingredient]!;
+          if (count > 0) {
+            products.add(product);
+            defaultProductsMap[product.ingredient.ingredient] = count - 1;
+            break;
+          }
+        }
+      }
+
+      productsTable.add(products);
+    }
+
+    var shuffled = ProductHelper().shuffleProducts(size, productsTable);
+
+    return shuffled;
   }
 }

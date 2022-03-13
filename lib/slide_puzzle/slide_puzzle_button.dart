@@ -62,7 +62,7 @@ class SlidePuzzleButtonState extends State<SlidePuzzleButton>
 
     _timer = Timer(const Duration(seconds: 1), () {
       _audioPlayer = widget._audioPlayerFactory()
-        ..setAsset('audio/tile_move.mp3');
+        ..setAsset('audio/move.wav');
     });
   }
 
