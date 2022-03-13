@@ -42,22 +42,22 @@ class _SlidePuzzlePageState extends State<SlidePuzzlePage> {
         ],
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: AnimatedContainer(
-        duration: const Duration(milliseconds: 530),
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => SlidePuzzleBloc()
-                ..add(
-                  const SlidePuzzleInitialized(shufflePuzzle: true, size: 5),
-                ),
-            ),
-            BlocProvider(
-              create: (context) => TimerCountUpBloc(ticker: const Ticker())
-                ..add(const TimerCountUpStarted()),
-            ),
-          ],
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 530),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => SlidePuzzleBloc()
+                  ..add(
+                    const SlidePuzzleInitialized(shufflePuzzle: true, size: 5),
+                  ),
+              ),
+              BlocProvider(
+                create: (context) => TimerCountUpBloc(ticker: const Ticker())
+                  ..add(const TimerCountUpStarted()),
+              ),
+            ],
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minHeight: 100,
