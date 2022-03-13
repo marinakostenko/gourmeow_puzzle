@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/helpers/link_helper.dart';
 
-const _shareUrl = 'https://flutterhack.devpost.com/';
+const _shareUrl = 'https://marinakostenko.github.io/';
 
 class TwitterButton extends StatelessWidget {
   final String score;
