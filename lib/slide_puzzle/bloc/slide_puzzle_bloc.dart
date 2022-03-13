@@ -42,7 +42,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
       cat.servedMeals = servedMeals;
 
       numberOfCorrectProducts = numberOfCorrectProducts + servedMeals.length;
-
     }
 
     Puzzle puzzle = Puzzle(products: productsList);
@@ -76,7 +75,6 @@ class SlidePuzzleBloc extends Bloc<SlidePuzzleEvent, SlidePuzzleState> {
         whiteSpaceProduct.cat = tappedProductCat;
         productsList[tappedProductPosition.y - 1][tappedProductPosition.x - 1] =
             whiteSpaceProduct;
-
 
         int numberOfCorrectProducts = 0;
 
