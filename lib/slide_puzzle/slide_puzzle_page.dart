@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gourmeow_puzzle/audio_player/bloc/audio_control_bloc.dart';
 import 'package:gourmeow_puzzle/audio_player/widgets/audio_control_widget.dart';
 import 'package:gourmeow_puzzle/models/product.dart';
 import 'package:gourmeow_puzzle/slide_puzzle/bloc/slide_puzzle_bloc.dart';

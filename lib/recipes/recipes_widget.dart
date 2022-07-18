@@ -149,7 +149,7 @@ class _RecipesModalState extends State<RecipesModal> {
             alignment: Alignment.center,
             width: iconSize * 0.3,
             height: iconSize,
-            child: Text(
+            child: const Text(
               "=",
               style: TextStyle(
                   fontSize: 32,
@@ -176,7 +176,7 @@ class _RecipesModalState extends State<RecipesModal> {
             alignment: Alignment.center,
             width: iconSize * 0.3,
             height: iconSize,
-            child: Text(
+            child: const Text(
               "+",
               style: TextStyle(
                   fontSize: 32,
@@ -203,7 +203,7 @@ class _RecipesModalState extends State<RecipesModal> {
             alignment: Alignment.center,
             width: iconSize * 0.3,
             height: iconSize,
-            child: Text(
+            child: const Text(
               "+",
               style: TextStyle(
                   fontSize: 32,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gourmeow_puzzle/models/meal.dart';
 import 'package:gourmeow_puzzle/recipes/recipes_widget.dart';
@@ -45,27 +44,23 @@ class Statistics extends StatelessWidget {
             SizedBox(
               height: fontSize * 0.8,
             ),
-            Container(
-              child: Text(
-                "Number of moves $moves",
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: fontSize,
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
+            Text(
+              "Number of moves $moves",
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: fontSize,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
             SizedBox(
               height: fontSize * 0.8,
             ),
-            Container(
-              child: Text(
-                "Prepared dishes $dishes / 8",
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: fontSize,
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
+            Text(
+              "Prepared dishes $dishes / 8",
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: fontSize,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
             SizedBox(
