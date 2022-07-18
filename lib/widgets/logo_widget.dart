@@ -7,8 +7,7 @@ class LogoImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double ratio = size.width / size.height;
-    var imageSize = ratio < 1 ? size.width * 0.08 : size.height * 0.08;
+    var imageSize = size.height * 0.04;
     return Container(
       height: imageSize,
       padding: EdgeInsets.only(left: imageSize * 0.5),
